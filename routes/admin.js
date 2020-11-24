@@ -54,4 +54,11 @@ router.get("/theater-details",(req,res)=>{
   res.render('admin/theater-details',{admin:true})
 })
 
+
+//get user details
+
+router.get('/user-details',(req,res)=>{
+  res.render("admin/user-details",{admin:true})
+})
+
 module.exports = router;

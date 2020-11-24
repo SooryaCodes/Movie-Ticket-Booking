@@ -287,10 +287,10 @@ table th {
 }
 table td {
   border-bottom: 1px solid #e7e7e7;
-  margin-bottom: 20px;
   padding: 30px;
   text-align: center;
   width: 300px;
+  margin-bottom: 20px;
 }
 td img {
   margin-left: 10px;
