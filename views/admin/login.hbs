@@ -9,14 +9,15 @@
           <h3>Welcome</h3>
         </div>
         {{!-- <!-- ---login input field--- --> --}}
+        <form action="/admin/login" method="POST">
           <div class="input-group">
-            <input type="email" name="adminEmail" id="" required/>
+            <input type="email" name="a_email"  id="" required/>
             <label for=""
               ><i class="fa fa-envelope" aria-hidden="true"></i> Email</label
             >
           </div>
           <div class="input-group">
-            <input type="password" name="adminPassword" id="" required/>
+            <input type="password" name="a_password"  id="" required/>
             <label for=""
               ><i class="fa fa-lock" aria-hidden="true"></i> Password</label
             >
@@ -24,5 +25,6 @@
         <div class="input-submit">
             <input type="submit" name="" id="" value="Login"/>
           </div>
+          </form>
       </div>
     </div>
