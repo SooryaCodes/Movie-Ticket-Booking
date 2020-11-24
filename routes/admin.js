@@ -19,7 +19,7 @@ router.get("/", verifyLogin,function (req, res, next) {
 
 // ----get login page---
 router.get("/login", (req, res) => {
-  res.render("admin/login");
+  res.render("admin/login",{loginErr:req.session.loginErr});
 });
 
 // ---post login page---
