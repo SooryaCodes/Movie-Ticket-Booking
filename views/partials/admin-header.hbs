@@ -1,30 +1,59 @@
 <link rel="stylesheet" href="/stylesheets/admin/admin-header.css">
 <!-- ---navbar--- -->
-  <div class="nav-bar">
-    <div class="nav-items">
-      <a href="#side-bar"><img src="/images/admin/menu (1).svg" alt="" /></a>
-      <div class="nav-text">
-        <p>Movie Cafe</p>
+<div class="nav-bar">
+  <div class="nav-items">
+    <a href="#side-bar"><img src="/images/admin/menu (1).svg" alt="" /></a>
+    <div class="nav-text" onclick="profileToggle()">
+      <div class="profile"> <img id="profile" src="/images/admin/profile.svg" alt=""><img id="down-arrow"
+          src="/images/admin/chevron-down.svg" alt=""></div>
+      <p>Hi Admin</p>
+    </div>
+  </div>
+  <div class="wrapper">
+    <div class="nothing"></div>
+    <div class="profile-details">
+      <div class="picture"> <img src="/images/admin/profile.svg" alt="" />
       </div>
+      <p>Admin</p>
+    </div>
+    <div class="details">
+      <ul>
+        <li><i class="fa fa-user" aria-hidden="true"></i>Edit Profile</li>
+        <li><i class="fa fa-lock" aria-hidden="true"></i>Change Password</li>
+        <li><i class="fa fa-envelope" aria-hidden="true"></i>Inbox</li>
+        <a href="/admin/logout">
+          <li><i class="fas fa-sign-out-alt"></i>Logout</li>
+        </a>
+      </ul>
     </div>
   </div>
+</div>
 
-  <!-- ---side-bar--- -->
 
-  <div id="side-bar">
-    <div class="top-side-bar">
-      <p>Admin Panel</p>
-      <a href="#"><img src="/images/admin/x.svg" alt="" /></a>
-    </div>
-    <a href="" class="menu-items"><img src="/images/admin/grid.svg" alt="" /> Dashboard</a>
-    <a href="" class="menu-items"><img src="/images/admin/users.svg" alt="" /> Owners</a>
-    <a href="/admin/theater-details" class="menu-items"><img src="/images/admin/film.svg" alt="" /> Theaters</a>
-    <a href="/admin/user-details" class="menu-items"><img src="/images/admin/users.svg" alt="" /> Users</a>
-    <a href="" class="menu-items"><img src="/images/admin/book.svg" alt="" /> Bookings</a>
-    <a href="" class="menu-items"><img src="/images/admin/user-plus.svg" alt="" /> Add Owners</a>
-    <a href="" class="menu-items"><img src="/images/admin/file-plus.svg" alt="" /> Add Theaters</a>
-    <div class="menu-item">
-      <a href="/admin/logout" id="logout">Logout</a>
-    </div>
 
+<!-- ---side-bar--- -->
+
+<div id="side-bar">
+  <div class="top-side-bar">
+    <p>Admin Panel</p>
+    <a href="#"><img src="/images/admin/x.svg" alt="" /></a>
   </div>
+  <a href="" class="menu-items"><img src="/images/admin/grid.svg" alt="" /> Dashboard</a>
+  <a href="" class="menu-items"><img src="/images/admin/users.svg" alt="" /> Owners</a>
+  <a href="/admin/theater-details" class="menu-items"><img src="/images/admin/film.svg" alt="" /> Theaters</a>
+  <a href="/admin/user-details" class="menu-items"><img src="/images/admin/users.svg" alt="" /> Users</a>
+  <a href="" class="menu-items"><img src="/images/admin/book.svg" alt="" /> Bookings</a>
+  <a href="" class="menu-items"><img src="/images/admin/user-plus.svg" alt="" /> Add Owners</a>
+  <a href="" class="menu-items"><img src="/images/admin/file-plus.svg" alt="" /> Add Theaters</a>
+  <div class="menu-item">
+    <a href="/admin/logout" id="logout">Logout</a>
+  </div>
+
+</div>
+
+<script>
+  function profileToggle(){
+    const toggleProfile=document.querySelector(".wrapper")
+    toggleProfile.classList.toggle("active")
+  }
+</script>
