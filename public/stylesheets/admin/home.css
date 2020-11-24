@@ -1,0 +1,254 @@
+
+/* -----main analytics------ */
+
+.analytics {
+    margin-top: 100px;
+    width: 100%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  
+  .analytics .bar-chart {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px #ccc;
+    width: 820px;
+    padding: 20px;
+  }
+  .bar-chart p {
+    font-size: 20px;
+    font-weight: 600;
+    margin-left: 100px;
+    color: #707070;
+    margin-top: 20px;
+  }
+  
+  .doghnut-chart p {
+    font-size: 20px;
+    font-weight: 600;
+    margin-left: 50px;
+    color: #707070;
+    margin-top: 20px;
+    margin-bottom: 50px;
+  }
+  .analytics .doghnut-chart {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px #ccc;
+    width: 410px;
+    height: 480px;
+    padding: 20px;
+  }
+  
+  @media screen and (max-width: 1355px) {
+    .analytics {
+      width: 100%;
+      height: 600px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+  
+    .analytics .bar-chart {
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px #ccc;
+      width: 720px;
+      padding: 20px;
+    }
+  
+    .analytics .doghnut-chart {
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px #ccc;
+      width: 310px;
+      height: 430px;
+      padding: 20px;
+    }
+  }
+  @media screen and (max-width: 1077px) {
+    .analytics {
+      width: 100%;
+      height: 600px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+  
+    .analytics .bar-chart {
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px #ccc;
+      width: 620px;
+      height: 430px;
+      padding: 20px;
+    }
+  
+    .analytics .doghnut-chart {
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px #ccc;
+      width: 310px;
+      height: 430px;
+      padding: 20px;
+    }
+  }
+  @media screen and (max-width: 961px) {
+    .analytics {
+      width: 100%;
+      height: 600px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+  
+    .analytics .bar-chart {
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px #ccc;
+      width: 520px;
+      height: 430px;
+      padding: 20px;
+    }
+  
+    .analytics .doghnut-chart {
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px #ccc;
+      width: 310px;
+      height: 430px;
+      padding: 20px;
+    }
+  }
+  @media screen and (max-width: 892px) {
+    .analytics {
+      width: 100%;
+      height: 600px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+  
+    .analytics .bar-chart {
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px #ccc;
+      width: 420px;
+      height: 290px;
+      padding: 20px;
+    }
+  
+    .analytics .doghnut-chart {
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px #ccc;
+      width: 310px;
+      height: 290px;
+      padding: 20px;
+    }
+  
+    .bar-chart p {
+      font-size: 15px;
+      font-weight: 600;
+      margin-left: 20px;
+      color: #707070;
+      margin-top: 0px;
+    }
+  
+    .doghnut-chart p {
+      font-size: 15px;
+      font-weight: 600;
+      margin-left: 50px;
+      color: #707070;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  }
+  @media screen and (max-width: 756px) {
+    .analytics {
+      width: 100%;
+      height: 600px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+  
+    .analytics .bar-chart {
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px #ccc;
+      width: 380px;
+      height: 240px;
+      padding: 20px;
+    }
+  
+    .analytics .doghnut-chart {
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px #ccc;
+      width: 310px;
+      height: 290px;
+      padding: 20px;
+    }
+  
+    .bar-chart p {
+      font-size: 15px;
+      font-weight: 600;
+      margin-left: 20px;
+      color: #707070;
+      margin-top: 0px;
+    }
+  
+    .doghnut-chart p {
+      font-size: 15px;
+      font-weight: 600;
+      margin-left: 50px;
+      color: #707070;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  }
+  @media screen and (max-width: 410px) {
+    .analytics {
+      width: 100%;
+      height: 600px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+  
+    .analytics .bar-chart {
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px #ccc;
+      width: 350px;
+      height: 240px;
+      padding: 20px;
+    }
+  
+    .analytics .doghnut-chart {
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px #ccc;
+      width: 310px;
+      height: 290px;
+      padding: 20px;
+    }
+  
+    .bar-chart p {
+      font-size: 15px;
+      font-weight: 600;
+      margin-left: 20px;
+      color: #707070;
+      margin-top: 0px;
+    }
+  
+    .doghnut-chart p {
+      font-size: 15px;
+      font-weight: 600;
+      margin-left: 50px;
+      color: #707070;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  }
+  
+  

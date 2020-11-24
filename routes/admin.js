@@ -8,12 +8,14 @@ const verifyLogin = (req, res, next) => {
   if (req.session.loggedIn) {
     next();
   } else {
-    res.redirect("/login");
+    res.redirect("/admin/login");
   }
 };
 
 /* GET home page. */
-router.get("/", function (req, res, next) {});
+router.get("/", verifyLogin,function (req, res, next) {
+  res.render("admin/home",{admin:true})
+});
 
 // ----get login page---
 router.get("/login", (req, res) => {
@@ -28,7 +30,7 @@ router.post("/login", (req, res) => {
       console.log(response.admin);
       req.session.loggedIn = true;
       req.session.admin = response.admin;
-      res.redirect("/");
+      res.redirect("/admin");
     } else {
       req.session.loginErr = true;
       res.redirect("/admin/login");
