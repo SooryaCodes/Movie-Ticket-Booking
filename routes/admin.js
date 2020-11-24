@@ -47,4 +47,11 @@ router.get("/logout",(req,res)=>{
   res.redirect("/admin")
 })
 
+
+//get theater details 
+
+router.get("/theater-details",(req,res)=>{
+  res.render('admin/theater-details',{admin:true})
+})
+
 module.exports = router;
