@@ -16,7 +16,6 @@ module.exports = {
         .get()
         .collection(collection.ADMIN_COLLECTION)
         .findOne({ adminEmail: details.a_email });
-      console.log(admin, "admdin console");
 
       if (admin) {
         bcrypt
