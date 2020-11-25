@@ -14,7 +14,9 @@ const verifyLogin = (req, res, next) => {
 
 /* GET home page. */
 router.get("/", verifyLogin, function (req, res, next) {
-  res.render("admin/home", { admin: true });
+  adminHelper.getAdminDetails().then((adminDetails)=>{
+    res.render("admin/home", { admin: true,adminDetails });
+  })
 });
 
 // ----get login page---
@@ -99,8 +101,6 @@ router.post("/edit-profile/:id", (req, res) => {
       Image.mv("./public/images/admin/profile/"+id+".jpg");
       console.log("exist");
       res.redirect("/admin");
-    
-
   });
 });
 module.exports = router;

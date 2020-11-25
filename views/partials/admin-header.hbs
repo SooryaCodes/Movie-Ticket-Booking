@@ -6,21 +6,42 @@
     <div class="nav-text" onclick="profileToggle()">
       <div class="profile"> <img id="profile" src="/images/admin/profile.svg" alt=""><img id="down-arrow"
           src="/images/admin/chevron-down.svg" alt=""></div>
+      {{#if adminDetails.name}}
+      <p>Hi {{adminDetails.name}}</p>
+      {{/if}}
+      {{#if ?adminDetails.name}}
       <p>Hi Admin</p>
+      {{/if}}
     </div>
   </div>
   <div class="wrapper">
     <div class="nothing"></div>
     <div class="profile-details">
-      <div class="picture"> <img src="/images/admin/profile.svg" alt="" />
+      <div class="picture">
+        {{#if adminDetails._id}}
+        <img src="/images/admin/profile/{{adminDetails._id}}.jpg" alt="">
+        {{/if}}
+        {{#if ?adminDetails._id}}
+        <img src="/images/admin/profile.svg" alt="" />
+        {{/if}}
       </div>
+      {{#if adminDetails.name}}
+      <p>{{adminDetails.name}}</p>
+      {{/if}}
+      {{#if ?adminDetails.name}}
       <p>Admin</p>
-    </div>
+      {{/if}}    </div>
     <div class="details">
       <ul>
-       <a href="/admin/edit-profile"> <li><i class="fa fa-user" aria-hidden="true"></i>Edit Profile</li></a>
-        <a href="/admin/update-password"><li><i class="fa fa-lock" aria-hidden="true"></i>Update Password</li></a>
-        <a href="https://mail.google.com/mail/u/0/#inbox"><li><i class="fa fa-envelope" aria-hidden="true"></i>Inbox</li></a>
+        <a href="/admin/edit-profile">
+          <li><i class="fa fa-user" aria-hidden="true"></i>Edit Profile</li>
+        </a>
+        <a href="/admin/update-password">
+          <li><i class="fa fa-lock" aria-hidden="true"></i>Update Password</li>
+        </a>
+        <a href="https://mail.google.com/mail/u/0/#inbox">
+          <li><i class="fa fa-envelope" aria-hidden="true"></i>Inbox</li>
+        </a>
         <a href="/admin/logout">
           <li><i class="fas fa-sign-out-alt"></i>Logout</li>
         </a>
@@ -52,8 +73,8 @@
 </div>
 
 <script>
-  function profileToggle(){
-    const toggleProfile=document.querySelector(".wrapper")
+  function profileToggle() {
+    const toggleProfile = document.querySelector(".wrapper")
     toggleProfile.classList.toggle("active")
   }
 </script>
