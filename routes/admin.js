@@ -78,4 +78,10 @@ router.post("/update-password", (req, res) => {
     }
   });
 });
+
+//get edit profile
+
+router.get('/edit-profile',(req,res)=>{
+  res.render('admin/edit-profile')
+})
 module.exports = router;

@@ -1,0 +1,36 @@
+<link rel="stylesheet" href="/stylesheets/admin/edit-profile.css">
+<!-- ------wrapper----- -->
+<div class="wrapper">
+    <!-- ---Login-section--- -->
+    <div class="login-section">
+        <!-- ---Welcome title--- -->
+        <div class="title">
+            <h3>Edit Profile</h3>
+        </div>
+        <!-- ---login input field--- -->
+        <form action="/admin/edit-profile" method="POST">
+            <div class="input-file">
+                <div class="profile-image">
+                    <i class="fa fa-camera" aria-hidden="true"></i>
+                    <img src="/images/admin/profile.svg" alt="" id="imgView">
+                </div>
+                <input type="file" name="profile" id="file"  onchange="changeProductImage(event)">
+
+            </div>
+            <div class="input-group">
+                <input type="text" name="name" id="" required />
+                <label for=""><i class="fa fa-user" aria-hidden="true"></i> Full Name</label>
+            </div>
+
+            <div class="input-submit">
+                <input type="submit" name="" id="" value="Update" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function changeProductImage(event) {
+        document.getElementById("imgView").src = URL.createObjectURL(event.target.files[0])
+    }
+</script>
