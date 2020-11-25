@@ -61,4 +61,10 @@ router.get('/user-details',(req,res)=>{
   res.render("admin/user-details",{admin:true})
 })
 
+//get update password
+
+router.get('/update-password',(req,res)=>{
+  res.render('admin/update-password')
+})
+
 module.exports = router;
