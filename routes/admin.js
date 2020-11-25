@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-adminHelper = require("../helpers/admin-helpers");
+const adminHelper = require("../helpers/admin-helpers");
 
 // ---verifyLogin----
 
@@ -63,8 +63,17 @@ router.get('/user-details',(req,res)=>{
 
 //get update password
 
-router.get('/update-password',(req,res)=>{
+router.get('/update-password',verifyLogin,(req,res)=>{
   res.render('admin/update-password')
 })
 
+
+//post update password
+
+router.post('/update-password',(req,res)=>{
+  adminHelper.updatePassword(req.body).then((response)=>{
+    res.redirect("/admin")
+  })
+
+})
 module.exports = router;
