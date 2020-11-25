@@ -60,7 +60,7 @@ router.get("/user-details", (req, res) => {
 //get update password
 
 router.get("/update-password", verifyLogin, (req, res) => {
-  res.render("admin/update-password",{passErr:req.session.passErr});
+  res.render("admin/update-password", { passErr: req.session.passErr });
 });
 
 //post update password
@@ -69,7 +69,7 @@ router.post("/update-password", (req, res) => {
   adminHelper.updatePassword(req.body).then((response) => {
     if (response.status) {
       adminHelper.getAdminDetails().then((data) => {
-        req.session.admin.adminPassword=data.adminPassword
+        req.session.admin.adminPassword = data.adminPassword;
         res.redirect("/admin");
       });
     } else {
@@ -81,7 +81,26 @@ router.post("/update-password", (req, res) => {
 
 //get edit profile
 
-router.get('/edit-profile',(req,res)=>{
-  res.render('admin/edit-profile')
-})
+router.get("/edit-profile", (req, res) => {
+  adminHelper.getAdminDetails().then((adminDetails) => {
+    res.render("admin/edit-profile", { admin: true, adminDetails });
+  });
+});
+
+//post edit profile
+
+router.post("/edit-profile/:id", (req, res) => {
+
+  let id = req.params.id;
+  adminHelper.editProfile(id, req.body).then((data) => {
+    let Image = req.files.image;
+    // console.log(Image);
+    console.log(data,"data");
+      Image.mv("./public/images/admin/profile/"+id+".jpg");
+      console.log("exist");
+      res.redirect("/admin");
+    
+
+  });
+});
 module.exports = router;

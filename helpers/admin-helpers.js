@@ -81,8 +81,26 @@ module.exports = {
   getAdminDetails:()=>{
     return new Promise ((resolve,reject)=>{
       db.get().collection(collection.ADMIN_COLLECTION).find().toArray().then((data)=>{
-        resolve(data)
+        resolve(data[0])
       })
     })
+  },
+
+
+  //edit profile
+
+  editProfile:(id,details)=>{
+    return new Promise ((resolve,reject)=>{
+      db.get().collection(collection.ADMIN_COLLECTION).updateOne(
+        {_id:objectId(id)},
+        {
+          $set:{
+            name:details.name
+          }
+        }
+      ).then((response)=>{
+        resolve(response)
+      })
+    })   
   }
 };

@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/stylesheets/admin/edit-profile.css">
 <!-- ------wrapper----- -->
-<div class="wrapper">
+<div class="wrapper-edit">
     <!-- ---Login-section--- -->
     <div class="login-section">
         <!-- ---Welcome title--- -->
@@ -8,13 +8,13 @@
             <h3>Edit Profile</h3>
         </div>
         <!-- ---login input field--- -->
-        <form action="/admin/edit-profile" method="POST">
+        <form action="/admin/edit-profile/{{adminDetails._id}}" method="POST" enctype="multipart/form-data">
             <div class="input-file">
                 <div class="profile-image">
                     <i class="fa fa-camera" aria-hidden="true"></i>
                     <img src="/images/admin/profile.svg" alt="" id="imgView">
                 </div>
-                <input type="file" name="profile" id="file"  onchange="changeProductImage(event)">
+                <input type="file" name="image" id="file"  onchange="changeProductImage(event)">
 
             </div>
             <div class="input-group">
