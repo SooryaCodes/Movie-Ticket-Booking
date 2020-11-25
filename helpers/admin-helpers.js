@@ -74,4 +74,15 @@ module.exports = {
       }
     });
   },
+
+
+  //get admin details
+
+  getAdminDetails:()=>{
+    return new Promise ((resolve,reject)=>{
+      db.get().collection(collection.ADMIN_COLLECTION).find().toArray().then((data)=>{
+        resolve(data)
+      })
+    })
+  }
 };
