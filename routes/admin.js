@@ -12,8 +12,6 @@ const verifyLogin = (req, res, next) => {
   }
 };
 
-
-
 /* GET home page. */
 router.get("/", verifyLogin, function (req, res, next) {
   adminHelper.getAdminDetails().then((adminDetails) => {
@@ -23,13 +21,13 @@ router.get("/", verifyLogin, function (req, res, next) {
 });
 
 // ----get login page---
-router.get("/login",(req, res) => {
-  if(req.session.loggedIn){
-    res.redirect('/admin')
-  }else{
-    res.render('admin/login')
+router.get("/login", (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect("/admin");
+  } else {
+    res.render("admin/login");
   }
-  
+
   res.render("admin/login", { loginErr: req.session.loginErr });
 });
 
@@ -78,7 +76,11 @@ router.get("/user-details", (req, res) => {
 
 router.get("/update-password", verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
-    res.render("admin/update-password",{admin:true,adminDetails,passErr:req.session.passErr});
+    res.render("admin/update-password", {
+      admin: true,
+      adminDetails,
+      passErr: req.session.passErr,
+    });
   });
 });
 
