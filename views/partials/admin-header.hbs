@@ -4,8 +4,14 @@
   <div class="nav-items">
     <a href="#side-bar"><img src="/images/admin/menu (1).svg" alt="" /></a>
     <div class="nav-text" onclick="profileToggle()">
-      <div class="profile"> <img id="profile" src="/images/admin/profile.svg" alt=""><img id="down-arrow"
-          src="/images/admin/chevron-down.svg" alt=""></div>
+      <div class="profile"> 
+        {{#if adminDetails._id}}
+        <img id="profile" src="/images/admin/profile/{{adminDetails._id}}.jpg" alt="">
+        {{/if}}
+        {{#if ?adminDetails._id}}
+        <img id="profile" src="/images/admin/profile.svg" alt="" />
+        {{/if}}
+        <img id="down-arrow" src="/images/admin/chevron-down.svg" alt=""></div>
       {{#if adminDetails.name}}
       <p>Hi {{adminDetails.name}}</p>
       {{/if}}
@@ -30,7 +36,8 @@
       {{/if}}
       {{#if ?adminDetails.name}}
       <p>Admin</p>
-      {{/if}}    </div>
+      {{/if}}
+    </div>
     <div class="details">
       <ul>
         <a href="/admin/edit-profile">
@@ -65,7 +72,6 @@
   <a href="/admin/user-details" class="menu-items"><img src="/images/admin/users.svg" alt="" /> Users</a>
   <a href="" class="menu-items"><img src="/images/admin/book.svg" alt="" /> Bookings</a>
   <a href="" class="menu-items"><img src="/images/admin/user-plus.svg" alt="" /> Add Owners</a>
-  <a href="" class="menu-items"><img src="/images/admin/file-plus.svg" alt="" /> Add Theaters</a>
   <div class="menu-item">
     <a href="/admin/logout" id="logout">Logout</a>
   </div>
