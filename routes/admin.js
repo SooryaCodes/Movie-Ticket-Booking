@@ -12,15 +12,24 @@ const verifyLogin = (req, res, next) => {
   }
 };
 
+
+
 /* GET home page. */
 router.get("/", verifyLogin, function (req, res, next) {
-  adminHelper.getAdminDetails().then((adminDetails)=>{
-    res.render("admin/home", { admin: true,adminDetails });
-  })
+  adminHelper.getAdminDetails().then((adminDetails) => {
+    console.log(req.session.admin);
+    res.render("admin/home", { admin: true, adminDetails });
+  });
 });
 
 // ----get login page---
-router.get("/login", (req, res) => {
+router.get("/login",(req, res) => {
+  if(req.session.loggedIn){
+    res.redirect('/admin')
+  }else{
+    res.render('admin/login')
+  }
+  
   res.render("admin/login", { loginErr: req.session.loginErr });
 });
 
@@ -50,19 +59,27 @@ router.get("/logout", (req, res) => {
 //get theater details
 
 router.get("/theater-details", (req, res) => {
-  res.render("admin/theater-details", { admin: true });
+  adminHelper.getAdminDetails().then((adminDetails) => {
+    console.log(req.session.admin);
+    res.render("admin/theater-details", { admin: true, adminDetails });
+  });
 });
 
 //get user details
 
 router.get("/user-details", (req, res) => {
-  res.render("admin/user-details", { admin: true });
+  adminHelper.getAdminDetails().then((adminDetails) => {
+    console.log(req.session.admin);
+    res.render("admin/user-details", { admin: true, adminDetails });
+  });
 });
 
 //get update password
 
 router.get("/update-password", verifyLogin, (req, res) => {
-  res.render("admin/update-password", { passErr: req.session.passErr });
+  adminHelper.getAdminDetails().then((adminDetails) => {
+    res.render("admin/update-password",{admin:true,adminDetails,passErr:req.session.passErr});
+  });
 });
 
 //post update password
@@ -83,7 +100,7 @@ router.post("/update-password", (req, res) => {
 
 //get edit profile
 
-router.get("/edit-profile", (req, res) => {
+router.get("/edit-profile", verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
     res.render("admin/edit-profile", { admin: true, adminDetails });
   });
@@ -92,15 +109,17 @@ router.get("/edit-profile", (req, res) => {
 //post edit profile
 
 router.post("/edit-profile/:id", (req, res) => {
-
   let id = req.params.id;
   adminHelper.editProfile(id, req.body).then((data) => {
-    let Image = req.files.image;
-    // console.log(Image);
-    console.log(data,"data");
-      Image.mv("./public/images/admin/profile/"+id+".jpg");
+    res.redirect("/admin");
+    if (req.files.image) {
+      let Image = req.files.image;
+      // console.log(Image);
+      console.log(data, "data");
+      Image.mv("./public/images/admin/profile/" + id + ".jpg");
       console.log("exist");
-      res.redirect("/admin");
+    }
   });
 });
+
 module.exports = router;

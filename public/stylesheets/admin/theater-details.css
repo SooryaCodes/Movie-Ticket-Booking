@@ -270,9 +270,9 @@ table {
   width: 90%;
 }
 table tr {
+  border-bottom: 1px solid #e7e7e7;
   color: #969696;
-  padding-left: 50px;
-  padding-right: 50px;
+
   width: 100%;
   display: flex;
   align-items: center;
@@ -280,17 +280,15 @@ table tr {
 }
 table th {
   color: #707070;
-  border-bottom: 1px solid #e7e7e7;
   padding: 30px;
   text-align: center;
   width: 300px;
 }
 table td {
-  border-bottom: 1px solid #e7e7e7;
-  margin-bottom: 20px;
   padding: 30px;
   text-align: center;
   width: 300px;
+  margin-bottom: 20px;
 }
 td img {
   margin-left: 10px;
@@ -315,8 +313,8 @@ td img {
   }
   table tr {
     color: #969696;
-    padding-left: 50px;
-    padding-right: 50px;
+    border-bottom: 1px solid #e7e7e7;
+
     width: 100%;
     display: flex;
     align-items: center;
@@ -324,7 +322,7 @@ td img {
   }
   table th {
     color: #707070;
-    border-bottom: 1px solid #e7e7e7;
+
     padding: 30px;
     text-align: center;
     width: 200px;
@@ -357,8 +355,7 @@ td img {
   }
   table tr {
     color: #969696;
-    padding-left: 10px;
-    padding-right: 10px;
+
     width: 100%;
     display: flex;
     align-items: center;
@@ -370,7 +367,7 @@ td img {
     font-size: 11px;
 
     color: #707070;
-    border-bottom: 1px solid #e7e7e7;
+
     padding: 10px;
     text-align: center;
     width: 150px;
@@ -406,8 +403,7 @@ td img {
   }
   table tr {
     color: #969696;
-    padding-left: 10px;
-    padding-right: 10px;
+
     width: 100%;
     display: flex;
     align-items: center;
@@ -419,7 +415,7 @@ td img {
     font-size: 9px;
 
     color: #707070;
-    border-bottom: 1px solid #e7e7e7;
+
     padding: 20px;
     text-align: center;
     width: 100px;
@@ -455,8 +451,7 @@ td img {
   }
   table tr {
     color: #969696;
-    padding-left: 10px;
-    padding-right: 10px;
+
     width: 100%;
     display: flex;
     align-items: center;
@@ -468,17 +463,17 @@ td img {
     font-size: 9px;
 
     color: #707070;
-    border-bottom: 1px solid #e7e7e7;
+
     padding: 20px;
     text-align: center;
-    width: 80px;
+    width: 95px;
   }
   table td {
     margin-bottom: 10px;
     font-size: 10px;
     padding: 10px;
     text-align: center;
-    width: 80px;
+    width: 95px;
   }
   td img {
     width: 14px;
@@ -504,30 +499,29 @@ td img {
   }
   table tr {
     color: #969696;
-    padding-left: 10px;
-    padding-right: 10px;
+
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
   }
   table th {
+    
     height: 50px;
     margin-bottom: 10px;
     font-size: 8px;
 
     color: #707070;
-    border-bottom: 1px solid #e7e7e7;
-    padding: 10px;
+    padding: 20px;
     text-align: center;
-    width: 70px;
+    width: 100px;
   }
   table td {
     margin-bottom: 10px;
     font-size: 9px;
     padding: 10px;
     text-align: center;
-    width: 72px;
+    width: 100px;
   }
   td img {
     width: 10px;
