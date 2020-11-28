@@ -56,7 +56,7 @@ router.get("/logout", (req, res) => {
 
 //get theater details
 
-router.get("/theater-details", (req, res) => {
+router.get("/theater-details",verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
     console.log(req.session.admin);
     res.render("admin/theater-details", { admin: true, adminDetails });
@@ -65,7 +65,7 @@ router.get("/theater-details", (req, res) => {
 
 //get user details
 
-router.get("/user-details", (req, res) => {
+router.get("/user-details", verifyLogin,(req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
     console.log(req.session.admin);
     res.render("admin/user-details", { admin: true, adminDetails });
@@ -123,5 +123,14 @@ router.post("/edit-profile/:id", (req, res) => {
     }
   });
 });
+
+
+//---owner-details---
+
+
+router.get('/owner-details',verifyLogin,(req,res)=>{
+  res.render('admin/owner-details',{admin:true})
+})
+
 
 module.exports = router;
