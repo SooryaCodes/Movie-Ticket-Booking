@@ -25,10 +25,9 @@ router.get("/login", (req, res) => {
   if (req.session.loggedIn) {
     res.redirect("/admin");
   } else {
-    res.render("admin/login");
+    res.render("admin/login", { loginErr: req.session.loginErr });
   }
 
-  res.render("admin/login", { loginErr: req.session.loginErr });
 });
 
 // ---post login page---
@@ -42,7 +41,7 @@ router.post("/login", (req, res) => {
       res.redirect("/admin");
     } else {
       req.session.loginErr = true;
-      res.redirect("/admin/login");
+      res.redirect('/admin/login')
     }
   });
 });
