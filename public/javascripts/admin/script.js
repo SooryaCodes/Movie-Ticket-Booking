@@ -6,16 +6,7 @@ function profileToggle() {
   toggleProfile.classList.toggle("active");
 }
 
-// --- a active script---
 
-// const currentLocation = location.href;
-// const sidebar = document.querySelectorAll(".sidebar-items");
-// const foodLength = sidebar.length;
-// for (let i = 0; i < foodLength; i++) {
-//   if (sidebar[i].href === currentLocation) {
-//     sidebar[i].className = "sidebar-items s-active";
-//   }
-// }
 
 // Tooltips Initialization
 $(function () {

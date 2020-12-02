@@ -28,7 +28,14 @@
       {{#if ?adminDetails._id}}
       <img src="/images/admin/profile.svg" alt="" />
       {{/if}}
+      {{#if adminDetails.name}}
+      <p>{{adminDetails.name}}</p>
+      {{/if}}
+
+      {{#if ?adminDetails.name}}
       <p>Admin</p>
+      {{/if}}
+
     </div>
     <div class=".n-p-details">
       <ul>
@@ -57,27 +64,50 @@
     {{#if ?adminDetails._id}}
     <img src="/images/admin/profile.svg" id="p-img" alt="" />
     {{/if}}
+
+  {{#if adminDetails.name}}
+    <span>{{adminDetails.name}}</span>
+    {{/if}}
+    {{#if ?adminDetails.name}}
     <span>Admin</span>
+    {{/if}}  
+  
   </div>
   <div class="sidebar-bottom">
-    <a href="#" class="sidebar-items active"><img src="/images/admin/grid.svg" id="s-img" alt="" /> Dashboard</a>
-    <a href="#" class="sidebar-items"><img src="/images/admin/users.svg" id="s-img" alt="" /> Owner's</a>
-    <a href="#" class="sidebar-items"><img src="/images/admin/home.svg" id="s-img" alt="" /> Theaters</a>
-    <a href="#" class="sidebar-items"><img src="/images/admin/users.svg" id="s-img" alt="" /> User's</a>
-    <a href="#" class="sidebar-items"><img src="/images/admin/file.svg" id="s-img" alt="" /> Bookings</a>
-    <a href="#" class="sidebar-items"><img src="/images/admin/film.svg" id="s-img" alt="" /> Movies</a>
-    <a href="#" class="sidebar-items"><img src="/images/admin/user-plus.svg" id="s-img" alt="" /> Add Owner</a>
-    <a href="#" class="sidebar-items"><img src="/images/admin/edit-2.svg" id="s-img" alt="" /> Edit Profile</a>
-    <a href="#" class="sidebar-items"><img src="/images/admin/lock.svg" id="s-img" alt="" /> Update Password</a>
+    <a href="/admin" class="sidebar-items"><img src="/images/admin/grid.svg" id="s-img" alt="" />
+      Dashboard</a>
+    <a href="/admin/owner-details" class="sidebar-items"><img src="/images/admin/users.svg" id="s-img" alt="" />
+      Owner's</a>
+    <a href="/admin/theater-details" class="sidebar-items"><img src="/images/admin/home.svg" id="s-img" alt="" />
+      Theaters</a>
+    <a href="/admin/user-details" class="sidebar-items"><img src="/images/admin/users.svg" id="s-img" alt="" />
+      User's</a>
+    <a href="#" class="sidebar-items"><img src="/images/admin/file.svg" id="s-img" alt="" />
+      Bookings</a>
+    <a href="#" class="sidebar-items"><img src="/images/admin/film.svg" id="s-img" alt="" />
+      Movies</a>
+    <a href="#" class="sidebar-items"><img src="/images/admin/user-plus.svg" id="s-img" alt="" />
+      Add Owner</a>
+    <a href="/admin/edit-profile" class="sidebar-items"><img src="/images/admin/edit-2.svg" id="s-img" alt="" /> Edit
+      Profile</a>
+    <a href="/admin/update-password" class="sidebar-items"><img src="/images/admin/lock.svg" id="s-img" alt="" /> Update
+      Password</a>
   </div>
 
 </div>
 
 
 
-<style>
-  .sidebar-bottom .active{
-    background-color: red;
-  }
-</style>
 
+
+{{!-- --- a active script--- --}}
+
+<script>
+  const currentLocation = location.href;
+  const sidebar = document.querySelectorAll("a");
+  const foodLength = sidebar.length;
+  for (let i = 0; i < foodLength; i++) {
+    if (sidebar[i].href === currentLocation) {
+      sidebar[i].classList = "sidebar-items s-active";
+    }
+  }</script>

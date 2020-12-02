@@ -310,3 +310,8 @@ padding-top: 0px;
     height: 10%;
   }
 }
+
+
+.sidebar-bottom .s-active{
+  background: rgb(80, 80, 80);
+}
