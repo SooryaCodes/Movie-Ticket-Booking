@@ -52,23 +52,32 @@
       <a href="#"> <img src="/images/admin/x.svg" alt="" /> </a>
     </div>
     {{#if adminDetails._id}}
-    <img src="/images/admin/profile/{{adminDetails._id}}.jpg" alt="">
+    <img src="/images/admin/profile/{{adminDetails._id}}.jpg" id="p-img" alt="">
     {{/if}}
     {{#if ?adminDetails._id}}
-    <img src="/images/admin/profile.svg" alt="" />
+    <img src="/images/admin/profile.svg" id="p-img" alt="" />
     {{/if}}
     <span>Admin</span>
   </div>
   <div class="sidebar-bottom">
-    <a href="" class="sidebar-items"><img src="/images/admin/grid.svg" id="s-img" alt="" /> Dashboard</a>
-    <a href="" class="sidebar-items"><img src="/images/admin/users.svg" id="s-img" alt="" /> Owner's</a>
-    <a href="" class="sidebar-items"><img src="/images/admin/home.svg" id="s-img" alt="" /> Theaters</a>
-    <a href="" class="sidebar-items"><img src="/images/admin/users.svg" id="s-img" alt="" /> User's</a>
-    <a href="" class="sidebar-items"><img src="/images/admin/file.svg" id="s-img" alt="" /> Bookings</a>
-    <a href="" class="sidebar-items"><img src="/images/admin/film.svg" id="s-img" alt="" /> Movies</a>
-    <a href="" class="sidebar-items"><img src="/images/admin/user-plus.svg" id="s-img" alt="" /> Add Owner</a>
-    <a href="" class="sidebar-items"><img src="/images/admin/edit-2.svg" id="s-img" alt="" /> Edit Profile</a>
-    <a href="" class="sidebar-items"><img src="/images/admin/lock.svg" id="s-img" alt="" /> Update Password</a>
+    <a href="#" class="sidebar-items active"><img src="/images/admin/grid.svg" id="s-img" alt="" /> Dashboard</a>
+    <a href="#" class="sidebar-items"><img src="/images/admin/users.svg" id="s-img" alt="" /> Owner's</a>
+    <a href="#" class="sidebar-items"><img src="/images/admin/home.svg" id="s-img" alt="" /> Theaters</a>
+    <a href="#" class="sidebar-items"><img src="/images/admin/users.svg" id="s-img" alt="" /> User's</a>
+    <a href="#" class="sidebar-items"><img src="/images/admin/file.svg" id="s-img" alt="" /> Bookings</a>
+    <a href="#" class="sidebar-items"><img src="/images/admin/film.svg" id="s-img" alt="" /> Movies</a>
+    <a href="#" class="sidebar-items"><img src="/images/admin/user-plus.svg" id="s-img" alt="" /> Add Owner</a>
+    <a href="#" class="sidebar-items"><img src="/images/admin/edit-2.svg" id="s-img" alt="" /> Edit Profile</a>
+    <a href="#" class="sidebar-items"><img src="/images/admin/lock.svg" id="s-img" alt="" /> Update Password</a>
   </div>
 
 </div>
+
+
+
+<style>
+  .sidebar-bottom .active{
+    background-color: red;
+  }
+</style>
+

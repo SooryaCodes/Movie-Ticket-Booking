@@ -236,6 +236,8 @@ a:hover {
   justify-content: flex-end;
 }
 .x img {
+  width: 30px;
+  height: 30px;
   display: none;
 }
 .sidebar-bottom {
@@ -282,7 +284,29 @@ a:hover {
   }
   .x img {
     display: flex;
-    margin-right: 10px;
+    margin-top: 30px;
   }
 
+}
+
+@media screen and (max-height:850px){
+
+  .x img{
+    margin-top: 30px;
+  }
+  .sidebar-top{
+padding-top: 0px;
+  }
+}
+
+@media screen and (max-height:734px){
+  .sidebar-top #p-img{
+    display: none;
+  }
+  .sidebar-top span{
+    display: none;
+  }
+  .sidebar-top{
+    height: 10%;
+  }
 }
