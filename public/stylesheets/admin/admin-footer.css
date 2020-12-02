@@ -3,6 +3,9 @@
 /* --footer-- */
 
 .footer {
+  position: relative;
+  bottom: 0;
+  z-index: -1;
   color: #c3c3c3;
   background: rgb(27, 27, 27);
   margin-top: 100px;
