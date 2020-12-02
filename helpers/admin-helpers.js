@@ -102,5 +102,15 @@ module.exports = {
         resolve(response)
       })
     })   
+  },
+
+  addOwner:(owner)=>{
+    return new Promise (async(resolve,reject)=>{
+      owner.Password=await bcrypt.hash(owner.Password,10)
+      db.get().collection(collection.OWNER_COLLECTION).insertOne(owner).then((response)=>{
+        console.log(response.ops[0]);
+        resolve(response.ops[0])
+      })
+    })
   }
 };

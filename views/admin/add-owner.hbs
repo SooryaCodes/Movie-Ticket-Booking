@@ -25,6 +25,29 @@
       <label for="">Theater</label>
       <input type="text" name="Theater" placeholder="Theater" required />
     </div>
+    <div class="input-group">
+      <label for="">Profile</label>
+      <img id="image" id="input-image"  src="">
+
+      <input type="file" class="btn btn-dark file" name="Owner-Images" placeholder="Theater" required />
+    </div>
     <button type="submit" class="btn btn-light input-submit" style="border-radius: 6px;  height:35px ;">Add</button>
   </form>
 </div>
+<style>
+  #image {
+  display: block;
+
+  /* This rule is very important, please don't ignore this */
+  max-width: 100%;
+}
+</style>
+
+<link rel="stylesheet" href="/stylesheets/admin/cropper/cropper.css">
+<script src="/javascripts/admin/cropper/cropper.js"></script>
+<script>
+var image=document.querySelector('#input-image')
+var copper;
+const change =(event)=>{
+}
+</script>

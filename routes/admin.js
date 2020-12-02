@@ -4,6 +4,7 @@ const adminHelper = require("../helpers/admin-helpers");
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
+const { response } = require("express");
 
 //nodemailer
 
@@ -17,14 +18,14 @@ let mailer = nodemailer.createTransport({
 
 var options = {
   viewEngine: {
-      extname: '.hbs',
-      layoutsDir: 'views/email/',
-      defaultLayout : 'layout',
+    extname: ".hbs",
+    layoutsDir: "views/email/",
+    defaultLayout: "layout",
   },
-  viewPath: 'views/email/'
-}
+  viewPath: "views/email/",
+};
 
-mailer.use('compile', hbs(options));
+mailer.use("compile", hbs(options));
 
 // ---verifyLogin----
 
@@ -170,12 +171,12 @@ router.post("/add-owner", async (req, res) => {
     to: req.body.Email, // list of receivers
     subject: "Congradulation", // Subject line
     text: `hi there`,
-    template:"index",
-    context:{
-      name:req.body.Name,
-      password:req.body.Password,
-      theater:req.body.Theater
-    }
+    template: "index",
+    context: {
+      name: req.body.Name,
+      password: req.body.Password,
+      theater: req.body.Theater,
+    },
   };
   mailer.sendMail(mailOptions, function (err, response) {
     if (err) {
@@ -183,6 +184,10 @@ router.post("/add-owner", async (req, res) => {
     } else {
       console.log(":) good email");
     }
+  });
+
+  adminHelper.addOwner(req.body).then((response) => {
+    console.log("Success add owner");
   });
 });
 
