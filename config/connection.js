@@ -14,7 +14,7 @@ module.exports.connect = function (done) {
     const dbname = 'Movie';
 
     // Use connect method to connect to the server
-    mongoClient.connect(url, (err, data) => {
+    mongoClient.connect(url, { useUnifiedTopology: true },(err, data) => {
 
         if (err) return done(err)
 

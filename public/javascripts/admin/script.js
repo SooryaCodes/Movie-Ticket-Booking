@@ -1,11 +1,4 @@
 
-// ---profile pop up  script---
-
-function profileToggle() {
-  const toggleProfile = document.querySelector(".nav-profile-pop-up");
-  toggleProfile.classList.toggle("active");
-}
-
 
 
 // Tooltips Initialization

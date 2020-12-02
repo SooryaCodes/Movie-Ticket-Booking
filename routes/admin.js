@@ -15,7 +15,6 @@ const verifyLogin = (req, res, next) => {
 /* GET home page. */
 router.get("/", verifyLogin, function (req, res, next) {
   adminHelper.getAdminDetails().then((adminDetails) => {
-    console.log(req.session.admin);
     res.render("admin/home", { admin: true, adminDetails });
   });
 });
@@ -35,7 +34,6 @@ router.get("/login", (req, res) => {
 router.post("/login", (req, res) => {
   adminHelper.adminLogin(req.body).then((response) => {
     if (response.status) {
-      console.log(response.admin);
       req.session.loggedIn = true;
       req.session.admin = response.admin;
       res.redirect("/admin");
@@ -57,7 +55,6 @@ router.get("/logout", (req, res) => {
 
 router.get("/theater-details",verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
-    console.log(req.session.admin);
     res.render("admin/theater-details", { admin: true, adminDetails });
   });
 });
@@ -132,4 +129,7 @@ router.get('/owner-details',verifyLogin,(req,res)=>{
 })
 
 
+router.post('/add-owner',(req,res)=>{
+  console.log('hi');
+})
 module.exports = router;

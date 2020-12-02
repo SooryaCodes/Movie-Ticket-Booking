@@ -39,11 +39,18 @@
     </div>
     <div class=".n-p-details">
       <ul>
-        <li><i class="fa fa-user" aria-hidden="true"></i>Edit Profile</li>
-        <li>
-          <i class="fa fa-lock" aria-hidden="true"></i>Change Password
-        </li>
-        <li><i class="fa fa-envelope" aria-hidden="true"></i>Inbox</li>
+        <a href="/admin/edit-profile">
+          <li><i class="fa fa-user" aria-hidden="true"></i>Edit Profile</li>
+        </a>
+        <a href="/admin/update-password">
+          <li> <i class="fa fa-lock" aria-hidden="true"></i>Change Password</li>
+        </a>
+
+        <a href="https://mail.google.com/mail/u/0/#inbox">
+
+          <li><i class="fa fa-envelope" aria-hidden="true"></i>Inbox</li>
+        </a>
+
         <a href="/admin/logout">
           <li><i class="fas fa-sign-out-alt"></i>Logout</li>
         </a>
@@ -65,13 +72,13 @@
     <img src="/images/admin/profile.svg" id="p-img" alt="" />
     {{/if}}
 
-  {{#if adminDetails.name}}
+    {{#if adminDetails.name}}
     <span>{{adminDetails.name}}</span>
     {{/if}}
     {{#if ?adminDetails.name}}
     <span>Admin</span>
-    {{/if}}  
-  
+    {{/if}}
+
   </div>
   <div class="sidebar-bottom">
     <a href="/admin" class="sidebar-items"><img src="/images/admin/grid.svg" id="s-img" alt="" />
@@ -104,10 +111,23 @@
 
 <script>
   const currentLocation = location.href;
-  const sidebar = document.querySelectorAll("a");
+  const sidebar = document.getElementsByClassName("sidebar-items");
   const foodLength = sidebar.length;
   for (let i = 0; i < foodLength; i++) {
     if (sidebar[i].href === currentLocation) {
       sidebar[i].classList = "sidebar-items s-active";
     }
   }</script>
+
+
+<script>
+
+
+  // ---profile pop up  script---
+
+  function profileToggle() {
+    const toggleProfile = document.querySelector(".nav-profile-pop-up");
+    toggleProfile.classList.toggle("active");
+  }
+
+</script>
