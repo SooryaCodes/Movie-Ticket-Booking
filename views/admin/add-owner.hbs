@@ -1,7 +1,7 @@
  <script src="/javascripts/admin/script.js"></script>
 <link rel="stylesheet" href="/stylesheets/admin/add-owner.css">
  <div class="add-owner">
-      <form action="#" autocomplete="off">
+      <form action="/admin/add-product" method="POST" autocomplete="off">
         <div class="title-add-owner">
           <p>Add Owner</p>
         </div>
@@ -28,7 +28,7 @@
               title="Genrate Password"
               onclick="getPassword()"
               class="fa fa-key"
-              type="submit"
+              type="button"
             ></button>
           </div>
         </div>
@@ -36,6 +36,6 @@
           <label for="">Theater</label>
           <input type="text" name="" placeholder="Theater" />
         </div>
-        <button type="submit" class="btn btn-light input-submit">Submit</button>
+        <button type="submit" class="btn btn-light input-submit" style="border-radius: 6px;  height:35px ;">Add</button>
       </form>
     </div>

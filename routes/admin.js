@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const adminHelper = require("../helpers/admin-helpers");
+require('dotenv').config()
 
 // ---verifyLogin----
 
@@ -129,8 +130,24 @@ router.get('/owner-details',verifyLogin,(req,res)=>{
 })
 
 
-router.get('/add-owner',(req,res)=>{
+//add owner
+
+router.get('/add-owner',verifyLogin,(req,res)=>{
   console.log('hi');
   res.render('admin/add-owner',{admin:true,adminDetails:req.session.admin})
 })
+
+
+//bookings
+
+router.get('/bookings',verifyLogin,(req,res)=>{
+  res.render('admin/booking',{admin:true,adminDetails:req.session.admin})
+})
+
+//movies
+
+router.get('/movies',verifyLogin,(req,res)=>{
+  res.render('admin/booking',{admin:true,adminDetails:req.session.admin})
+})
+
 module.exports = router;
