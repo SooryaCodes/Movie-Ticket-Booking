@@ -1,7 +1,30 @@
 var express = require("express");
 var router = express.Router();
 const adminHelper = require("../helpers/admin-helpers");
-require('dotenv').config()
+require("dotenv").config();
+const nodemailer = require("nodemailer");
+const hbs = require("nodemailer-express-handlebars");
+
+//nodemailer
+
+let mailer = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.MY_EMAIL, // generated ethereal user
+    pass: process.env.MY_PASSWORD, // generated ethereal password
+  },
+});
+
+var options = {
+  viewEngine: {
+      extname: '.hbs',
+      layoutsDir: 'views/email/',
+      defaultLayout : 'layout',
+  },
+  viewPath: 'views/email/'
+}
+
+mailer.use('compile', hbs(options));
 
 // ---verifyLogin----
 
@@ -27,7 +50,6 @@ router.get("/login", (req, res) => {
   } else {
     res.render("admin/login", { loginErr: req.session.loginErr });
   }
-
 });
 
 // ---post login page---
@@ -40,7 +62,7 @@ router.post("/login", (req, res) => {
       res.redirect("/admin");
     } else {
       req.session.loginErr = true;
-      res.redirect('/admin/login')
+      res.redirect("/admin/login");
     }
   });
 });
@@ -54,7 +76,7 @@ router.get("/logout", (req, res) => {
 
 //get theater details
 
-router.get("/theater-details",verifyLogin, (req, res) => {
+router.get("/theater-details", verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
     res.render("admin/theater-details", { admin: true, adminDetails });
   });
@@ -62,7 +84,7 @@ router.get("/theater-details",verifyLogin, (req, res) => {
 
 //get user details
 
-router.get("/user-details", verifyLogin,(req, res) => {
+router.get("/user-details", verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
     console.log(req.session.admin);
     res.render("admin/user-details", { admin: true, adminDetails });
@@ -121,33 +143,59 @@ router.post("/edit-profile/:id", (req, res) => {
   });
 });
 
-
 //---owner-details---
 
-
-router.get('/owner-details',verifyLogin,(req,res)=>{
-  res.render('admin/home',{admin:true,adminDetails:req.session.admin})
-})
-
+router.get("/owner-details", verifyLogin, (req, res) => {
+  res.render("admin/home", { admin: true, adminDetails: req.session.admin });
+});
 
 //add owner
 
-router.get('/add-owner',verifyLogin,(req,res)=>{
-  console.log('hi');
-  res.render('admin/add-owner',{admin:true,adminDetails:req.session.admin})
-})
+router.get("/add-owner", verifyLogin, (req, res) => {
+  console.log("hi");
+  res.render("admin/add-owner", {
+    admin: true,
+    adminDetails: req.session.admin,
+  });
+});
 
+//post add owner
+
+router.post("/add-owner", async (req, res) => {
+  console.log("hi");
+  res.redirect("/admin/add-owner");
+  console.log(req.body);
+  const mailOptions = {
+    from: process.env.MY_EMAIL, // sender address
+    to: req.body.Email, // list of receivers
+    subject: "Congradulation", // Subject line
+    text: `hi there`,
+    template:"index",
+    context:{
+      name:req.body.Name,
+      password:req.body.Password,
+      theater:req.body.Theater
+    }
+  };
+  mailer.sendMail(mailOptions, function (err, response) {
+    if (err) {
+      console.log(":( bad email", err, response);
+    } else {
+      console.log(":) good email");
+    }
+  });
+});
 
 //bookings
 
-router.get('/bookings',verifyLogin,(req,res)=>{
-  res.render('admin/booking',{admin:true,adminDetails:req.session.admin})
-})
+router.get("/bookings", verifyLogin, (req, res) => {
+  res.render("admin/booking", { admin: true, adminDetails: req.session.admin });
+});
 
 //movies
 
-router.get('/movies',verifyLogin,(req,res)=>{
-  res.render('admin/booking',{admin:true,adminDetails:req.session.admin})
-})
+router.get("/movies", verifyLogin, (req, res) => {
+  res.render("admin/booking", { admin: true, adminDetails: req.session.admin });
+});
 
 module.exports = router;
