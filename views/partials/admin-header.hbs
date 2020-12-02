@@ -1,54 +1,42 @@
 <link rel="stylesheet" href="/stylesheets/admin/admin-header.css">
-<!-- ---navbar--- -->
+
+
+<!--nav bar-->
 <div class="nav-bar">
-  <div class="nav-items">
-    <a href="#side-bar"><img src="/images/admin/menu (1).svg" alt="" /></a>
-    <div class="nav-text" onclick="profileToggle()">
-      <div class="profile"> 
-        {{#if adminDetails._id}}
-        <img id="profile" src="/images/admin/profile/{{adminDetails._id}}.jpg" alt="">
-        {{/if}}
-        {{#if ?adminDetails._id}}
-        <img id="profile" src="/images/admin/profile.svg" alt="" />
-        {{/if}}
-        <img id="down-arrow" src="/images/admin/chevron-down.svg" alt=""></div>
-      {{#if adminDetails.name}}
-      <p>Hi {{adminDetails.name}}</p>
-      {{/if}}
-      {{#if ?adminDetails.name}}
-      <p>Hi Admin</p>
-      {{/if}}
-    </div>
+  <div class="nav-left">
+    <a href="#side-bar">
+      <img src="menu (1).svg" alt="" />
+    </a>
+    <span>Movie Cafe</span>
   </div>
-  <div class="wrapper-h">
+  <div class="nav-right">
+    {{#if adminDetails.name}}
+    <span onclick="profileToggle()">Hi {{adminDetails.name}}</span>
+    {{/if}}
+    {{#if ?adminDetails.name}}
+    <span onclick="profileToggle()">Hi Admin</span>
+    {{/if}}
+
+    <i class="fas fa-chevron-down" onclick="profileToggle()" aria-hidden="true"></i>
+  </div>
+  <div class="nav-profile-pop-up">
     <div class="nothing"></div>
     <div class="profile-details">
-      <div class="picture">
-        {{#if adminDetails._id}}
-        <img src="/images/admin/profile/{{adminDetails._id}}.jpg" alt="">
-        {{/if}}
-        {{#if ?adminDetails._id}}
-        <img src="/images/admin/profile.svg" alt="" />
-        {{/if}}
-      </div>
-      {{#if adminDetails.name}}
-      <p>{{adminDetails.name}}</p>
+      {{#if adminDetails._id}}
+      <img src="/images/admin/profile/{{adminDetails._id}}.jpg" alt="">
       {{/if}}
-      {{#if ?adminDetails.name}}
+      {{#if ?adminDetails._id}}
+      <img src="/images/admin/profile.svg" alt="" />
+      {{/if}}
       <p>Admin</p>
-      {{/if}}
     </div>
-    <div class="details">
+    <div class=".n-p-details">
       <ul>
-        <a href="/admin/edit-profile">
-          <li><i class="fa fa-user" aria-hidden="true"></i>Edit Profile</li>
-        </a>
-        <a href="/admin/update-password">
-          <li><i class="fa fa-lock" aria-hidden="true"></i>Update Password</li>
-        </a>
-        <a href="https://mail.google.com/mail/u/0/#inbox">
-          <li><i class="fa fa-envelope" aria-hidden="true"></i>Inbox</li>
-        </a>
+        <li><i class="fa fa-user" aria-hidden="true"></i>Edit Profile</li>
+        <li>
+          <i class="fa fa-lock" aria-hidden="true"></i>Change Password
+        </li>
+        <li><i class="fa fa-envelope" aria-hidden="true"></i>Inbox</li>
         <a href="/admin/logout">
           <li><i class="fas fa-sign-out-alt"></i>Logout</li>
         </a>
@@ -57,30 +45,30 @@
   </div>
 </div>
 
-
-
-<!-- ---side-bar--- -->
-
-<div id="side-bar">
-  <div class="top-side-bar">
-    <p>Admin Panel</p>
-    <a href="#"><img src="/images/admin/x.svg" alt="" /></a>
+<!-- ---sidebar--- -->
+<div class="side-bar" id="side-bar">
+  <div class="sidebar-top">
+    <div class="x">
+      <a href="#"> <img src="x.svg" alt="" /> </a>
+    </div>
+    {{#if adminDetails._id}}
+    <img src="/images/admin/profile/{{adminDetails._id}}.jpg" alt="">
+    {{/if}}
+    {{#if ?adminDetails._id}}
+    <img src="/images/admin/profile.svg" alt="" />
+    {{/if}}
+    <span>Admin</span>
   </div>
-  <a href="/admin" class="menu-items"><img src="/images/admin/grid.svg" alt="" /> Dashboard</a>
-  <a href="/admin/owner-details" class="menu-items"><img src="/images/admin/users.svg" alt="" /> Owners</a>
-  <a href="/admin/theater-details" class="menu-items"><img src="/images/admin/film.svg" alt="" /> Theaters</a>
-  <a href="/admin/user-details" class="menu-items"><img src="/images/admin/users.svg" alt="" /> Users</a>
-  <a href="/admin/booking" class="menu-items"><img src="/images/admin/book.svg" alt="" /> Bookings</a>
-  <a href="/admin/add-owner" class="menu-items"><img src="/images/admin/user-plus.svg" alt="" /> Add Owners</a>
-  <div class="menu-item">
-    <a href="/admin/logout" id="logout">Logout</a>
+  <div class="sidebar-bottom">
+    <a href="" class="sidebar-items"><img src="grid.svg" id="s-img" alt="" /> Dashboard</a>
+    <a href="" class="sidebar-items"><img src="users.svg" id="s-img" alt="" /> Owner's</a>
+    <a href="" class="sidebar-items"><img src="home.svg" id="s-img" alt="" /> Theaters</a>
+    <a href="" class="sidebar-items"><img src="users.svg" id="s-img" alt="" /> User's</a>
+    <a href="" class="sidebar-items"><img src="file.svg" id="s-img" alt="" /> Bookings</a>
+    <a href="" class="sidebar-items"><img src="film.svg" id="s-img" alt="" /> Movies</a>
+    <a href="" class="sidebar-items"><img src="user-plus.svg" id="s-img" alt="" /> Add Owner</a>
+    <a href="" class="sidebar-items"><img src="edit-2.svg" id="s-img" alt="" /> Edit Profile</a>
+    <a href="" class="sidebar-items"><img src="lock.svg" id="s-img" alt="" /> Update Password</a>
   </div>
 
 </div>
-
-<script>
-  function profileToggle() {
-    const toggleProfile = document.querySelector(".wrapper-h")
-    toggleProfile.classList.toggle("active")
-  }
-</script>
