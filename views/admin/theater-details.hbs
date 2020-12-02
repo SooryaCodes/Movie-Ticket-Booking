@@ -1,70 +1,168 @@
-  <link rel="stylesheet" href="/stylesheets/admin/theater-details.css">
-    <!-- ---top-main-section--- -->
-    <div class="top-section">
-      <div class="top-main">
-        <div class="top-main-small">
-          <div class="top-text">
-            <p>Theaters</p>
-            <span>200</span>
-          </div>
-          <div class="top-icon">
-            <img src="/images/admin/film copy.svg" alt="" />
-          </div>
-        </div>
-      </div>
-      <div class="top-main">
-        <div class="top-main-small">
-          <div class="top-text">
-            <p>Active Theaters</p>
-            <span>400</span>
-          </div>
-          <div class="top-icon">
-            <img src="/images/admin/film copy.svg" alt="" />
-          </div>
-        </div>
-      </div>
-      <div class="top-main">
-        <div class="top-main-small">
-          <div class="top-text">
-            <p>On Hold</p>
-            <span>20</span>
-          </div>
-          <div class="top-icon">
-            <img src="/images/admin/film copy.svg" alt="" />
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- ----theater----- -->
+<link rel="stylesheet" href="/stylesheets/admin/home.css">
+<script src="/javascripts/admin/script.js"></script>
 
-    <div class="theater">
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Owner Name</th>
-          <th>Seats</th>
-          <th>Date Of Create</th>
-          <th>Action</th>
-        </tr>
-        <tr>
-          <td>Sivadham Cinemas</td>
-          <td>John Doe</td>
-          <td>220</td>
-          <td>10/2/2020</td>
-          <td>
-            <a href=""><img src="/images/admin/x.svg" alt="" /></a>
-            <a href=""><img src="/images/admin/edit-2.svg" alt="" /></a>
-          </td>
-        </tr>
-        <tr>
-          <td>Sivadham Cinemas</td>
-          <td>John Doe</td>
-          <td>221</td>
-          <td>10/2/2020</td>
-          <td>
-            <a href=""><img src="/images/admin/x.svg" alt="" /></a>
-            <a href=""><img src="/images/admin/edit-2.svg" alt="" /></a>
-          </td>
-        </tr>
-      </table>
+
+
+<!--main boxes-->
+<div class="main-box">
+  <div class="boxes boxes11">
+    <div class="box-wrapper">
+      <div class="box">
+        <div class="box-content">
+          <span>User's</span>
+          <p>20</p>
+        </div>
+      </div>
     </div>
+    <div class="box-wrapper">
+      <div class="box">
+        <div class="box-content">
+          <span>Owner's</span>
+          <p>20</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="boxes">
+    <div class="box-wrapper2">
+      <div class="box">
+        <div class="box-content">
+          <span>Theater's</span>
+          <p>20</p>
+        </div>
+      </div>
+    </div>
+    <div class="box-wrapper2">
+      <div class="box">
+        <div class="box-content">
+          <span>Bookings's</span>
+          <p>20</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ---charts--- -->
+
+<div class="admin-chart">
+  <div class="chart1">
+    <canvas id="lineChart"></canvas>
+    <!--Grid row-->
+  </div>
+  <div class="chart2">
+    <canvas id="barChart"></canvas>
+  </div>
+</div>
+<!--table -->
+<div class="admin-table">
+  <table>
+    <tr>
+      <th id="row">No</th>
+      <th>Theater</th>
+      <th>Owner</th>
+      <th>Seat</th>
+      <th>Date</th>
+      <th>Status</th>
+    </tr>
+    <tr>
+      <td id="row">1</td>
+      <td>John Doe</td>
+      <td>Sivadham</td>
+      <td>220</td>
+      <td>10-2-2020</td>
+      <td>
+        <div class="status-h"></div>
+        On Hold
+      </td>
+    </tr>
+    <tr>
+      <td id="row">2</td>
+      <td>John Doe</td>
+      <td>Sivadham</td>
+      <td>220</td>
+      <td>10-2-2020</td>
+      <td>
+        <div class="status-a"></div>
+        Active
+      </td>
+
+    </tr>
+    <tr>
+      <td id="row">3</td>
+      <td>John Doe</td>
+      <td>Sivadham</td>
+      <td>220</td>
+      <td>10-2-2020</td>
+      <td>
+        <div class="status-h"></div>
+        On Hold
+      </td>
+    </tr>
+    <tr>
+      <td id="row">4</td>
+      <td>John Doe</td>
+      <td>Sivadham</td>
+      <td>220</td>
+      <td>10-2-2020</td>
+      <td>
+        <div class="status-a"></div>
+        Active
+      </td>
+
+    </tr>
+  </table>
+</div>
+
+
+
+
+<script>
+  // ---chart script---
+
+  var ctxL = document.getElementById("barChart").getContext("2d");
+  var gradientFill = ctxL.createLinearGradient(0, 0, 0, 290);
+  gradientFill.addColorStop(0, "#5e97ff");
+  gradientFill.addColorStop(1, "rgba(0,146,255,0.1)");
+  var myLineChart = new Chart(ctxL, {
+    type: "bar",
+    data: {
+      labels: ["March", "March", "April", "May", "June", "July"],
+      datasets: [
+        {
+          label: "My First dataset",
+          data: [30, 65, 45, 65, 35, 65, 0],
+          backgroundColor: gradientFill,
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+    },
+  });
+
+  var ctxL = document.getElementById("lineChart").getContext("2d");
+  var gradientFill = ctxL.createLinearGradient(0, 0, 0, 290);
+  gradientFill.addColorStop(0, "rgba(173, 53, 186, 1)");
+  gradientFill.addColorStop(1, "rgba(173, 53, 186, 0.1)");
+  var myLineChart = new Chart(ctxL, {
+    type: "line",
+    data: {
+      labels: ["January", "February", "March", "April", "May", "June", "July"],
+      datasets: [
+        {
+          label: "My First dataset",
+          data: [0, 65, 45, 65, 35, 65, 0],
+          backgroundColor: gradientFill,
+          borderColor: ["#AD35BA"],
+          borderWidth: 2,
+          pointBorderColor: "#fff",
+          pointBackgroundColor: "rgba(173, 53, 186, 0.1)",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+    },
+  });
+</script>

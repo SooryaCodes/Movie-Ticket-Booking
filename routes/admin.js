@@ -128,7 +128,7 @@ router.post("/edit-profile/:id", (req, res) => {
 
 
 router.get('/owner-details',verifyLogin,(req,res)=>{
-  res.render('admin/owner-details',{admin:true})
+  res.render('admin/home',{admin:true,adminDetails:req.session.admin})
 })
 
 
