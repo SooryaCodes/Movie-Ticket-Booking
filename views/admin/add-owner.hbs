@@ -1,0 +1,41 @@
+ <script src="/javascripts/admin/script.js"></script>
+<link rel="stylesheet" href="/stylesheets/admin/add-owner.css">
+ <div class="add-owner">
+      <form action="#" autocomplete="off">
+        <div class="title-add-owner">
+          <p>Add Owner</p>
+        </div>
+        <div class="input-group">
+          <label for="">Name</label>
+          <input type="text" name="" placeholder="Name" id="user" />
+        </div>
+        <div class="input-group">
+          <label for="">Email</label>
+          <input type="email" name="" placeholder="Email" />
+        </div>
+        <div class="input-group">
+          <label for="">Password</label>
+          <div class="password">
+            <input
+              disabled
+              type="password"
+              name=""
+              placeholder="Password"
+              id="password"
+            />
+            <button
+              data-toggle="tooltip"
+              title="Genrate Password"
+              onclick="getPassword()"
+              class="fa fa-key"
+              type="submit"
+            ></button>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="">Theater</label>
+          <input type="text" name="" placeholder="Theater" />
+        </div>
+        <button type="submit" class="btn btn-light input-submit">Submit</button>
+      </form>
+    </div>

@@ -129,7 +129,8 @@ router.get('/owner-details',verifyLogin,(req,res)=>{
 })
 
 
-router.post('/add-owner',(req,res)=>{
+router.get('/add-owner',(req,res)=>{
   console.log('hi');
+  res.render('admin/add-owner',{admin:true,adminDetails:req.session.admin})
 })
 module.exports = router;
