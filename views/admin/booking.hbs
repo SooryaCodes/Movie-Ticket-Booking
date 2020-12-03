@@ -58,40 +58,60 @@
   <table>
     <tr>
       <th id="row">No</th>
-      <th>Name</th>
       <th>Theater</th>
-      <th>Action</th>
+      <th>Owner</th>
+      <th>Seat</th>
+      <th>Date</th>
+      <th>Status</th>
     </tr>
-    {{#each owner}}
     <tr>
       <td id="row">1</td>
-      <td>{{this.Name}}</td>
-      <td>{{this.Email}}</td>
+      <td>John Doe</td>
+      <td>Sivadham</td>
+      <td>220</td>
+      <td>10-2-2020</td>
       <td>
-        <a href="/admin/edit-owner/{{this._id}}"><img src="/images/admin/edit-2.svg" alt="" /></a>
-        <a onclick="deleteOwner('{{this._id}}')"> <img src="/images/admin/trash (1).svg" alt="" /></a>
+        <div class="status-h"></div>
+        On Hold
       </td>
     </tr>
-    {{/each}}
+    <tr>
+      <td id="row">2</td>
+      <td>John Doe</td>
+      <td>Sivadham</td>
+      <td>220</td>
+      <td>10-2-2020</td>
+      <td>
+        <div class="status-a"></div>
+        Active
+      </td>
 
+    </tr>
+    <tr>
+      <td id="row">3</td>
+      <td>John Doe</td>
+      <td>Sivadham</td>
+      <td>220</td>
+      <td>10-2-2020</td>
+      <td>
+        <div class="status-h"></div>
+        On Hold
+      </td>
+    </tr>
+    <tr>
+      <td id="row">4</td>
+      <td>John Doe</td>
+      <td>Sivadham</td>
+      <td>220</td>
+      <td>10-2-2020</td>
+      <td>
+        <div class="status-a"></div>
+        Active
+      </td>
+
+    </tr>
   </table>
 </div>
-
-<script>
-  function deleteOwner(ownerId) {
-    $.ajax({
-      url: '/admin/delete-owner/' + ownerId,
-      data: ownerId,
-      method: 'post',
-      success: (response) => {
-        console.log(response.status)
-        if (response.status) {
-            location.reload()
-        }
-      }
-    })
-  }
-</script>
 
 
 

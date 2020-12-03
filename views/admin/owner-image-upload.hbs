@@ -1,0 +1,121 @@
+<script src="/javascripts/admin/script.js"></script>
+<link rel="stylesheet" href="/stylesheets/admin/add-owner.css">
+<div class="add-owner">
+    <form action="/admin/owner-image-upload" method="POST" enctype="multipart/form-data" autocomplete="on">
+        <div class="title-add-owner">
+            <p>Add Profile</p>
+        </div>
+
+        <div class="input-group">
+            <label for="">Profile</label>
+            <div class="profile-pic">
+                <img id="input-image" alt="" src="">
+                <!-- Button trigger modal -->
+
+
+                <!-- Modal -->
+                <div class="mt-5 modal fade" id="basicExampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Preview</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body"
+                                style="width: 100%; display: flex; align-items: center; justify-content: center;">
+
+                                <div id="cropped-image">
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-dark" data-dismiss="modal">Continue</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="file" id="image" class="btn btn-dark file" name="Owner-Images" onchange="change(event)"
+                placeholder="Theater" />
+
+
+            <button type="button" class="btn btn-dark" id="crop-btn" data-toggle="modal"
+                data-target="#basicExampleModal">Crop</button>
+        </div>
+        <button type="submit" class="btn btn-light input-submit"
+            style="border-radius: 6px;  height:35px ;">Upload</button>
+    </form>
+</div>
+
+
+
+<link rel="stylesheet" href="/stylesheets/admin/cropper/cropper.css">
+<script src="/javascripts/admin/cropper/cropper.js"></script>
+<script>
+    var image = document.querySelector('#input-image')
+    var cropper;
+    const change = (event) => {
+        var files = event.target.files;
+        image.src = URL.createObjectURL(files[0])
+    }
+
+    if (image) {
+        image.addEventListener('load', () => {
+            document.querySelector('#crop-btn').style.display = "flex";
+            cropper = new Cropper(image, {
+                aspectRatio: 1 / 1,
+                viewMode: 2,
+                zoomOnWheel: true,
+            })
+        })
+    }
+
+     const crop = () => {
+        var cropped = cropper.getCroppedCanvas({ height: 300 })
+        var current = document.querySelector('canvas');
+        if (current) {
+            current.remove()
+        }
+        document.querySelector('#cropped-image').appendChild(cropped)
+    }
+
+cropper.getCroppedCanvas();
+
+cropper.getCroppedCanvas({
+  width: 160,
+  height: 90,
+  minWidth: 256,
+  minHeight: 256,
+  maxWidth: 4096,
+  maxHeight: 4096,
+  fillColor: '#fff',
+  imageSmoothingEnabled: false,
+  imageSmoothingQuality: 'high',
+});
+
+// Upload cropped image to server if the browser supports `HTMLCanvasElement.toBlob`.
+// The default value for the second parameter of `toBlob` is 'image/png', change it if necessary.
+cropper.getCroppedCanvas().toBlob((blob) => {
+  const formData = new FormData();
+
+  // Pass the image file name as the third parameter if necessary.
+  formData.append('croppedImage', blob/*, 'example.png' */);
+
+  // Use `jQuery.ajax` method for example
+  $.ajax('/path/to/upload', {
+    method: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    success() {
+      console.log('Upload success');
+    },
+    error() {
+      console.log('Upload error');
+    },
+  });
+}/*, 'image/png' */);
+</script>

@@ -5,6 +5,7 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const { response } = require("express");
+const Swal = require("sweetalert2");
 
 //nodemailer
 
@@ -147,7 +148,13 @@ router.post("/edit-profile/:id", (req, res) => {
 //---owner-details---
 
 router.get("/owner-details", verifyLogin, (req, res) => {
-  res.render("admin/home", { admin: true, adminDetails: req.session.admin });
+  adminHelper.getOwnerDetails().then((details) => {
+    res.render("admin/home", {
+      admin: true,
+      adminDetails: req.session.admin,
+      owner: details,
+    });
+  });
 });
 
 //add owner
@@ -164,7 +171,7 @@ router.get("/add-owner", verifyLogin, (req, res) => {
 
 router.post("/add-owner", async (req, res) => {
   console.log("hi");
-  res.redirect("/admin/add-owner");
+
   console.log(req.body);
   const mailOptions = {
     from: process.env.MY_EMAIL, // sender address
@@ -188,9 +195,78 @@ router.post("/add-owner", async (req, res) => {
 
   adminHelper.addOwner(req.body).then((response) => {
     console.log("Success add owner");
+    console.log(response, "response");
+    res.redirect("/admin/owner-details");
   });
 });
 
+//edit owner
+
+router.get("/edit-owner/:id", (req, res) => {
+  var id = req.params.id.toString();
+
+  console.log(id, "hey");
+  adminHelper.getOwner(id).then((data) => {
+    res.render("admin/edit-owner", {
+      admin: true,
+      data,
+      adminDetails: req.session.admin,
+    });
+  });
+});
+
+//post edit owner
+
+router.post("/edit-owner/:id", (req, res) => {
+  const mailOptions = {
+    from: process.env.MY_EMAIL, // sender address
+    to: req.body.Email, // list of receivers
+    subject: "Login Credentials Updated", // Subject line
+    template: "index-update",
+    context: {
+      name: req.body.Name,
+      password: req.body.Password,
+      theater: req.body.Theater,
+    },
+  };
+  mailer.sendMail(mailOptions, function (err, response) {
+    if (err) {
+      console.log(":( bad email", err, response);
+    } else {
+      console.log(":) good email");
+    }
+  });
+
+  adminHelper.editOwner(req.params.id, req.body).then((data) => {
+    res.redirect("/admin/owner-details");
+  });
+});
+//owner image upload
+
+router.get("/owner-image-upload", (req, res) => {
+  res.render("admin/owner-image-upload", {
+    admin: true,
+    adminDetails: req.session.admin,
+  });
+});
+
+//delet owner
+
+router.post('/delete-owner/:id',(req,res)=>{
+  console.log(req.params.id);
+  console.log('del');
+  adminHelper.deleteOwner(req.params.id).then((response)=>{
+    res.json({status:true})
+  })
+})
+
+//post owner image upload
+
+router.post("/owner-image-upload", (req, res) => {
+  console.log("success");
+  console.log(req.files.image);
+  console.log(req.body);
+});
 //bookings
 
 router.get("/bookings", verifyLogin, (req, res) => {
@@ -200,7 +276,7 @@ router.get("/bookings", verifyLogin, (req, res) => {
 //movies
 
 router.get("/movies", verifyLogin, (req, res) => {
-  res.render("admin/booking", { admin: true, adminDetails: req.session.admin });
+  res.render("admin/movie", { admin: true, adminDetails: req.session.admin });
 });
 
 module.exports = router;

@@ -1,29 +1,29 @@
 <script src="/javascripts/admin/script.js"></script>
 <link rel="stylesheet" href="/stylesheets/admin/add-owner.css">
 <div class="add-owner">
-  <form action="/admin/add-owner" method="POST" enctype="multipart/form-data" autocomplete="on">
+  <form action="/admin/edit-owner/{{data._id}}" method="POST" enctype="multipart/form-data" autocomplete="on">
     <div class="title-add-owner">
-      <p>Add Owner</p>
+      <p>Edit Owner</p>
     </div>
     <div class="input-group">
       <label for="">Name</label>
-      <input type="text" name="Name" placeholder="Name" id="user" />
+      <input type="text" name="Name" value="{{data.Name}}" id="user" />
     </div>
     <div class="input-group">
       <label for="">Email</label>
-      <input type="email" name="Email" placeholder="Email" />
+      <input type="email" name="Email"  value="{{data.Email}}"/>
     </div>
     <div class="input-group">
       <label for="">Password</label>
       <div class="password">
-        <input type="password" name="Password" placeholder="Password" id="password" />
+        <input type="password" name="Password" id="password" value="" />
         <button data-toggle="tooltip" title="Genrate Password" onclick="getPassword()" class="fa fa-key"
           type="button"></button>
       </div>
     </div>
     <div class="input-group">
       <label for="">Theater</label>
-      <input type="text" name="Theater" placeholder="Theater" />
+      <input type="text" name="Theater" value="{{data.Theater}}"/>
     </div>
         <button type="submit" class="btn btn-light input-submit" style="border-radius: 6px;  height:35px ;">Continue</button>
 

@@ -2,8 +2,7 @@ var db = require("../config/connection");
 var collection = require("../config/collection");
 const bcrypt = require("bcrypt");
 const { response } = require("express");
-var objectId = require("mongodb").ObjectID;
-
+const objectId = require("mongodb").ObjectID;
 module.exports = {
   // ---login---
   adminLogin: (details) => {
@@ -75,42 +74,126 @@ module.exports = {
     });
   },
 
-
   //get admin details
 
-  getAdminDetails:()=>{
-    return new Promise ((resolve,reject)=>{
-      db.get().collection(collection.ADMIN_COLLECTION).find().toArray().then((data)=>{
-        resolve(data[0])
-      })
-    })
+  getAdminDetails: () => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.ADMIN_COLLECTION)
+        .find()
+        .toArray()
+        .then((data) => {
+          resolve(data[0]);
+        });
+    });
   },
-
 
   //edit profile
 
-  editProfile:(id,details)=>{
-    return new Promise ((resolve,reject)=>{
-      db.get().collection(collection.ADMIN_COLLECTION).updateOne(
-        {_id:objectId(id)},
-        {
-          $set:{
-            name:details.name
+  editProfile: (id, details) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.ADMIN_COLLECTION)
+        .updateOne(
+          { _id: objectId(id) },
+          {
+            $set: {
+              name: details.name,
+            },
           }
-        }
-      ).then((response)=>{
-        resolve(response)
-      })
-    })   
+        )
+        .then((response) => {
+          resolve(response);
+        });
+    });
   },
 
-  addOwner:(owner)=>{
-    return new Promise (async(resolve,reject)=>{
-      owner.Password=await bcrypt.hash(owner.Password,10)
-      db.get().collection(collection.OWNER_COLLECTION).insertOne(owner).then((response)=>{
-        console.log(response.ops[0]);
-        resolve(response.ops[0])
+  addOwner: (owner) => {
+    return new Promise(async (resolve, reject) => {
+      owner.Password = await bcrypt.hash(owner.Password, 10);
+      db.get()
+        .collection(collection.OWNER_COLLECTION)
+        .insertOne(owner)
+        .then((response) => {
+          console.log(response.ops[0]);
+          resolve(response.ops[0]);
+        });
+    });
+  },
+
+  getOwnerDetails: () => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.OWNER_COLLECTION)
+        .find()
+        .toArray()
+        .then((data) => {
+          resolve(data);
+        });
+    });
+  },
+
+  getOwner: (OwnerId) => {
+    return new Promise((resolve, reject) => {
+      console.log(typeof objectId(OwnerId), "first type of");
+      console.log(typeof OwnerId, "second type of");
+      db.get()
+        .collection(collection.OWNER_COLLECTION)
+        .findOne({ _id: objectId(OwnerId) })
+        .then((data) => {
+          resolve(data);
+          console.log(data);
+        });
+    });
+  },
+  editOwner: (id, details) => {
+    return new Promise(async (resolve, reject) => {
+
+      if (details.Password) {
+        details.Password = await bcrypt.hash(details.Password, 10);
+
+        db.get()
+          .collection(collection.OWNER_COLLECTION)
+          .updateOne(
+            { _id: objectId(id) },
+            {
+              $set: {
+                Name: details.Name,
+                Email: details.Email,
+                Password: details.Password,
+                Theater: details.Theater,
+              },
+            }
+          )
+          .then((data) => {
+            resolve(data);
+          });
+      } else {
+        db.get()
+          .collection(collection.OWNER_COLLECTION)
+          .updateOne(
+            { _id: objectId(id) },
+            {
+              $set: {
+                Name: details.Name,
+                Email: details.Email,
+                Theater: details.Theater,
+              },
+            }
+          )
+          .then((data) => {
+            resolve(data);
+          });
+      }
+    });
+  },
+  deleteOwner:(OwnerId)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collection.OWNER_COLLECTION).removeOne({_id:objectId(OwnerId)}).then((response)=>{
+        console.log('success');
+        resolve({status:true})
       })
     })
   }
 };
+
