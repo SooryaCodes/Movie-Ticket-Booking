@@ -208,6 +208,7 @@ a:hover {
   width: 250px;
   height: 100vh;
   display: flex;
+  z-index: 10000;
   align-items: center;
   flex-direction: column;
 }

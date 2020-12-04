@@ -42,7 +42,17 @@ const verifyLogin = (req, res, next) => {
 router.get("/", verifyLogin, function (req, res, next) {
   adminHelper.getAdminDetails().then((adminDetails) => {
     adminHelper.getOwnerDetails().then((details) => {
-      res.render("admin/home", { admin: true, adminDetails, owner: details });
+      console.log(details.length, "length");
+      if (details.length < 1) {
+        res.render("admin/homeOwnerdetailsDummy", {
+          admin: true,
+          adminDetails: req.session.admin,
+          owner: details,
+        });
+      } else {
+        res.render("admin/home", { admin: true, adminDetails, owner: details });
+
+      }
     });
   });
 });
