@@ -193,6 +193,7 @@ router.get("/add-owner", verifyLogin, (req, res) => {
 //post add owner
 
 router.post("/add-owner", async (req, res) => {
+
   console.log("hi");
   var ownerPassword = "";
   console.log(req.body);
@@ -221,7 +222,7 @@ router.post("/add-owner", async (req, res) => {
   });
 
   adminHelper.addOwner(req.body, ownerPassword).then((response) => {
-    res.redirect("/admin/owner-details");
+    res.render("admin/owner-image-upload",{id:response._id,admin:true});
   });
 });
 
@@ -243,6 +244,7 @@ router.get("/edit-owner/:id", (req, res) => {
 //post edit owner
 
 router.post("/edit-owner/:id", (req, res) => {
+  var id=req.params.id
   var OwnerPasswordNew = "";
 
   adminHelper.getPassword(req.body.Name).then((Password) => {
@@ -270,18 +272,17 @@ router.post("/edit-owner/:id", (req, res) => {
   adminHelper
     .editOwner(req.params.id, req.body, OwnerPasswordNew)
     .then((data) => {
-      res.redirect("/admin/owner-details");
+      res.render('admin/edit-owner-image-upload',{id})
     });
 });
-//owner image upload
-
-router.get("/owner-image-upload", (req, res) => {
-  res.render("admin/owner-image-upload", {
-    admin: true,
-    adminDetails: req.session.admin,
-  });
+// edit owner image upload
+router.post("/edit-owner-image-upload/:id", (req, res) => {
+  res.json({ status: true });
+  var id=req.params.id
+  var image=req.files.croppedImage
+  image.mv("./public/images/owner/profile/owner"+id+".jpg");
+  console.log(req.body);
 });
-
 //delet owner
 
 router.post("/delete-owner/:id", (req, res) => {
@@ -315,15 +316,11 @@ router.post("/delete-owner/:id", (req, res) => {
 
 //post owner image upload
 
-router.post("/owner-image-upload", (req, res) => {
+router.post("/owner-image-upload/:id", (req, res) => {
   res.json({ status: true });
-  console.log("success");
-  console.log(req.files.image);
-  console.log(req.files);
-  console.log(req.files.croppedImage, "cropped image");
-  let image = req.files.croppedImage;
-  image.mv("./public/images/owner/profile/owner.jpg");
-
+  var id=req.params.id
+  var image=req.files.croppedImage
+  image.mv("./public/images/owner/profile/owner"+id+".jpg");
   console.log(req.body);
 });
 //bookings

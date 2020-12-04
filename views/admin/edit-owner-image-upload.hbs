@@ -105,7 +105,7 @@
             var formData = new FormData();
             formData.append('croppedImage', blob);
 
-            $.ajax("/admin/owner-image-upload/"+id ,{
+            $.ajax("/admin/edit-owner-image-upload/"+id ,{
                 
                 method: "post",
                 data: formData,
