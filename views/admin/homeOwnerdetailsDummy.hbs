@@ -62,17 +62,14 @@
       <th>Theater</th>
       <th>Action</th>
     </tr>
-    {{#each owner}}
     <tr>
-      <td id="row">1</td>
-      <td>{{this.Name}}</td>
-      <td>{{this.Email}}</td>
-      <td>
-        <a href="/admin/edit-owner/{{this._id}}"><img src="/images/admin/edit-2.svg" alt="" /></a>
-        <a onclick="deleteOwner('{{this._id}}')"> <img src="/images/admin/trash (1).svg" alt="" /></a>
-      </td>
+<td class="empty" style="width: 100%; ">
+  <div id="empty" style="display: flex; align-items: center;">
+    <h1 style="font-size: 30px !important; font-weight: 600; color: rgb(116, 116, 116); margin-right: 20px;">Oops, there is no Owner's</h1>
+    <a href="/admin/add-owner" class="btn btn-mdb-color ">Add Now</a>
+  </div>
+</td>
     </tr>
-    {{/each}}
 
   </table>
 </div>

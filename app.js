@@ -7,6 +7,8 @@ var hbs = require("express-handlebars");
 var db = require("./config/connection");
 var userRouter = require("./routes/user");
 var adminRouter = require("./routes/admin");
+var ownerRouter = require("./routes/owner");
+
 var session = require("express-session");
 var fileUpload = require("express-fileupload");
 var app = express();
@@ -46,6 +48,7 @@ db.connect((err) => {
 });
 app.use("/", userRouter);
 app.use("/admin", adminRouter);
+app.use("/owner", ownerRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

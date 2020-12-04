@@ -41,7 +41,9 @@ const verifyLogin = (req, res, next) => {
 /* GET home page. */
 router.get("/", verifyLogin, function (req, res, next) {
   adminHelper.getAdminDetails().then((adminDetails) => {
-    res.render("admin/home", { admin: true, adminDetails });
+    adminHelper.getOwnerDetails().then((details) => {
+      res.render("admin/home", { admin: true, adminDetails, owner: details });
+    });
   });
 });
 
@@ -149,11 +151,20 @@ router.post("/edit-profile/:id", (req, res) => {
 
 router.get("/owner-details", verifyLogin, (req, res) => {
   adminHelper.getOwnerDetails().then((details) => {
-    res.render("admin/home", {
-      admin: true,
-      adminDetails: req.session.admin,
-      owner: details,
-    });
+    console.log(details.length, "length");
+    if (details.length < 1) {
+      res.render("admin/homeOwnerdetailsDummy", {
+        admin: true,
+        adminDetails: req.session.admin,
+        owner: details,
+      });
+    } else {
+      res.render("admin/home", {
+        admin: true,
+        adminDetails: req.session.admin,
+        owner: details,
+      });
+    }
   });
 });
 
@@ -171,31 +182,33 @@ router.get("/add-owner", verifyLogin, (req, res) => {
 
 router.post("/add-owner", async (req, res) => {
   console.log("hi");
-
+  var ownerPassword = "";
   console.log(req.body);
-  const mailOptions = {
-    from: process.env.MY_EMAIL, // sender address
-    to: req.body.Email, // list of receivers
-    subject: "Congradulation", // Subject line
-    text: `hi there`,
-    template: "index",
-    context: {
-      name: req.body.Name,
-      password: req.body.Password,
-      theater: req.body.Theater,
-    },
-  };
-  mailer.sendMail(mailOptions, function (err, response) {
-    if (err) {
-      console.log(":( bad email", err, response);
-    } else {
-      console.log(":) good email");
-    }
+  adminHelper.getPassword(req.body.Name).then((Password) => {
+    console.log(Password, "password");
+    ownerPassword = Password;
+    const mailOptions = {
+      from: process.env.MY_EMAIL, // sender address
+      to: req.body.Email, // list of receivers
+      subject: "Congradulation", // Subject line
+      text: `hi there`,
+      template: "index",
+      context: {
+        name: req.body.Name,
+        password: Password,
+        theater: req.body.Theater,
+      },
+    };
+    mailer.sendMail(mailOptions, function (err, response) {
+      if (err) {
+        console.log(":( bad email", err, response);
+      } else {
+        console.log(":) good email");
+      }
+    });
   });
 
-  adminHelper.addOwner(req.body).then((response) => {
-    console.log("Success add owner");
-    console.log(response, "response");
+  adminHelper.addOwner(req.body, ownerPassword).then((response) => {
     res.redirect("/admin/owner-details");
   });
 });
@@ -218,28 +231,35 @@ router.get("/edit-owner/:id", (req, res) => {
 //post edit owner
 
 router.post("/edit-owner/:id", (req, res) => {
-  const mailOptions = {
-    from: process.env.MY_EMAIL, // sender address
-    to: req.body.Email, // list of receivers
-    subject: "Login Credentials Updated", // Subject line
-    template: "index-update",
-    context: {
-      name: req.body.Name,
-      password: req.body.Password,
-      theater: req.body.Theater,
-    },
-  };
-  mailer.sendMail(mailOptions, function (err, response) {
-    if (err) {
-      console.log(":( bad email", err, response);
-    } else {
-      console.log(":) good email");
-    }
+  var OwnerPasswordNew = "";
+
+  adminHelper.getPassword(req.body.Name).then((Password) => {
+    OwnerPasswordNew = Password;
+    const mailOptions = {
+      from: process.env.MY_EMAIL, // sender address
+      to: req.body.Email, // list of receivers
+      subject: "Login Credentials Updated", // Subject line
+      template: "index-update",
+      context: {
+        name: req.body.Name,
+        password: Password,
+        theater: req.body.Theater,
+      },
+    };
+    mailer.sendMail(mailOptions, function (err, response) {
+      if (err) {
+        console.log(":( bad email", err, response);
+      } else {
+        console.log(":) good email");
+      }
+    });
   });
 
-  adminHelper.editOwner(req.params.id, req.body).then((data) => {
-    res.redirect("/admin/owner-details");
-  });
+  adminHelper
+    .editOwner(req.params.id, req.body, OwnerPasswordNew)
+    .then((data) => {
+      res.redirect("/admin/owner-details");
+    });
 });
 //owner image upload
 
@@ -252,13 +272,34 @@ router.get("/owner-image-upload", (req, res) => {
 
 //delet owner
 
-router.post('/delete-owner/:id',(req,res)=>{
+router.post("/delete-owner/:id", (req, res) => {
   console.log(req.params.id);
-  console.log('del');
-  adminHelper.deleteOwner(req.params.id).then((response)=>{
-    res.json({status:true})
-  })
-})
+  console.log("del");
+  adminHelper.getOwner(req.params.id).then((response) => {
+    adminHelper.deleteOwner(req.params.id).then(() => {
+      console.log(response);
+      const mailOptions = {
+        from: process.env.MY_EMAIL, // sender address
+        to: response.Email, // list of receivers
+        subject: "Account Deleted", // Subject line
+        template: "index-delete",
+        context: {
+          name: response.Name,
+          theater: response.Theater,
+        },
+      };
+      mailer.sendMail(mailOptions, function (err, response) {
+        if (err) {
+          console.log(":( bad email", err, response);
+        } else {
+          console.log(":) good email");
+        }
+      });
+    });
+
+    res.json({ status: true });
+  });
+});
 
 //post owner image upload
 

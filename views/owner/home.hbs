@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/stylesheets/admin/home.css">
+<link rel="stylesheet" href="/stylesheets/owner/home.css">
 <script src="/javascripts/admin/script.js"></script>
 
 
@@ -78,25 +78,18 @@
 </div>
 
 <script>
-
   function deleteOwner(ownerId) {
-    var confirmDelete = confirm('Are You Sure Want To Delete')
-    if (confirmDelete) {
-      $.ajax({
-        url: '/admin/delete-owner/' + ownerId,
-        data: ownerId,
-        method: 'post',
-        success: (response) => {
-          console.log(response.status)
-          if (response.status) {
+    $.ajax({
+      url: '/admin/delete-owner/' + ownerId,
+      data: ownerId,
+      method: 'post',
+      success: (response) => {
+        console.log(response.status)
+        if (response.status) {
             location.reload()
-
-
-          }
         }
-      })
-    }
-
+      }
+    })
   }
 </script>
 

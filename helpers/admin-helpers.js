@@ -108,9 +108,27 @@ module.exports = {
     });
   },
 
-  addOwner: (owner) => {
+  //---generate password---
+
+  getPassword: (name) => {
+
+    return new Promise((resolve,reject)=>{
+      var chars = "12@34567891012@34567@89101234567@8910@";
+      var passwordLength = 8;
+      var password = "";
+  
+      for (var i = 0; i < passwordLength; i++) {
+        var randomPassword = Math.floor(Math.random() * chars.length);
+        password += chars.substring(randomPassword, randomPassword + 5);
+        resolve(name+password)
+      }
+    })
+   
+  },
+
+  addOwner: (owner,Password) => {
     return new Promise(async (resolve, reject) => {
-      owner.Password = await bcrypt.hash(owner.Password, 10);
+      owner.Password = await bcrypt.hash(Password, 10);
       db.get()
         .collection(collection.OWNER_COLLECTION)
         .insertOne(owner)
@@ -135,22 +153,19 @@ module.exports = {
 
   getOwner: (OwnerId) => {
     return new Promise((resolve, reject) => {
-      console.log(typeof objectId(OwnerId), "first type of");
-      console.log(typeof OwnerId, "second type of");
       db.get()
         .collection(collection.OWNER_COLLECTION)
         .findOne({ _id: objectId(OwnerId) })
         .then((data) => {
           resolve(data);
-          console.log(data);
+          console.log(data, "hhhhhhhhhhhhhhhh");
         });
     });
   },
-  editOwner: (id, details) => {
+  editOwner: (id, details,Password) => {
     return new Promise(async (resolve, reject) => {
-
       if (details.Password) {
-        details.Password = await bcrypt.hash(details.Password, 10);
+        details.Password = await bcrypt.hash(Password, 10);
 
         db.get()
           .collection(collection.OWNER_COLLECTION)
@@ -187,13 +202,15 @@ module.exports = {
       }
     });
   },
-  deleteOwner:(OwnerId)=>{
-    return new Promise((resolve,reject)=>{
-      db.get().collection(collection.OWNER_COLLECTION).removeOne({_id:objectId(OwnerId)}).then((response)=>{
-        console.log('success');
-        resolve({status:true})
-      })
-    })
-  }
+  deleteOwner: (OwnerId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.OWNER_COLLECTION)
+        .removeOne({ _id: objectId(OwnerId) })
+        .then((response) => {
+          console.log("success");
+          resolve({ status: true });
+        });
+    });
+  },
 };
-
