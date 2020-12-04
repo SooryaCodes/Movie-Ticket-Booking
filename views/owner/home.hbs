@@ -65,11 +65,12 @@
     {{#each owner}}
     <tr>
       <td id="row">1</td>
-      <td>{{this.Name}}</td>
+      <td><div class="o-img"><img src="/images/owner/owner{{this._id}}" alt=""></div>{{this.Name}}</td>
       <td>{{this.Email}}</td>
       <td>
-        <a href="/admin/edit-owner/{{this._id}}"><img src="/images/admin/edit-2.svg" alt="" /></a>
-        <a onclick="deleteOwner('{{this._id}}')"> <img src="/images/admin/trash (1).svg" alt="" /></a>
+        
+        <a href="/admin/edit-owner/{{this._id}}"><img class="e-d" src="/images/admin/edit-2.svg" alt="" /></a>
+        <a onclick="deleteOwner('{{this._id}}')"> <img class="e-d" src="/images/admin/trash (1).svg" alt="" /></a>
       </td>
     </tr>
     {{/each}}

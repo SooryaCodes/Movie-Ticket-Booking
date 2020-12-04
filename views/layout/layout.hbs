@@ -40,17 +40,21 @@
 </head>
 
 <body>
-  {{#if admin}}
-  {{>admin-header}}
-  {{else}}
-  {{>owner-header}}
-  {{/if}}
-  {{{body}}}
-  {{#if admin}}
-  {{>admin-footer}}
-  {{else}}
-  {{>owner-footer}}
-  {{/if}}
+
+{{#if owner}}
+{{>owner-header}}
+{{/if}}
+{{#if admin}}
+{{>admin-header}}
+{{/if}}
+{{{body}}}
+{{#if owner}}
+{{>owner-footer}}
+{{/if}}
+{{#if admin}}
+{{>admin-footer}}
+{{/if}}
+
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->

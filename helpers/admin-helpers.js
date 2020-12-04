@@ -128,6 +128,12 @@ module.exports = {
 
   addOwner: (owner,Password) => {
     return new Promise(async (resolve, reject) => {
+      var dateObj = new Date();
+      var month = dateObj.getUTCMonth() + 1; //months from 1-12
+      var day = dateObj.getUTCDate();
+      var year = dateObj.getUTCFullYear();
+      newdate = year + "-" + month + "-" + day;
+      owner.date=newdate
       owner.Password = await bcrypt.hash(Password, 10);
       db.get()
         .collection(collection.OWNER_COLLECTION)

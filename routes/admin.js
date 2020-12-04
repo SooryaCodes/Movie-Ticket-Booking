@@ -6,7 +6,9 @@ const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const { response } = require("express");
 const Swal = require("sweetalert2");
-
+var ownersLength={
+  oLength:""
+}
 //nodemailer
 
 let mailer = nodemailer.createTransport({
@@ -40,17 +42,20 @@ const verifyLogin = (req, res, next) => {
 
 /* GET home page. */
 router.get("/", verifyLogin, function (req, res, next) {
+console.log(ownersLength,"skbskb");
   adminHelper.getAdminDetails().then((adminDetails) => {
     adminHelper.getOwnerDetails().then((details) => {
+      ownersLength.oLength=details.length
+
       console.log(details.length, "length");
       if (details.length < 1) {
         res.render("admin/homeOwnerdetailsDummy", {
-          admin: true,
+          admin: true ,ownersLength,
           adminDetails: req.session.admin,
           owner: details,
         });
       } else {
-        res.render("admin/home", { admin: true, adminDetails, owner: details });
+        res.render("admin/home", { admin: true ,ownersLength, adminDetails, ownerDetails: details});
       }
     });
   });
@@ -61,7 +66,7 @@ router.get("/login", (req, res) => {
   if (req.session.loggedIn) {
     res.redirect("/admin");
   } else {
-    res.render("admin/login", { loginErr: req.session.loginErr });
+    res.render("admin/login", { loginErr: req.session.loginErr, login:true});
   }
 });
 
@@ -91,7 +96,7 @@ router.get("/logout", (req, res) => {
 
 router.get("/theater-details", verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
-    res.render("admin/theater-details", { admin: true, adminDetails });
+    res.render("admin/theater-details", { admin: true ,ownersLength, adminDetails,});
   });
 });
 
@@ -100,7 +105,7 @@ router.get("/theater-details", verifyLogin, (req, res) => {
 router.get("/user-details", verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
     console.log(req.session.admin);
-    res.render("admin/user-details", { admin: true, adminDetails });
+    res.render("admin/user-details", { admin: true ,ownersLength, adminDetails });
   });
 });
 
@@ -109,7 +114,7 @@ router.get("/user-details", verifyLogin, (req, res) => {
 router.get("/update-password", verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
     res.render("admin/update-password", {
-      admin: true,
+      admin: true ,ownersLength,
       adminDetails: req.session.admin,
       passErr: req.session.passErr,
     });
@@ -137,7 +142,7 @@ router.post("/update-password", (req, res) => {
 router.get("/edit-profile", verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
     res.render("admin/edit-profile", {
-      admin: true,
+      admin: true ,ownersLength,
       adminDetails: req.session.admin,
     });
   });
@@ -164,17 +169,18 @@ router.post("/edit-profile/:id", (req, res) => {
 router.get("/owner-details", verifyLogin, (req, res) => {
   adminHelper.getOwnerDetails().then((details) => {
     console.log(details.length, "length");
+    ownersLength.oLength=details.length
     if (details.length < 1) {
       res.render("admin/homeOwnerdetailsDummy", {
-        admin: true,
+        admin: true ,ownersLength,
         adminDetails: req.session.admin,
         owner: details,
       });
     } else {
       res.render("admin/home", {
-        admin: true,
+        admin: true ,ownersLength,
         adminDetails: req.session.admin,
-        owner: details,
+        ownerDetails: details,
       });
     }
   });
@@ -185,7 +191,7 @@ router.get("/owner-details", verifyLogin, (req, res) => {
 router.get("/add-owner", verifyLogin, (req, res) => {
   console.log("hi");
   res.render("admin/add-owner", {
-    admin: true,
+    admin: true ,ownersLength,
     adminDetails: req.session.admin,
   });
 });
@@ -222,19 +228,19 @@ router.post("/add-owner", async (req, res) => {
   });
 
   adminHelper.addOwner(req.body, ownerPassword).then((response) => {
-    res.render("admin/owner-image-upload",{id:response._id,admin:true});
+    res.render("admin/owner-image-upload",{id:response._id,admin:true,adminDetails:req.session.admin});
   });
 });
 
 //edit owner
 
-router.get("/edit-owner/:id", (req, res) => {
+router.get("/edit-owner/:id",verifyLogin, (req, res) => {
   var id = req.params.id.toString();
 
   console.log(id, "hey");
   adminHelper.getOwner(id).then((data) => {
     res.render("admin/edit-owner", {
-      admin: true,
+      admin: true ,ownersLength,
       data,
       adminDetails: req.session.admin,
     });
@@ -272,7 +278,7 @@ router.post("/edit-owner/:id", (req, res) => {
   adminHelper
     .editOwner(req.params.id, req.body, OwnerPasswordNew)
     .then((data) => {
-      res.render('admin/edit-owner-image-upload',{id})
+      res.render('admin/edit-owner-image-upload',{id,adminDetails:req.session.admin,admin:true})
     });
 });
 // edit owner image upload
@@ -326,13 +332,13 @@ router.post("/owner-image-upload/:id", (req, res) => {
 //bookings
 
 router.get("/bookings", verifyLogin, (req, res) => {
-  res.render("admin/booking", { admin: true, adminDetails: req.session.admin });
+  res.render("admin/booking", { admin: true ,ownersLength, adminDetails: req.session.admin });
 });
 
 //movies
 
 router.get("/movies", verifyLogin, (req, res) => {
-  res.render("admin/movie", { admin: true, adminDetails: req.session.admin });
+  res.render("admin/movie", { admin: true ,ownersLength, adminDetails: req.session.admin });
 });
 
 module.exports = router;

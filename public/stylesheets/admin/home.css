@@ -14,6 +14,11 @@ body {
 /* .s-active{
   background: rgb(83, 83, 83);
 } */
+#row::before {
+  counter-increment: section;
+  content: counter(section);
+}
+
 
 
 
@@ -262,6 +267,7 @@ body {
 .admin-table {
   color: #c3c3c3;
   margin-top: 20px;
+  counter-reset:section;
   text-align: center;
   margin-left: 250px;
   display: flex;
@@ -280,7 +286,11 @@ body {
 }
 
 .admin-table table th {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 16.66%;
+
   padding: 20px;
 }
 .admin-table td {
@@ -326,7 +336,7 @@ td a {
 }
 
 @media screen and (max-width: 714px) {
-  .admin-table img {
+  .admin-table .e-d {
     width: 15px;
   }
 
