@@ -1,6 +1,8 @@
 <script src="/javascripts/admin/script.js"></script>
+<link rel="stylesheet" href="/stylesheets/admin/cropper/cropper.css">
+
 <link rel="stylesheet" href="/stylesheets/admin/add-owner.css">
-<div class="add-owner">
+{{!-- <div class="add-owner">
     <form action="/admin/owner-image-upload" method="POST" enctype="multipart/form-data" autocomplete="on">
         <div class="title-add-owner">
             <p>Add Profile</p>
@@ -49,73 +51,171 @@
             style="border-radius: 6px;  height:35px ;">Upload</button>
     </form>
 </div>
+ --}}
 
 
 
-<link rel="stylesheet" href="/stylesheets/admin/cropper/cropper.css">
-<script src="/javascripts/admin/cropper/cropper.js"></script>
+
+
+<div class="wrapper-edit">
+    <!-- ---Login-section--- -->
+    <div class="login-section">
+        <!-- ---Welcome title--- -->
+        <div class="title">
+            <h3>Edit Profile</h3>
+        </div>
+        <!-- ---login input field--- -->
+        <div class="input-file">
+            <div class="profile-image">
+                <i class="fa fa-camera" aria-hidden="true"></i>
+                <img src="" style="width: 200px; height: 200px;" id="image" alt="">
+
+
+            </div>
+            <input type="file" name="image" id="file" onchange="change(event)">
+
+        </div>
+
+
+    </div>
+</div>
+
+<button class="btn btn-dark" id="button" type="button">Crop</button>
+
+
+<div id="result">
+    <img src="" style="width: 200px; height: 200px;" alt="">
+</div>
+
+
+<button type="submit" id="upload" >submir</button>
+
+
 <script>
-    var image = document.querySelector('#input-image')
+    var image = document.querySelector('#image')
     var cropper;
     const change = (event) => {
         var files = event.target.files;
         image.src = URL.createObjectURL(files[0])
     }
 
+
+
+
+
+
+
+
+    function getRoundedCanvas(sourceCanvas) {
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        var width = sourceCanvas.width;
+        var height = sourceCanvas.height;
+
+        canvas.width = width;
+        canvas.height = height;
+        context.imageSmoothingEnabled = true;
+        context.drawImage(sourceCanvas, 0, 0, width, height);
+        context.globalCompositeOperation = 'destination-in';
+        context.beginPath();
+        context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true);
+        context.fill();
+        return canvas;
+    }
     if (image) {
-        image.addEventListener('load', () => {
-            document.querySelector('#crop-btn').style.display = "flex";
-            cropper = new Cropper(image, {
-                aspectRatio: 1 / 1,
-                viewMode: 2,
-                zoomOnWheel: true,
-            })
-        })
+
+        image.addEventListener('load', function () {
+            var image = document.getElementById('image');
+            var button = document.getElementById('button');
+            var result = document.getElementById('result');
+            var croppable = false;
+            var cropper = new Cropper(image, {
+                aspectRatio: 1,
+                viewMode: 1,
+                ready: function () {
+                    croppable = true;
+                },
+            });
+                        var upload = document.getElementById('upload');
+
+  upload.onclick = function (){
+  console.log('hi')
+ cropper.getCroppedCanvas().toBlob(function (blob) {
+
+            var formData = new FormData();
+            formData.append('croppedImage', blob);
+
+            $.ajax("/admin/owner-image-upload", {
+                
+                method: "post",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function () {
+                         console.log('errrrorrrrr',blob)
+
+                    alert('Upload success');
+                    location.reload();
+                    console.log('success')
+                },
+                error: function () {
+                    console.log('error')
+                    alert('Upload error');
+                }
+            });
+        });
+};
+
+
+            button.onclick = function () {
+                var croppedCanvas;
+                var roundedCanvas;
+                var roundedImage;
+
+                if (!croppable) {
+                    return;
+                }
+
+                // Crop
+                croppedCanvas = cropper.getCroppedCanvas({ height: 300 });
+
+                // Round
+                roundedCanvas = getRoundedCanvas(croppedCanvas);
+
+                // Show
+                roundedImage = document.createElement('img');
+                roundedImage.src = roundedCanvas.toDataURL()
+                result.innerHTML = '';
+                result.appendChild(roundedImage);
+            };
+        });
     }
 
-     const crop = () => {
-        var cropped = cropper.getCroppedCanvas({ height: 300 })
-        var current = document.querySelector('canvas');
-        if (current) {
-            current.remove()
-        }
-        document.querySelector('#cropped-image').appendChild(cropped)
-    }
 
-cropper.getCroppedCanvas();
 
-cropper.getCroppedCanvas({
-  width: 160,
-  height: 90,
-  minWidth: 256,
-  minHeight: 256,
-  maxWidth: 4096,
-  maxHeight: 4096,
-  fillColor: '#fff',
-  imageSmoothingEnabled: false,
-  imageSmoothingQuality: 'high',
-});
 
-// Upload cropped image to server if the browser supports `HTMLCanvasElement.toBlob`.
-// The default value for the second parameter of `toBlob` is 'image/png', change it if necessary.
-cropper.getCroppedCanvas().toBlob((blob) => {
-  const formData = new FormData();
+/*        var cropper;
+        cropper.getCroppedCanvas().toBlob(function (blob) {
+            var formData = new FormData();
+            formData.append('croppedImage', blob);
 
-  // Pass the image file name as the third parameter if necessary.
-  formData.append('croppedImage', blob/*, 'example.png' */);
+            $.ajax("/admin/owner-image-upload", {
+                method: "post",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function () {
+                    alert('Upload success');
+                    location.reload();
+                },
+                error: function () {
+                    alert('Upload error');
+                }
+            });
+        });
+    
+*/
 
-  // Use `jQuery.ajax` method for example
-  $.ajax('/path/to/upload', {
-    method: 'POST',
-    data: formData,
-    processData: false,
-    contentType: false,
-    success() {
-      console.log('Upload success');
-    },
-    error() {
-      console.log('Upload error');
-    },
-  });
-}/*, 'image/png' */);
 </script>
+
+<script src="/javascripts/admin/cropper/cropper.js"></script>

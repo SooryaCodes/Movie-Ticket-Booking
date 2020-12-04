@@ -51,7 +51,6 @@ router.get("/", verifyLogin, function (req, res, next) {
         });
       } else {
         res.render("admin/home", { admin: true, adminDetails, owner: details });
-
       }
     });
   });
@@ -111,7 +110,7 @@ router.get("/update-password", verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
     res.render("admin/update-password", {
       admin: true,
-      adminDetails,
+      adminDetails: req.session.admin,
       passErr: req.session.passErr,
     });
   });
@@ -137,7 +136,10 @@ router.post("/update-password", (req, res) => {
 
 router.get("/edit-profile", verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
-    res.render("admin/edit-profile", { admin: true, adminDetails });
+    res.render("admin/edit-profile", {
+      admin: true,
+      adminDetails: req.session.admin,
+    });
   });
 });
 
@@ -314,8 +316,14 @@ router.post("/delete-owner/:id", (req, res) => {
 //post owner image upload
 
 router.post("/owner-image-upload", (req, res) => {
+  res.json({ status: true });
   console.log("success");
   console.log(req.files.image);
+  console.log(req.files);
+  console.log(req.files.croppedImage, "cropped image");
+  let image = req.files.croppedImage;
+  image.mv("./public/images/owner/profile/owner.jpg");
+
   console.log(req.body);
 });
 //bookings
