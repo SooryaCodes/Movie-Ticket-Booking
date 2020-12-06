@@ -10,4 +10,15 @@ router.get("/", function (req, res, next) {
   });
 });
 
+router.get('/login',(req,res)=>{
+  res.render('owner/login')
+})
+
+router.post('/login',(req,res)=>{
+  ownerHelper.ownerLogin(req.body).then((response)=>{
+    console.log("chacking");
+    res.send('suucceessffuullyy lllooggiinn ccoommppllleetteedd')
+    // console.log(response);
+  })
+})
 module.exports = router;
