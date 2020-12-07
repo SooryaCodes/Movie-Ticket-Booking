@@ -64,7 +64,7 @@
       </div>
       </div>
         </div>
-        <!-- ---chart section --- -->
+        {{!-- <!-- ---chart section --- -->
 
 
 
@@ -85,14 +85,14 @@
     
             </div>
     
-            
+             --}}
             <!-- table -->
 
             
 <!--table -->
 <div class="owner-table">
   <div class="table-title">
-      <p>Today Shows</p>
+      <p>User Activity</p>
   </div>
     <table>
      
@@ -102,16 +102,19 @@
           No
         </th>
         <th>
-          Movie
+          Name
         </th>
         <th>
-          Date
+         Date
         </th>
         <th>
-            Time    
+            Last Booking    
         </th>
         <th>
-          Action
+            Status    
+        </th>
+        <th>
+          Amount
         </th>
       </tr>
         <tr>
@@ -125,15 +128,14 @@
               20-10-2020
         </td>
           <td>
-            10:10 AM      
+              20-10-2020
         </td>
+         <td>
+        <div class="status-h"></div>
+        On Hold
+      </td>
           <td>
-            <a href="/admin/edit-owner/{{this._id}}">
-              <img src="/images/admin/edit-2.svg" alt="" />
-            </a>
-            <a onclick="deleteOwner('{{this._id}}')">
-              <img src="/images/admin/trash (1).svg" alt="" />
-            </a>
+           $23303.0
           </td>
         </tr>
     </table>
@@ -144,14 +146,23 @@
 
       <!-- ----tables--- -->
 
-
+{{!-- 
         <script>
             $(document).ready(function () {
                 $('#dtBasicExample').DataTable();
                 $('.dataTables_length').addClass('bs-select');
             });
         </script>
-     
+        <script>
+            const currentLocation = location.href;
+            const sidebar = document.getElementsByClassName("side-bar-items");
+            const sidebarLength = sidebar.length;
+            for (let i = 0; i < sidebarLength; i++) {
+                if (sidebar[i].href === currentLocation) {
+                    sidebar[i].classList = "side-bar-items active";
+                }
+            }
+        </script>
         <script>
 
 
@@ -247,4 +258,4 @@
             });
         </script>
 
-       
+        --}}

@@ -11,11 +11,11 @@
     {{!-- <!-- ---login input field--- --> --}}
     <form action="/owner/login" method="POST">
       <div class="input-group">
-        <input type="email" name="username" id="" required />
+        <input type="text" name="username" id="" required />
         <label for=""><i class="fa fa-envelope" aria-hidden="true"></i> Email</label>
       </div>
       <div class="input-group">
-        <input type="password" name="a_password" id="" required />
+        <input type="password" name="password" id="" required />
         <label for=""><i class="fa fa-lock" aria-hidden="true"></i> Password</label>
       </div>
       {{#if loginErr}}

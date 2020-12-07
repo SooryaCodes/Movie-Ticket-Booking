@@ -1,123 +1,63 @@
 <link rel="stylesheet" href="/stylesheets/owner/owner-header.css">
 
 
-<!--nav bar-->
-<div class="nav-bar">
-  <div class="nav-left">
-    <a href="#side-bar">
-      <img src="/images/admin/menu (1).svg" alt="" />
-    </a>
-    <span>Movie Cafe</span>
-  </div>
-  <div class="nav-right">
-    {{#if adminDetails.name}}
-    <span onclick="profileToggle()">Hi {{adminDetails.name}}</span>
-    {{/if}}
-    {{#if ?adminDetails.name}}
-    <span onclick="profileToggle()">Hi Admin</span>
-    {{/if}}
+<body>
+    <div class="nav-bar">
+        <div class="nav-logo">
+            <div class="menu">
+                <img src="/images/owner/home/x.svg" alt="" onclick="manuReturn()" id="times">
+                <img src="/images/owner/home/menu (1).svg" onclick="menuToggle()" id="bar" alt="">
 
-    <i class="fas fa-chevron-down" onclick="profileToggle()" aria-hidden="true"></i>
-  </div>
-  <div class="nav-profile-pop-up">
-    <div class="nothing"></div>
-    <div class="profile-details">
-      {{#if adminDetails._id}}
-      <img src="/images/admin/profile/{{adminDetails._id}}.jpg" alt="">
-      {{/if}}
-      {{#if ?adminDetails._id}}
-      <img src="/images/admin/profile.svg" alt="" />
-      {{/if}}
-      {{#if adminDetails.name}}
-      <p>{{adminDetails.name}}</p>
-      {{/if}}
-
-      {{#if ?adminDetails.name}}
-      <p>Admin</p>
-      {{/if}}
-
+            </div>
+            <a>Movie Cafe</a>
+        </div>
+        <div class="nav-items">
+            <a href="" class="nav-items-links">Dashboard</a>
+            <a href="" class="nav-items-links">Moives</a>
+            <a href="" class="nav-items-links">Bookings</a>
+            <a href="" class="nav-items-links">About</a>
+        </div>
     </div>
-    <div class=".n-p-details">
-      <ul>
-        <a href="/admin/edit-profile">
-          <li><i class="fa fa-user" aria-hidden="true"></i>Edit Profile</li>
-        </a>
-        <a href="/admin/update-password">
-          <li> <i class="fa fa-lock" aria-hidden="true"></i>Change Password</li>
-        </a>
 
-        <a href="https://mail.google.com/mail/u/0/#inbox">
+    <!--side-bar-->
 
-          <li><i class="fa fa-envelope" aria-hidden="true"></i>Inbox</li>
-        </a>
-
-        <a href="/admin/logout">
-          <li><i class="fas fa-sign-out-alt"></i>Logout</li>
-        </a>
-      </ul>
+    <div class="side-bar" id="side-bar">
+        <div class="side-bar-top">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFWBnyvJtrWYVL5q2Nwl1UkCOxOPxFGoORjg&usqp=CAU"
+                alt="">
+            <p>Hello, <span>Admin</span></p>
+        </div>
+        <div class="side-bar-bottom">
+            <a href="/owner" class="side-bar-items"><i class="fas fa-th-large"></i>Dashboard</a>
+            <a href="/hi" class="side-bar-items"><i class="fas fa-film"></i>Movies</a>
+            <a href="/logins" class="side-bar-items"><i class="fas fa-ticket-alt"></i>Bookings</a>
+            <a href="/logind" class="side-bar-items"><i class="fas fa-hotel"></i></i>Theaters</a>
+            <a href="/owner/user-details" class="side-bar-items"><i class="fas fa-user-friends"></i>Users</a>
+            <a href="/owner/screen" class="side-bar-items"><i class="fas fa-ticket-alt"></i>Screen</a>
+            <a href="/loginn" class="side-bar-items"><i class="fas fa-lock"></i>Update Password</a>
+            <a href="/log" class="side-bar-items"><i class="fas fa-user-edit"></i>Edit Profile</a>
+        </div>
     </div>
-  </div>
-</div>
+    <script>
+ const menuToggle=()=>{
+     var side_bar =document.getElementById('side-bar')
+     side_bar.classList.toggle('side-bar-active')
+     var bar = document.getElementById('bar')
+     bar.classList.toggle('bar-active')
+     var times=document.getElementById('times')
+     times.classList.toggle('times-active')
 
-<!-- ---sidebar--- -->
-<div class="side-bar" id="side-bar">
-  <div class="sidebar-top">
-    <div class="x">
-      <a href="#"> <img src="/images/admin/x.svg" alt="" /> </a>
-    </div>
-    {{#if adminDetails._id}}
-    <img src="/images/admin/profile/{{adminDetails._id}}.jpg" id="p-img" alt="">
-    {{/if}}
-    {{#if ?adminDetails._id}}
-    <img src="/images/admin/profile.svg" id="p-img" alt="" />
-    {{/if}}
+ }
+ const manuReturn=()=>{
+     var side_bar =document.getElementById('side-bar')
+     side_bar.classList.remove('side-bar-active')
+     var bar = document.getElementById('bar')
+     bar.classList.remove('bar-active')
+     var times=document.getElementById('times')
+     times.classList.remove('times-active')
 
-    {{#if adminDetails.name}}
-    <span>{{adminDetails.name}}</span>
-    {{/if}}
-    {{#if ?adminDetails.name}}
-    <span>Admin</span>
-    {{/if}}
-
-  </div>
-  <div class="sidebar-bottom">
-    <a href="/admin" class="sidebar-items"><img src="/images/admin/grid.svg" id="s-img" alt="" />
-      Dashboard</a>
-    <a href="/admin/owner-details" class="sidebar-items"><img src="/images/admin/users.svg" id="s-img" alt="" />
-      Owner's</a>
-    <a href="/admin/theater-details" class="sidebar-items"><img src="/images/admin/home.svg" id="s-img" alt="" />
-      Theaters</a>
-    <a href="/admin/user-details" class="sidebar-items"><img src="/images/admin/users.svg" id="s-img" alt="" />
-      User's</a>
-    <a href="/admin/bookings" class="sidebar-items"><img src="/images/admin/file.svg" id="s-img" alt="" />
-      Bookings</a>
-    <a href="/admin/movies" class="sidebar-items"><img src="/images/admin/film.svg" id="s-img" alt="" />
-      Movies</a>
-    <a href="/admin/add-owner" class="sidebar-items"><img src="/images/admin/user-plus.svg" id="s-img" alt="" />
-      Add Owner</a>
-    <a href="/admin/edit-profile" class="sidebar-items"><img src="/images/admin/edit-2.svg" id="s-img" alt="" /> Edit
-      Profile</a>
-    <a href="/admin/update-password" class="sidebar-items"><img src="/images/admin/lock.svg" id="s-img" alt="" /> Update
-      Password</a>
-  </div>
-
-</div>
-
-
-
-
-
-{{!-- --- a active script--- --}}
-
-<script>
-  const currentLocation = location.href;
-  const sidebar = document.getElementsByClassName("sidebar-items");
-  const foodLength = sidebar.length;
-  for (let i = 0; i < foodLength; i++) {
-    if (sidebar[i].href === currentLocation) {
-      sidebar[i].classList = "sidebar-items s-active";
-    }
-  }</script>
+ }
+        </script>
 
 
 <script>
@@ -131,3 +71,14 @@
   }
 
 </script>
+
+   <script>
+            const currentLocation = location.href;
+            const sidebar = document.getElementsByClassName("side-bar-items");
+            const sidebarLength = sidebar.length;
+            for (let i = 0; i < sidebarLength; i++) {
+                if (sidebar[i].href === currentLocation) {
+                    sidebar[i].classList = "side-bar-items active";
+                }
+            }
+        </script>
