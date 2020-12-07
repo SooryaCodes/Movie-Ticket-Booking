@@ -72,8 +72,11 @@
 <!--table -->
 <div class="owner-table">
   <div class="table-title">
-      <p>Screens</p>
-      <a href="#" id="add-btn" onclick="addToggle()" class="btn btn-elegant">Add Screen</a>
+      <p>Bookings</p>
+<div class="movie">
+
+
+</div>
   </div>
     <table>
      
@@ -86,27 +89,27 @@
             Name
         </th>
         <th>
-          Seats
+          Relsease Date
         </th>
         <th>
-            Schedule    
+            Run Time    
         </th>
         <th>
           Action
         </th>
       </tr>
-        <tr>
+        <tr>    
           <td id="row" >
-            1
+            
           </td>
           <td>
-           Audi 1 <!-- <img src="/images/owner/profile/owner{{this._id}}.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" alt=""> {{this.Name}} -->
+           Joker<!-- <img src="/images/owner/profile/owner{{this._id}}.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" alt=""> {{this.Name}} -->
           </td>
           <td>
-              200
+              20-10-2020
         </td>
         <td>
-            <a href="/owner/screen/schedule" class="btn btn-mdb-color">View</a>
+            2H 20M
         </td>
           <td>
             <a href="/admin/edit-owner/{{this._id}}">
@@ -122,7 +125,7 @@
 
 
 
-
+{{!-- 
 {{!-- add-screen-modal --}}
 
 <div class="add" id="add">
@@ -132,13 +135,34 @@
     </div>
       <div class="input-wrapper">
             <div class="input-groups">
-        <label for="">Name</label><br>
-        <input type="text" name="" placeholder="Name" id="">
+        <label for="">Ttile</label><br>
+        <input type="text" name="Title" placeholder="Title" id="">
+        </div>
+            <div class="input-groups">
+        <label for="">Cast</label><br>
+        <input type="text" name="Cast" placeholder="Cast" id="">
+        </div>
+            <div class="input-groups">
+        <label for="">Director</label><br>
+        <input type="text" name="Director" placeholder="Director" id="">
+        </div>
+            <div class="input-groups">
+        <label for="">Release Date</label><br>
+        <input type="text" name="Date" placeholder="Release Date" id="">
+        </div>
+            <div class="input-groups">
+        <label for="">Category</label><br>
+        <input type="text" name="Category" placeholder="Category" id="">
+        </div>
+            <div class="input-groups">
+        <label for="">Trailer</label><br>
+        <input type="text" name="Trailer" placeholder="Trailer" id="">
         </div>
    
-    <div class="input-groups">
-        <label for="" id="label">Seats</label>
-        <input type="number" name="" placeholder="Seats" id="">
+    <div class="input-groups runtime">
+        <label for="" id="label">Run Time</label>
+        <input type="number" name="Hour" placeholder="Run Time" id="">
+        <input type="number" name="Minute" placeholder="Run Time" id="">
     </div>
       </div>
    
@@ -150,9 +174,9 @@
     </div>
 
    </form>
-    </div>
+    </div> --}}
       <!-- ----tables--- -->
-<script>
+{{!-- <script>
 function addToggle(){
 var addWindow=document.getElementById('add')
 addWindow.classList.toggle('add-active')
@@ -162,7 +186,7 @@ function cancelAdd(){
     var addWindow=document.getElementById('add')
 addWindow.classList.remove('add-active')
 }
-</script>
+</script> --}}
 
         <script>
             $(document).ready(function () {

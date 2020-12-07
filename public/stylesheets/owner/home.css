@@ -9,8 +9,6 @@ body {
   min-height: 100vh !important;
 }
 
-
-
 /* ---over view--- */
 
 .over-view {
@@ -180,7 +178,7 @@ body {
   }
   .over-view .boxes {
     width: 350px;
-margin-bottom: 10px;
+    margin-bottom: 10px;
     height: 110px;
   }
   .chart-owner .line-chart {
@@ -192,17 +190,16 @@ margin-bottom: 10px;
     height: 450px;
   }
 
-  .box-wrapper{
+  .box-wrapper {
     flex-direction: column;
   }
 
-  .box-wrapper2{
+  .box-wrapper2 {
     flex-direction: column;
   }
 }
 
 @media screen and (max-width: 516px) {
-
   .chart-owner .line-chart {
     width: 400px;
     height: 450px;
@@ -211,11 +208,8 @@ margin-bottom: 10px;
     width: 400px;
     height: 450px;
   }
-
-
 }
 @media screen and (max-width: 424px) {
-
   .chart-owner .line-chart {
     width: 350px;
     height: 450px;
@@ -224,17 +218,14 @@ margin-bottom: 10px;
     width: 350px;
     height: 450px;
   }
-
-
 }
 /* table */
-
 
 /* ---aadmin table--- */
 .owner-table {
   color: #a0a0a0;
   margin-top: 30px;
-  counter-reset:section;
+  counter-reset: section;
   text-align: center;
   margin-left: 250px;
   display: flex;
@@ -242,17 +233,18 @@ margin-bottom: 10px;
   align-items: center;
   justify-content: center;
 }
-.table-title{
-height: 50px;
-  width: 100%;
+.table-title {
+  height: 50px;
+  width: 90%;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
-  padding-left: 60px;
-  justify-content: flex-start;
-font-size: 20px;
-color: #3f3d3d;
+  justify-content: space-between;
+  font-size: 20px;
+  color: #3f3d3d;
 }
 .owner-table table {
+  counter-reset:section;
 
   border-radius: 7px;
   background: rgb(255, 255, 255);
@@ -332,7 +324,7 @@ td a {
     background: rgb(255, 255, 255);
     width: 99% !important;
   }
-  .table-title{
+  .table-title {
     padding-left: 20px;
     font-size: 15px;
   }
@@ -360,11 +352,96 @@ td a {
   #row {
     display: none;
   }
-  .no{
+  .no {
     display: none !important;
   }
 }
 
+/* add */
+
+.add {
+  transition: .7s ease-in-out;
+  transform: translateY(-100%);
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;justify-content: center;  
+  /* position: relative; */
+  /* flex-direction: column; */
+}
+
+form{
+/* box-shadow: 0px 0px 20px rgba(233, 233, 233, 0.867); */
+  width: 500px;
+  background: #ffff;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.add .add-title{
+  padding: 20px;
+width: 100%;
+height: 30%;
+font-size: 25px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.input-groups{
+/* width: 200px; */
+height: 50%;
+display: flex;
+flex-direction: column;
+align-items: flex-start ;
+justify-content: center;
+margin-bottom: 10px;
+}
+.input-wrapper{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  flex-direction: column;
+}
+.input-groups input{
+  width: 300px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 20px rgba(240, 240, 240, 0.867);
+  background: rgb(255, 255, 255);
+  height: 45px;
+}
+input:focus{
+  outline: none;
+}
+.input-submit{
+  /* margin-top: 100px; */
+  position: relative;
+  bottom: 0px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30%;
+  /* margin-top: 50px; */
+}
+#label{
+  margin-bottom: 30px;
+}
+.add-active{
+background: rgba(59, 59, 59, 0.39);
+ transform: translateY(0%);
+}
 
 
-
+#row::before {
+  counter-increment: section;
+  content: counter(section);
+}

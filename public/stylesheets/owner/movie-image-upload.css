@@ -1,0 +1,144 @@
+body {
+    width: 100%;
+    height: 100vh;
+    background: rgb(255, 255, 255);
+  }
+  .add-owner {
+    margin-left: 250px;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column  ;
+    justify-content: center;
+  }
+  label {
+    color: #707070;
+  }
+  
+  
+  .image{
+      width: 300px;
+      height: 300px;
+
+  }
+
+  .input-group {
+      width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .input-group input {
+    caret-color: #707070 !important;
+    color: #707070 !important;
+    box-shadow: 0px 0px 37px rgb(228, 228, 228);
+    border: none;
+    width: 350px;
+    height: 45px;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+  }
+  .password {
+    background: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    width: 100%;
+  }
+  ::placeholder {
+    color: #c3c3c3;
+  }
+
+  .password input {
+    background: rgb(255, 255, 255);
+    width: 300px;
+    border: none;
+  }
+  label{
+      display: flex;
+      width: 350px;
+      align-items: center;
+      justify-content: flex-start;
+  }
+  
+  input:focus {
+    outline: none;
+  }
+  .password button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    box-shadow: 0px 0px 10px #727272;
+    border-radius: 6px;
+    width: 34px;
+    margin-right: 5px;
+    height: 35px;
+    cursor: pointer;
+    border: none;
+  }
+  button:focus {
+    outline: 0;
+  }
+  .title-add-owner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .title-add-owner p {
+    font-size: 30px !important;
+    color: #707070;
+  }
+  
+
+  
+  @media screen and (max-width: 1476px) {
+    .add-owner {
+      margin-left: 0px;
+    }
+  }
+  
+  .file {
+    width: 100%;
+    height: 100%;
+    padding: 10px !important;
+  }
+  
+  .profile-pic {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  
+  .cropped-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+  .cropped-image canvas {
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    border: none;
+    -webkit-text-fill-color: rgb(221, 221, 221);
+    -webkit-box-shadow: 0 0 0px 1000px #f0f0f000 inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }

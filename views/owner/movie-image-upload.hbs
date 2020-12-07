@@ -1,0 +1,187 @@
+<script src="/javascripts/admin/script.js"></script>
+<link rel="stylesheet" href="/stylesheets/admin/cropper/cropper.css">
+
+<link rel="stylesheet" href="/stylesheets/owner/movie-image-upload.css">
+
+
+
+<div class="add-owner">
+    <div class="title-add-owner">
+      <p>Profile Image</p>
+    </div>
+   <div class="image">
+       <img src=""  id="image" alt="">
+   </div>
+      <label for="">Image</label>
+                  <input type="text" name="" value="{{id}}" hidden id="id">
+
+    <div class="input-group">
+      <input type="file" class="btn btn-dark" name="" placeholder="Theater" onchange="change(event)" required />
+    </div>
+        <button type="submit" id="button" class="btn btn-dark input-submit"  data-toggle="modal" data-target="#basicExampleModal">Crop</button>
+
+
+<!-- Modal -->
+<div class="modal fade ml-5" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" style="margin-top: 100px"role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload Image</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="display: flex;align-items: center; justify-content: center;">
+<div id="result">
+    <img src=""  alt="">
+</div>      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-mdb-color" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-elegant" id="upload">Upload</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    </div>
+</div>
+
+<script>
+    var image = document.querySelector('#image')
+    const change = (event) => {
+        var files = event.target.files;
+            
+
+                    image.src = URL.createObjectURL(files[0])
+
+    }
+
+
+
+
+
+
+
+
+    function getRoundedCanvas(sourceCanvas) {          
+
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        var width = sourceCanvas.width;
+        var height = sourceCanvas.height;
+
+        canvas.width = width;
+        canvas.height = height;
+        context.imageSmoothingEnabled = true;
+        context.drawImage(sourceCanvas, 0, 0, width, height);
+        context.globalCompositeOperation = 'destination-in';
+        context.beginPath();
+        context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true);
+        context.fill();
+        return canvas;
+    }
+    if (image) {
+
+        image.addEventListener('load', function () {
+            var image = document.getElementById('image');
+            var button = document.getElementById('button');
+            var result = document.getElementById('result');
+            var croppable = false;
+            var cropper = new Cropper(image, {
+                aspectRatio: 1,
+                viewMode: 1,
+                ready: function () {
+                    croppable = true;
+                },
+            });
+                        var upload = document.getElementById('upload');
+             upload.onclick = function (){
+                 var id=document.getElementById('id').value
+  console.log('hi')
+ cropper.getCroppedCanvas().toBlob(function (blob) {
+
+            var formData = new FormData();
+            formData.append('croppedImage', blob);
+
+            $.ajax("/admin/owner-image-upload/"+id ,{
+                
+                method: "post",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function () {
+                         console.log('success',blob)
+swal({
+  title: "Image",
+  text: "Uploaded Successfully",
+  icon: "success",
+  button:false
+});  
+setTimeout(function(){
+ location.href="/admin/owner-details";
+},2000)
+                    console.log('success')
+                },
+                error: function () {
+                    console.log('error')
+                    alert('Upload error');
+                }
+            });
+        });
+};
+
+
+            button.onclick = function () {
+                var croppedCanvas;
+                var roundedCanvas;
+                var roundedImage;
+
+                if (!croppable) {
+                    return;
+                }
+
+                // Crop
+                croppedCanvas = cropper.getCroppedCanvas({ height: 300 });
+
+                // Round
+                roundedCanvas = getRoundedCanvas(croppedCanvas);
+
+                // Show
+                roundedImage = document.createElement('img');
+                roundedImage.src = roundedCanvas.toDataURL()
+                result.innerHTML = '';
+                result.appendChild(roundedImage);
+            };
+        });
+    }
+
+
+
+
+/*        var cropper;
+        cropper.getCroppedCanvas().toBlob(function (blob) {
+            var formData = new FormData();
+            formData.append('croppedImage', blob);
+
+            $.ajax("/admin/owner-image-upload", {
+                method: "post",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function () {
+                    alert('Upload success');
+                    location.reload();
+                },
+                error: function () {
+                    alert('Upload error');
+                }
+            });
+        });
+    
+*/
+
+</script>
+
+<script src="/javascripts/admin/cropper/cropper.js"></script>

@@ -72,9 +72,13 @@
 <!--table -->
 <div class="owner-table">
   <div class="table-title">
-      <p>Screens</p>
-      <a href="#" id="add-btn" onclick="addToggle()" class="btn btn-elegant">Add Screen</a>
-  </div>
+      <p>Upcoming Movies</p>
+<div class="movie">
+
+      <a href="/owner/movies" id="add-btn" class="btn btn-light-blue">Now Showing</a>
+      <a href="/owner/add-movie" id="add-btn" class="btn btn-mdb-color">Add Movie</a>
+
+</div>  </div>
     <table>
      
       <tr>
@@ -86,27 +90,27 @@
             Name
         </th>
         <th>
-          Seats
+          Relsease Date
         </th>
         <th>
-            Schedule    
+            Run Time    
         </th>
         <th>
           Action
         </th>
       </tr>
-        <tr>
+        <tr>    
           <td id="row" >
-            1
+            
           </td>
           <td>
-           Audi 1 <!-- <img src="/images/owner/profile/owner{{this._id}}.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" alt=""> {{this.Name}} -->
+           Joker<!-- <img src="/images/owner/profile/owner{{this._id}}.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" alt=""> {{this.Name}} -->
           </td>
           <td>
-              200
+              20-10-2020
         </td>
         <td>
-            <a href="/owner/screen/schedule" class="btn btn-mdb-color">View</a>
+            2H 20M
         </td>
           <td>
             <a href="/admin/edit-owner/{{this._id}}">
@@ -120,49 +124,6 @@
     </table>
   </div>
 
-
-
-
-{{!-- add-screen-modal --}}
-
-<div class="add" id="add">
-   <form action="">
-    <div class="add-title">
-        <p>Add Screen</p>
-    </div>
-      <div class="input-wrapper">
-            <div class="input-groups">
-        <label for="">Name</label><br>
-        <input type="text" name="" placeholder="Name" id="">
-        </div>
-   
-    <div class="input-groups">
-        <label for="" id="label">Seats</label>
-        <input type="number" name="" placeholder="Seats" id="">
-    </div>
-      </div>
-   
-
-   
-    <div class="input-submit">
-       <button class="btn btn-elegant" onclick="cancelAdd()">Cancel</button>
-        <button class="btn btn-light-blue">Submit</button>
-    </div>
-
-   </form>
-    </div>
-      <!-- ----tables--- -->
-<script>
-function addToggle(){
-var addWindow=document.getElementById('add')
-addWindow.classList.toggle('add-active')
-}
-
-function cancelAdd(){
-    var addWindow=document.getElementById('add')
-addWindow.classList.remove('add-active')
-}
-</script>
 
         <script>
             $(document).ready(function () {

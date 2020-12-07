@@ -49,18 +49,53 @@ router.get('/screen',(req,res)=>{
 })
 
 router.get('/bookings',(req,res)=>{
-  res.render('owner/user')
+  res.render('owner/bookings',{owner:true})
+})
+
+router.get('/screen/schedule',(req,res)=>{
+  res.render('owner/schedule',{owner:true})
 })
 
 router.get('/movies',(req,res)=>{
-  res.render('owner/user')
+  res.render('owner/movie',{owner:true})
 })
 
-router.get('/user-details',(req,res)=>{
-  res.render('owner/user')
+router.get('/upcoming-movies',(req,res)=>{
+  res.render('owner/upcoming',{owner:true})
 })
 
-router.get('/user-details',(req,res)=>{
-  res.render('owner/user')
+router.get('/add-movie',(req,res)=>{
+  res.render('owner/add-movie',{owner:true})
 })
+
+router.get('/movie-image-upload',(req,res)=>{
+  res.render('owner/movie-image-upload',{owner:true})
+})
+
+
+//get update password
+
+router.get("/update-password", verifyLogin, (req, res) => {
+  
+  res.render("owner/update-password", {
+      owner: true,
+    });
+});
+
+// //post update password
+
+// router.post("/update-password", (req, res) => {
+//   ownerHelper.updatePassword(req.body).then((response) => {
+//     if (response.status) {
+//       adminHelper.getOwnerDetails().then((data) => {
+//         req.session.owner.adminPassword = data.adminPassword;
+//         res.redirect("/admin");
+//       });
+//     } else {
+//       req.session.passErr = true;
+//       res.redirect("/admin/update-password");
+//     }
+//   });
+// });
+
 module.exports = router;

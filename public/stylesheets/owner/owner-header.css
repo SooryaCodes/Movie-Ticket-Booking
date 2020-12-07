@@ -141,8 +141,9 @@
   color: gray !important;
 }
 
-.active,
-.active i {
+ .side-bar .active,
+ .side-bar .active i {
+
   box-shadow: 0px 0px 20px rgb(240, 240, 240);
 
   color: rgb(230, 111, 111) !important;
