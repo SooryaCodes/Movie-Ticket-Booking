@@ -1,26 +1,34 @@
-<link rel="stylesheet" href="/stylesheets/admin/login.css">
-{{!-- <!-- ------wrapper----- --> --}}
+<link rel="stylesheet" href="/stylesheets/admin/login.css" />
+{{! <!-- ------wrapper----- --> }}
 <div class="wrapper">
-
-  {{!-- <!-- ---Login-section--- --> --}}
+  {{! <!-- ---Login-section--- --> }}
   <div class="login-section">
-    {{!-- <!-- ---Welcome title--- --> --}}
+    {{! <!-- ---Welcome title--- --> }}
     <div class="title">
-      <h3>Welcome</h3>
+      <h3>
+        Welcome
+      </h3>
     </div>
-    {{!-- <!-- ---login input field--- --> --}}
+    {{! <!-- ---login input field--- --> }}
     <form action="/owner/login" method="POST">
       <div class="input-group">
-        <input type="text" name="username" id="" required />
-        <label for=""><i class="fa fa-envelope" aria-hidden="true"></i> Email</label>
+        <input type="text" name="username" id=""  />
+        <label for="">
+          <i class="fa fa-user" aria-hidden="true"></i>
+          Username
+        </label>
       </div>
       <div class="input-group">
-        <input type="password" name="password" id="" required />
-        <label for=""><i class="fa fa-lock" aria-hidden="true"></i> Password</label>
+        <input type="password" name="password" id=""  />
+        <label for="">
+          <i class="fa fa-lock" aria-hidden="true"></i>
+          Password
+        </label>
       </div>
-      {{#if loginErr}}
-      <p style="color: red;"><img src="/images/admin/invalid (1).png" alt="" style="width: 20px;"> Invalid
-        Username or Password</p>
+      {{#if messages.error}}
+        <div class="alert alert-danger" role="alert">
+          {{messages.error}}!
+        </div>
       {{/if}}
       <div class="input-submit">
         <input type="submit" name="" id="" value="Login" />

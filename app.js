@@ -8,12 +8,12 @@ var db = require("./config/connection");
 var userRouter = require("./routes/user");
 var adminRouter = require("./routes/admin");
 var ownerRouter = require("./routes/owner");
-
+var passport=require('passport')
 var session = require("express-session");
 var fileUpload = require("express-fileupload");
 var app = express();
 var MongoDBStore = require("connect-mongodb-session")(session);
-
+var flash=require('express-flash')
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
@@ -42,6 +42,9 @@ app.use(
     }),
   })
 );
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(flash())
 db.connect((err) => {
   if (err) console.log("Connection Invalid" + err);
   else console.log("Database connected");

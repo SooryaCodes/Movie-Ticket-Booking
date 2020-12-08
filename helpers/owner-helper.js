@@ -1,35 +1,36 @@
 var db = require("../config/connection");
 var collection = require("../config/collection");
 const bcrypt = require("bcrypt");
+const { static } = require("express");
 const objectId = require("mongodb").ObjectID;
 module.exports = {
-  // ---login---
-  ownerLogin: (details) => {
-    return new Promise(async (resolve, reject) => {
-      let loginStatus = false;
-      let response = {};
-      let owner = await db
-        .get()
-        .collection(collection.OWNER_COLLECTION)
-        .findOne({ Name: details.username });
-      if (owner) {
-        bcrypt.compare(details.password,owner.Password).then((status) => {
-          if (status) {
-            console.log("owner Login SuccessFull");
-            response.owner = owner;
-            response.status = true;
-            resolve(response);
-          } else {
-            console.log("owner Login Failed");
-            resolve({ status: false });
-          }
-        });
-      } else {
-        console.log("owner Login Failed Failed");
-        resolve({ status: false });
-      }
-    });
-  },
+  // // ---login---
+  // ownerLogin: (details) => {
+  //   return new Promise(async (resolve, reject) => {
+  //     let loginStatus = false;
+  //     let response = {};
+  //     let owner = await db
+  //       .get()
+  //       .collection(collection.OWNER_COLLECTION)
+  //       .findOne({ Name: details.username });
+  //     if (owner) {
+  //       bcrypt.compare(details.password,owner.Password).then((status) => {
+  //         if (status) {
+  //           console.log("owner Login SuccessFull");
+  //           response.owner = owner;
+  //           response.status = true;
+  //           resolve(response);
+  //         } else {
+  //           console.log("owner Login Failed");
+  //           resolve({ status: false });
+  //         }
+  //       });
+  //     } else {
+  //       console.log("owner Login Failed Failed");
+  //       resolve({ status: false });
+  //     }
+  //   });
+  // },
 
   // update password
 
@@ -68,4 +69,16 @@ module.exports = {
   //       }
   //     });
   //   },
+
+
+
+
+  // verifyPassword:(password,user)=>{
+  //   return new Promise ((resolve,reject)=>{
+  //     bcrypt.compare(password,user.Password).then((status)=>{
+  //       console.log(status);
+  //       resolve(status)
+  //     })
+  //   })
+  // }
 };

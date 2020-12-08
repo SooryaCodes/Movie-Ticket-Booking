@@ -11,16 +11,17 @@
     {{!-- <!-- ---login input field--- --> --}}
     <form action="/admin/login" method="POST">
       <div class="input-group">
-        <input type="email" name="a_email" id="" required />
+        <input type="email" name="username" id=""  />
         <label for=""><i class="fa fa-envelope" aria-hidden="true"></i> Email</label>
       </div>
       <div class="input-group">
-        <input type="password" name="a_password" id="" required />
+        <input type="password" name="password" id=""  />
         <label for=""><i class="fa fa-lock" aria-hidden="true"></i> Password</label>
       </div>
-      {{#if loginErr}}
-      <p style="color: red;"><img src="/images/admin/invalid (1).png" alt="" style="width: 20px;"> Invalid
-        Username or Password</p>
+       {{#if messages.error}}
+        <div class="alert alert-danger" role="alert">
+          {{messages.error}}!
+        </div>
       {{/if}}
       <div class="input-submit">
         <input type="submit" name="" id="" value="Login" />

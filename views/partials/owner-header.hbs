@@ -12,13 +12,45 @@
             <a>Movie Cafe</a>
         </div>
         <div class="nav-items">
-            <a href="" class="nav-items-links">Dashboard</a>
-            <a href="" class="nav-items-links">Moives</a>
-            <a href="" class="nav-items-links">Bookings</a>
-            <a href="" class="nav-items-links">About</a>
+    <span onclick="profileToggle()">Hi Owner</span>
+    <i class="fas fa-chevron-down" onclick="profileToggle()" aria-hidden="true"></i>
+
         </div>
     </div>
 
+
+{{!-- profile pop up --}}
+     <div class="nav-profile-pop-up">
+    <div class="nothing"></div>
+    <div class="profile-details">
+      <img src="/images/admin/profile.svg" alt="" />
+      <p>Owner</p>
+
+
+    </div>
+    <div class=".n-p-details">
+      <ul>
+        <a href="/owner/edit-profile">
+          <li><i class="fa fa-user" aria-hidden="true"></i>Edit Profile</li>
+        </a>
+        <a href="/owner/update-password">
+          <li> <i class="fa fa-lock" aria-hidden="true"></i>Change Password</li>
+        </a>
+
+        <a href="https://mail.google.com/mail/u/0/#inbox">
+
+          <li><i class="fa fa-envelope" aria-hidden="true"></i>Inbox</li>
+        </a>
+
+        <a href="/owner/logout">
+          <li><i class="fas fa-sign-out-alt"></i>Logout</li>
+        </a>
+      </ul>
+    </div>
+  </div>
+</div>
+
+   
     <!--side-bar-->
 
     <div class="side-bar" id="side-bar">
@@ -34,7 +66,7 @@
             <a href="/owner/user-details" class="side-bar-items"><i class="fas fa-user-friends"></i>Users</a>
             <a href="/owner/screen" class="side-bar-items"><i class="fas fa-ticket-alt"></i>Screen</a>
             <a href="/owner/update-password" class="side-bar-items"><i class="fas fa-lock"></i>Update Password</a>
-            <a href="/log" class="side-bar-items"><i class="fas fa-user-edit"></i>Edit Profile</a>
+            <a href="/owner/edit-profile" class="side-bar-items"><i class="fas fa-user-edit"></i>Edit Profile</a>
         </div>
     </div>
     <script>
@@ -76,8 +108,19 @@
             const sidebar = document.getElementsByClassName("side-bar-items");
             const sidebarLength = sidebar.length;
             for (let i = 0; i < sidebarLength; i++) {
-                if (sidebar[i].href === currentLocation) {
                     sidebar[i].classList = "side-bar-items active";
                 }
             }
         </script>
+
+        <script>
+
+
+  // ---profile pop up  script---
+
+  function profileToggle() {
+    const toggleProfile = document.querySelector(".nav-profile-pop-up");
+    toggleProfile.classList.toggle("profile-active");
+  }
+
+</script>

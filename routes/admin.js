@@ -6,6 +6,27 @@ const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const { response } = require("express");
 const Swal = require("sweetalert2");
+const bcrypt = require("bcrypt");
+
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+
+var db = require("../config/connection");
+var collection = require("../config/collection");
+
+// // ------
+const verifyLogin = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    res.set(
+      "Cache-Control",
+      "no-cache , private,no-store,must-revalidate,post-check=0,pre-check=0"
+    );
+    return next();
+  } else {
+    res.redirect("/admin/login");
+  }
+};
+
 var ownersLength = {
   oLength: "",
 };
@@ -29,16 +50,6 @@ var options = {
 };
 
 mailer.use("compile", hbs(options));
-
-// ---verifyLogin----
-
-const verifyLogin = (req, res, next) => {
-  if (req.session.loggedIn) {
-    next();
-  } else {
-    res.redirect("/admin/login");
-  }
-};
 
 /* GET home page. */
 router.get("/", verifyLogin, function (req, res, next) {
@@ -67,35 +78,87 @@ router.get("/", verifyLogin, function (req, res, next) {
   });
 });
 
-// ----get login page---
 router.get("/login", (req, res) => {
-  if (req.session.loggedIn) {
+  if (req.isAuthenticated()) {
+    res.set(
+      "Cache-Control",
+      "no-cache , private,no-store,must-revalidate,post-check=0,pre-check=0"
+    );
     res.redirect("/admin");
   } else {
-    res.render("admin/login", { loginErr: req.session.loginErr, login: true });
+    res.render("admin/login");
   }
 });
 
-// ---post login page---
-
-router.post("/login", (req, res) => {
-  adminHelper.adminLogin(req.body).then((response) => {
-    if (response.status) {
-      req.session.loggedIn = true;
-      req.session.admin = response.admin;
-      res.redirect("/admin");
-    } else {
-      req.session.loginErr = true;
-      res.redirect("/admin/login");
-    }
-  });
+passport.serializeUser(function (admin, done) {
+  done(null, admin);
 });
+passport.deserializeUser(function (admin, done) {
+  db.get()
+    .collection(collection.ADMIN_COLLECTION)
+    .findOne(
+      {
+        _id: admin._id,
+      },
+      function (err, admin) {
+        done(err, admin);
+      }
+    );
+});
+passport.use(
+  "admin-local",
+  new LocalStrategy(function (username, password, done) {
+    console.log(username, password);
+    db.get()
+      .collection(collection.ADMIN_COLLECTION)
+      .findOne({ adminEmail: username }, function (err, admin) {
+        if (err) {
+          return done(err, { message: "Invalid Email Or Password" });
+        }
+
+        if (!admin) {
+          console.log("username not ");
+          return done(null, false, { message: "Incorrect Email" });
+        }
+
+        bcrypt.compare(password, admin.adminPassword, (matchErr, match) => {
+          console.log(match);
+          if (matchErr) {
+            console.log("password inccorredt");
+            return done(null, false, { message: "Incorrect Password" });
+          }
+          if (!match) {
+            console.log("password inccorredt");
+            return done(null, false, { message: "Incorrect Password" });
+          }
+          if (match) {
+            return done(null, admin);
+          }
+        });
+      });
+  })
+);
+
+router.post(
+  "/login",
+  passport.authenticate("admin-local", {
+    failureRedirect: "/admin/login",
+    successRedirect: "/admin",
+    failureFlash: true,
+  }),
+  (req, res) => {
+    console.log(req.body, "hey");
+    res.redirect("/admin");
+
+    // console.log(response);
+  }
+);
 
 //---post logout---
 
-router.get("/logout", (req, res) => {
+router.get("/logout", verifyLogin, (req, res) => {
   req.session.destroy();
-  res.redirect("/admin");
+  res.redirect("/admin/login");
 });
 
 //get theater details
@@ -220,27 +283,27 @@ router.get("/add-owner", verifyLogin, (req, res) => {
 router.post("/add-owner", async (req, res) => {
   console.log("hi");
 
- adminHelper.getPassword(req.body.Name).then((Password) => {
-  const mailOptions = {
-    from: process.env.MY_EMAIL, // sender address
-    to: req.body.Email, // list of receivers
-    subject: "Congradulation", // Subject line
-    text: `hi there`,
-    template: "index",
-    context: {
-      name: req.body.Name,
-      password: Password,
-      theater: req.body.Theater,
-    },
-  };
-  mailer.sendMail(mailOptions, function (err, response) {
-    if (err) {
-      console.log(":( bad email", err, response);
-    } else {
-      console.log(":) good email");
-    }
-  });
-  adminHelper.addOwner(req.body, Password).then((response) => {
+  adminHelper.getPassword(req.body.Name).then((Password) => {
+    const mailOptions = {
+      from: process.env.MY_EMAIL, // sender address
+      to: req.body.Email, // list of receivers
+      subject: "Congradulation", // Subject line
+      text: `hi there`,
+      template: "index",
+      context: {
+        name: req.body.Name,
+        password: Password,
+        theater: req.body.Theater,
+      },
+    };
+    mailer.sendMail(mailOptions, function (err, response) {
+      if (err) {
+        console.log(":( bad email", err, response);
+      } else {
+        console.log(":) good email");
+      }
+    });
+    adminHelper.addOwner(req.body, Password).then((response) => {
       res.render("admin/owner-image-upload", {
         id: response._id,
         admin: true,
@@ -248,8 +311,6 @@ router.post("/add-owner", async (req, res) => {
       });
     });
   });
-
- 
 });
 
 //edit owner
