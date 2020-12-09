@@ -103,6 +103,7 @@ module.exports = {
       var year = dateObj.getUTCFullYear();
       newdate = year + "-" + month + "-" + day;
       owner.date = newdate;
+      owner.role="owner"
       // console.log(Password, "checking");
       console.log(owner, "owner");
       owner.Password=Password

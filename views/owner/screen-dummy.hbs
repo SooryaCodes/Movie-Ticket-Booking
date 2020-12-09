@@ -95,30 +95,15 @@
           Action
         </th>
       </tr>
-       {{#each Screen}}
         <tr>
-          <td id="row" >
-            
-          </td>
-          <td>
-           {{this.Name}}<!-- <img src="/images/owner/profile/owner{{this._id}}.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" alt=""> {{this.Name}} -->
-          </td>
-          <td>
-              {{this.Seat}}
-        </td>
-        <td>
-            <a href="/owner/screen/schedule" class="btn btn-mdb-color">View</a>
-        </td>
-          <td>
-            <a href="/owner/edit-screen/{{this.Name}}">
-              <img src="/images/admin/edit-2.svg" alt="" />
-            </a>
-            <a onclick="deleteOwner('{{this._id}}')">
-              <img src="/images/admin/trash (1).svg" alt="" />
-            </a>
-          </td>
+<td class="empty" style="width: 100%; ">
+  <div id="empty" style="display: flex; align-items: center;">
+    <h1 style="font-size: 25px !important; font-weight: 600; color: rgb(116, 116, 116); margin-right: 20px;">Oops, there is no Screen</h1>
+    <a href="/owner/add-screen" class="btn btn-mdb-color ">Add Now</a>
+  </div>
+</td>
         </tr>
-        {{/each}}
+
     </table>
   </div>
 

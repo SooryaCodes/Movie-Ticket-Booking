@@ -9,8 +9,10 @@ const LocalStrategy = require("passport-local");
 
 var db = require("../config/connection");
 var collection = require("../config/collection");
+const { route } = require("./admin");
+const { response } = require("express");
 
-
+require('../passport-setup')
 // // ------
 const verifyLogin = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -32,32 +34,37 @@ router.get("/",verifyLogin, function (req, res, next) {
 });
 
 router.get("/login", (req, res) => {
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() ) {
+    res.redirect("/owner");
     res.set(
       "Cache-Control",
       "no-cache , private,no-store,must-revalidate,post-check=0,pre-check=0"
     );
-    res.redirect("/owner");
   } else {
     res.render("owner/login");
   }
 });
 
 passport.serializeUser(function (user, done) {
-  done(null, user);
-});
-passport.deserializeUser(function (user, done) {
-  db.get()
+  db.get().collection(collection.OWNER_COLLECTION).findOne({_id:user._id,role:"owner"}).then((user)=>{
+    console.log(user);
+    done(null, user);
+  
+  })
+  });
+  passport.deserializeUser(function (user, done) {
+    db.get()
     .collection(collection.OWNER_COLLECTION)
     .findOne(
       {
         _id: user._id,
+        role:'owner'
       },
       function (err, user) {
         done(err, user);
       }
-    );
-});
+      );
+  });
 passport.use(
   "owner-local",
   new LocalStrategy(
@@ -108,8 +115,9 @@ router.post(
   }
 );
 
-router.get("/logout", verifyLogin, (req, res) => {
+router.get("/logout", (req, res) => {
   req.session.destroy();
+  req.logout()
   res.redirect("/owner/login");
 });
 
@@ -118,9 +126,40 @@ router.get("/user-details", verifyLogin, (req, res) => {
 });
 
 router.get("/screen", verifyLogin, (req, res) => {
-  res.render("owner/screen", { owner: true });
+ownerHelper.getScreen(req.session.passport.user._id).then((data)=>{
+  console.log(data.Screen.length);
+  if(data.Screen.length<1){
+    res.render('owner/screen-dummy',{owner:true})
+  }else{
+    res.render("owner/screen", { owner: true ,Screen:data.Screen});
+  }
+})
 });
 
+router.get('/add-screen',verifyLogin,(req,res)=>{
+  res.render('owner/add-screen')
+})
+
+router.post('/add-screen',(req,res)=>{
+  ownerHelper.addScreen(req.body,req.session.passport.user._id).then((data)=>{
+
+  })
+  res.redirect('/owner/screen')
+
+})
+
+
+router.get('/edit-screen/:id',verifyLogin,(req,res)=>{
+  console.log(req.params.id);
+ var id=req.params.id
+  res.render("owner/edit-screen",{owner:true,id})
+})
+
+router.post('/edit-screen/:id',(req,res)=>{
+  ownerHelper.editScreen(req.params.id,req.body).then((response)=>{
+    res.redirect('/owner/screen')
+  })
+})
 router.get("/bookings", verifyLogin, (req, res) => {
   res.render("owner/bookings", { owner: true });
 });

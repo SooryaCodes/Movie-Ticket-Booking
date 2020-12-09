@@ -16,7 +16,7 @@ var collection = require("../config/collection");
 
 // // ------
 const verifyLogin = (req, res, next) => {
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() || req.session.passport.user.role==="admin") {
     res.set(
       "Cache-Control",
       "no-cache , private,no-store,must-revalidate,post-check=0,pre-check=0"
@@ -53,6 +53,7 @@ mailer.use("compile", hbs(options));
 
 /* GET home page. */
 router.get("/", verifyLogin, function (req, res, next) {
+  
   console.log(ownersLength, "skbskb");
   adminHelper.getAdminDetails().then((adminDetails) => {
     adminHelper.getOwnerDetails().then((details) => {
@@ -79,7 +80,7 @@ router.get("/", verifyLogin, function (req, res, next) {
 });
 
 router.get("/login", (req, res) => {
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() ) {
     res.set(
       "Cache-Control",
       "no-cache , private,no-store,must-revalidate,post-check=0,pre-check=0"
@@ -90,54 +91,58 @@ router.get("/login", (req, res) => {
   }
 });
 
-passport.serializeUser(function (admin, done) {
-  done(null, admin);
-});
-passport.deserializeUser(function (admin, done) {
-  db.get()
-    .collection(collection.ADMIN_COLLECTION)
-    .findOne(
-      {
-        _id: admin._id,
-      },
-      function (err, admin) {
-        done(err, admin);
-      }
-    );
-});
-passport.use(
-  "admin-local",
-  new LocalStrategy(function (username, password, done) {
-    console.log(username, password);
-    db.get()
-      .collection(collection.ADMIN_COLLECTION)
-      .findOne({ adminEmail: username }, function (err, admin) {
-        if (err) {
-          return done(err, { message: "Invalid Email Or Password" });
-        }
+// passport.serializeUser(function (admin, done) {
+//   db.get().collection(collection.ADMIN_COLLECTION).findOne({_id:admin._id,role:"admin"}).then((admin)=>{
+//     done(null, admin);
+  
+//   })
+//   });
+//   passport.deserializeUser(function (admin, done) {
+//     db.get()
+//     .collection(collection.ADMIN_COLLECTION)
+//     .findOne(
+//       {
+//         _id: admin._id,
+//         role:'admin'
+//       },
+//       function (err, admin) {
+//         done(err, admin);
+//       }
+//       );
+//   });
+// passport.use(
+//   "admin-local",
+//   new LocalStrategy(function (username, password, done) {
+//     console.log(username, password);
+//     db.get()
+//       .collection(collection.ADMIN_COLLECTION)
+//       .findOne({ adminEmail: username }, function (err, admin) {
+//         if (err) {
+//           return done(err, { message: "Invalid Email Or Password" });
+//         }
 
-        if (!admin) {
-          console.log("username not ");
-          return done(null, false, { message: "Incorrect Email" });
-        }
+//         if (!admin) {
+//           console.log("username not ");
+//           return done(null, false, { message: "Incorrect Email" });
+//         }
 
-        bcrypt.compare(password, admin.adminPassword, (matchErr, match) => {
-          console.log(match);
-          if (matchErr) {
-            console.log("password inccorredt");
-            return done(null, false, { message: "Incorrect Password" });
-          }
-          if (!match) {
-            console.log("password inccorredt");
-            return done(null, false, { message: "Incorrect Password" });
-          }
-          if (match) {
-            return done(null, admin);
-          }
-        });
-      });
-  })
-);
+//         bcrypt.compare(password, admin.adminPassword, (matchErr, match) => {
+//           console.log(match);
+//           if (matchErr) {
+//             console.log("password inccorredt");
+//             return done(null, false, { message: "Incorrect Password" });
+//           }
+//           if (!match) {
+//             console.log("password inccorredt");
+//             return done(null, false, { message: "Incorrect Password" });
+//           }
+//           if (match) {
+//             return done(null, admin);
+//           }
+//         });
+//       });
+//   })
+// );
 
 router.post(
   "/login",
@@ -158,6 +163,7 @@ router.post(
 
 router.get("/logout", verifyLogin, (req, res) => {
   req.session.destroy();
+  req.logout()
   res.redirect("/admin/login");
 });
 
