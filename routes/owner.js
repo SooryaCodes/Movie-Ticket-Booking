@@ -9,101 +9,53 @@ const LocalStrategy = require("passport-local");
 
 var db = require("../config/connection");
 var collection = require("../config/collection");
-const { route } = require("./admin");
-const { response } = require("express");
 
-require('../passport-setup')
+
+require('../passport/passport-setup-google-owner')
+require('../passport/owner-local')
 // // ------
-const verifyLogin = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    res.set(
-      "Cache-Control",
-      "no-cache , private,no-store,must-revalidate,post-check=0,pre-check=0"
-    );
+const verifyLoginHome = (req, res, next) => {
+  if (req.isAuthenticated() && req.session.passport.user.role==="owner") {
+    // res.redirect('/owner')
     return next();
   } else {
     res.redirect("/owner/login");
   }
 };
+const verifyLogin=(req,res,next)=>{
+if(req.isAuthenticated() && req.session.passport.user.role==="owner"){
+
+  next()
+}
+}
 
 /* GET users listing. */
-router.get("/",verifyLogin, function (req, res, next) {
+router.get("/",verifyLoginHome, function (req, res, next) {
   adminHelper.getOwnerDetails().then((details) => {
     res.render("owner/home", { owner: true });
   });
 });
 
-router.get("/login", (req, res) => {
-  if (req.isAuthenticated() ) {
-    res.redirect("/owner");
-    res.set(
-      "Cache-Control",
-      "no-cache , private,no-store,must-revalidate,post-check=0,pre-check=0"
-    );
-  } else {
+router.get("/login",verifyLogin, (req, res) => {
     res.render("owner/login");
-  }
 });
 
-passport.serializeUser(function (user, done) {
-  db.get().collection(collection.OWNER_COLLECTION).findOne({_id:user._id,role:"owner"}).then((user)=>{
-    console.log(user);
-    done(null, user);
-  
-  })
-  });
-  passport.deserializeUser(function (user, done) {
-    db.get()
-    .collection(collection.OWNER_COLLECTION)
-    .findOne(
-      {
-        _id: user._id,
-        role:'owner'
-      },
-      function (err, user) {
-        done(err, user);
-      }
-      );
-  });
-passport.use(
-  "owner-local",
-  new LocalStrategy(
-   
-    function (username, password, done) {
-      console.log(password);
-      db.get()
-        .collection(collection.OWNER_COLLECTION)
-        .findOne({ Name: username }, function (err, user) {
-          if (err) {
-            return done(err, { message: "Invalid Username Or Password" });
-          }
+router.get('/google',verifyLogin, passport.authenticate('owner-google', { scope: ['profile', 'email'] }));
 
-          if (!user) {
-            console.log("username not ");
-            return done(null, false, { message: "Incorrect username" });
-          }
+router.get('/google/callback', verifyLogin,passport.authenticate('owner-google', { failureRedirect: '/owner/login',successRedirect:'/owner' ,failureFlash:true}),
+function(req, res) {
+  // Successful authentication, redirect home.
+  if(req.isAuthenticated()){
 
-          bcrypt.compare(password, user.Password, (matchErr, match) => {
-            console.log(match);
-            if (matchErr) {
-              console.log("password inccorredt");
-              return done(null, false, { message: "Incorrect Password" });
-            }
-            if (!match) {
-              console.log("password inccorredt");
-              return done(null, false, { message: "Incorrect Password" });
-            }
-            if (match) {
-              return done(null, user);
-            }
-          });
-        });
-    }
-  )
+    res.redirect('/owner');
+  }else{
+    res.redirect('/owner/login')
+  }
+}
 );
-
 router.post(
   "/login",
+  verifyLogin,
   passport.authenticate("owner-local", {
     failureRedirect: "/owner/login",
     successRedirect: "/owner",
@@ -136,8 +88,9 @@ ownerHelper.getScreen(req.session.passport.user._id).then((data)=>{
 })
 });
 
-router.get('/add-screen',verifyLogin,(req,res)=>{
-  res.render('owner/add-screen')
+router.get('/add-screen',verifyLogin, (req,res)=>{
+  res.render('owner/add-screen',{owner:true})
+
 })
 
 router.post('/add-screen',(req,res)=>{

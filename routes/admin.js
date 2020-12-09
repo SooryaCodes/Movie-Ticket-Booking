@@ -1,3 +1,5 @@
+
+
 var express = require("express");
 var router = express.Router();
 const adminHelper = require("../helpers/admin-helpers");
@@ -7,16 +9,17 @@ const hbs = require("nodemailer-express-handlebars");
 const { response } = require("express");
 const Swal = require("sweetalert2");
 const bcrypt = require("bcrypt");
-
+require('../passport/admin-local')
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
 var db = require("../config/connection");
 var collection = require("../config/collection");
 
+require('../passport/passport-setup-google-admin')
 // // ------
 const verifyLogin = (req, res, next) => {
-  if (req.isAuthenticated() || req.session.passport.user.role==="admin") {
+  if (req.isAuthenticated() && req.session.passport.user.role==="admin") {
     res.set(
       "Cache-Control",
       "no-cache , private,no-store,must-revalidate,post-check=0,pre-check=0"
@@ -80,7 +83,7 @@ router.get("/", verifyLogin, function (req, res, next) {
 });
 
 router.get("/login", (req, res) => {
-  if (req.isAuthenticated() ) {
+  if (req.isAuthenticated() && req.session.passport.user.role==="admin") {
     res.set(
       "Cache-Control",
       "no-cache , private,no-store,must-revalidate,post-check=0,pre-check=0"
@@ -91,59 +94,22 @@ router.get("/login", (req, res) => {
   }
 });
 
-// passport.serializeUser(function (admin, done) {
-//   db.get().collection(collection.ADMIN_COLLECTION).findOne({_id:admin._id,role:"admin"}).then((admin)=>{
-//     done(null, admin);
-  
-//   })
-//   });
-//   passport.deserializeUser(function (admin, done) {
-//     db.get()
-//     .collection(collection.ADMIN_COLLECTION)
-//     .findOne(
-//       {
-//         _id: admin._id,
-//         role:'admin'
-//       },
-//       function (err, admin) {
-//         done(err, admin);
-//       }
-//       );
-//   });
-// passport.use(
-//   "admin-local",
-//   new LocalStrategy(function (username, password, done) {
-//     console.log(username, password);
-//     db.get()
-//       .collection(collection.ADMIN_COLLECTION)
-//       .findOne({ adminEmail: username }, function (err, admin) {
-//         if (err) {
-//           return done(err, { message: "Invalid Email Or Password" });
-//         }
 
-//         if (!admin) {
-//           console.log("username not ");
-//           return done(null, false, { message: "Incorrect Email" });
-//         }
 
-//         bcrypt.compare(password, admin.adminPassword, (matchErr, match) => {
-//           console.log(match);
-//           if (matchErr) {
-//             console.log("password inccorredt");
-//             return done(null, false, { message: "Incorrect Password" });
-//           }
-//           if (!match) {
-//             console.log("password inccorredt");
-//             return done(null, false, { message: "Incorrect Password" });
-//           }
-//           if (match) {
-//             return done(null, admin);
-//           }
-//         });
-//       });
-//   })
-// );
 
+router.get('/google', passport.authenticate('admin-google', { scope: ['profile', 'email'] }));
+
+router.get('/google/callback',passport.authenticate('admin-google', { failureRedirect: '/admin/login',successRedirect:'/admin' ,failureFlash:true}),
+function(req, res) {
+  // Successful authentication, redirect home.
+  if(req.isAuthenticated()){
+
+    res.redirect('/admin');
+  }else{
+    res.redirect('/admin/login')
+  }
+}
+);
 router.post(
   "/login",
   passport.authenticate("admin-local", {

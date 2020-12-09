@@ -84,41 +84,12 @@ module.exports = {
 
 
   addScreen:(data,id)=>{
-    return new Promise (async(resolve,reject)=>{
-    db.get().collection(collection.OWNER_COLLECTION).updateOne({_id:objectId(id)},{
-      $push:{
-        Screen:data
-      }
-    })
-    })
-  },
-  addMovie:(data,id)=>{
-    return new Promise (async(resolve,reject)=>{
-    db.get().collection(collection.OWNER_COLLECTION).updateOne({_id:objectId(id)},{
-      $push:{
-        Movie:data
-      }
-    })
-    })
-  },
-
-  getScreen:(id)=>{
     return new Promise((resolve,reject)=>{
-      db.get().collection(collection.OWNER_COLLECTION).findOne({_id:objectId(id)}).then((details)=>{
-        resolve(details)
-      })
-    })
-  },
-  editScreen:(name,data)=>{
-    return new Promise((resolve,reject)=>{
-      db.get().collection(collection.OWNER_COLLECTION).updateOne({Name:name},{
-        $set:{
-          Name:data.Name,
-          Seat:data.Seat
-        }
-      }).then((response)=>{
+      data.OwnerId=id
+      db.get().collection(collection.SCREEN_COLLECTION).insertOne(data).then((response)=>{
         resolve(response)
       })
     })
   }
-};
+
+}
