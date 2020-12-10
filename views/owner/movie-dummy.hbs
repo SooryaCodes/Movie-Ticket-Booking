@@ -81,6 +81,7 @@
 </div>
   </div>
     <table>
+     
       <tr>
         
         <th class="no">
@@ -99,63 +100,19 @@
           Action
         </th>
       </tr>
-     {{#each movie}}
         <tr>    
-          <td id="row" >
-            
-          </td>
-          <td>
-           Joker<!-- <img src="/images/owner/profile/owner{{this._id}}.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" alt=""> {{this.Name}} -->
-          </td>
-          <td>
-              20-10-2020
-        </td>
-        <td>
-            2H 20M
-        </td>
-          <td>
-            <a href="/owner/edit-movie/{{this._id}}">
-              <img src="/images/admin/edit-2.svg" alt="" />
-            </a>
-            <a onclick="deleteMovie('{{this._id}}')">
-              <img src="/images/admin/trash (1).svg" alt="" />
-            </a>
-          </td>
+<td class="empty" style="width: 100%; ">
+  <div id="empty" style="display: flex; align-items: center;">
+    <h1 style="font-size: 25px !important; font-weight: 600; color: rgb(116, 116, 116); margin-right: 20px;">Oops, there is no Movie</h1>
+    <a href="/owner/add-movie" class="btn btn-mdb-color ">Add Now</a>
+  </div>
+</td>
         </tr>
-        {{/each}}
     </table>
   </div>
 
 
-<script>
-  function deleteMovie(Id) {
-    var confirmDelete = confirm('Are You Sure Want To Delete')
-    if (confirmDelete) {
-      $.ajax({
-        url: '/owner/delete-movie/' + Id,
-        data: Id,
-        method: 'post',
-        success: (response) => {
 
-          console.log(response.status)
-          if (response.status) {
-swal({
-  title: "Deleted",
-  text: "Successfully",
-  icon: "success",
-  button:false
-});        setTimeout(function(){
-              location.reload()
-            },2000)
-
-
-          }
-        }
-      })
-    }
-
-  }
-</script>
 
         <script>
             $(document).ready(function () {

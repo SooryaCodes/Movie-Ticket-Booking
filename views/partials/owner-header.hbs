@@ -2,25 +2,25 @@
 
 
 <body>
-    <div class="nav-bar">
-        <div class="nav-logo">
-            <div class="menu">
-                <img src="/images/owner/home/x.svg" alt="" onclick="manuReturn()" id="times">
-                <img src="/images/owner/home/menu (1).svg" onclick="menuToggle()" id="bar" alt="">
+  <div class="nav-bar">
+    <div class="nav-logo">
+      <div class="menu">
+        <img src="/images/owner/home/x.svg" alt="" onclick="manuReturn()" id="times">
+        <img src="/images/owner/home/menu (1).svg" onclick="menuToggle()" id="bar" alt="">
 
-            </div>
-            <a>Movie Cafe</a>
-        </div>
-        <div class="nav-items">
-    <span onclick="profileToggle()">Hi Owner</span>
-    <i class="fas fa-chevron-down" onclick="profileToggle()" aria-hidden="true"></i>
-
-        </div>
+      </div>
+      <a>Movie Cafe</a>
     </div>
+    <div class="nav-items">
+      <span onclick="profileToggle()">Hi Owner</span>
+      <i class="fas fa-chevron-down" onclick="profileToggle()" aria-hidden="true"></i>
+
+    </div>
+  </div>
 
 
-{{!-- profile pop up --}}
-     <div class="nav-profile-pop-up">
+  {{!-- profile pop up --}}
+  <div class="nav-profile-pop-up">
     <div class="nothing"></div>
     <div class="profile-details">
       <img src="/images/admin/profile.svg" alt="" />
@@ -48,79 +48,91 @@
       </ul>
     </div>
   </div>
-</div>
+  </div>
 
-   
-    <!--side-bar-->
 
-    <div class="side-bar" id="side-bar">
-        <div class="side-bar-top">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFWBnyvJtrWYVL5q2Nwl1UkCOxOPxFGoORjg&usqp=CAU"
-                alt="">
-            <p>Hello, <span>Admin</span></p>
-        </div>
-        <div class="side-bar-bottom">
-            <a href="/owner" class="side-bar-items"><i class="fas fa-th-large"></i>Dashboard</a>
-            <a href="/owner/movies" class="side-bar-items"><i class="fas fa-film"></i>Movies</a>
-            <a href="/owner/bookings" class="side-bar-items"><i class="fas fa-ticket-alt"></i>Bookings</a>
-            <a href="/owner/user-details" class="side-bar-items"><i class="fas fa-user-friends"></i>Users</a>
-            <a href="/owner/screen" class="side-bar-items"><i class="fas fa-ticket-alt"></i>Screen</a>
-            <a href="/owner/update-password" class="side-bar-items"><i class="fas fa-lock"></i>Update Password</a>
-            <a href="/owner/edit-profile" class="side-bar-items"><i class="fas fa-user-edit"></i>Edit Profile</a>
-        </div>
+  <!--side-bar-->
+
+  <div class="side-bar" id="side-bar">
+    <div class="side-bar-top">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFWBnyvJtrWYVL5q2Nwl1UkCOxOPxFGoORjg&usqp=CAU"
+        alt="">
+      <p>Hello, <span>Admin</span></p>
     </div>
-    <script>
- const menuToggle=()=>{
-     var side_bar =document.getElementById('side-bar')
-     side_bar.classList.toggle('side-bar-active')
-     var bar = document.getElementById('bar')
-     bar.classList.toggle('bar-active')
-     var times=document.getElementById('times')
-     times.classList.toggle('times-active')
+    <div class="side-bar-bottom">
+      <a href="/owner" class="side-bar-items"><i class="fas fa-th-large"></i>Dashboard</a>
+      <a href="/owner/movies" class="side-bar-items"><i class="fas fa-film"></i>Movies</a>
+      <a href="/owner/bookings" class="side-bar-items"><i class="fas fa-ticket-alt"></i>Bookings</a>
+      <a href="/owner/user-details" class="side-bar-items"><i class="fas fa-user-friends"></i>Users</a>
+      <a href="/owner/screen" class="side-bar-items"><i class="fas fa-ticket-alt"></i>Screen</a>
+      <a href="/owner/update-password" class="side-bar-items"><i class="fas fa-lock"></i>Update Password</a>
+      <a href="/owner/edit-profile" class="side-bar-items"><i class="fas fa-user-edit"></i>Edit Profile</a>
+    </div>
+  </div>
+  <script>
+    const menuToggle = () => {
+      var side_bar = document.getElementById('side-bar')
+      side_bar.classList.toggle('side-bar-active')
+      var bar = document.getElementById('bar')
+      bar.classList.toggle('bar-active')
+      var times = document.getElementById('times')
+      times.classList.toggle('times-active')
 
- }
- const manuReturn=()=>{
-     var side_bar =document.getElementById('side-bar')
-     side_bar.classList.remove('side-bar-active')
-     var bar = document.getElementById('bar')
-     bar.classList.remove('bar-active')
-     var times=document.getElementById('times')
-     times.classList.remove('times-active')
+    }
+    const manuReturn = () => {
+      var side_bar = document.getElementById('side-bar')
+      side_bar.classList.remove('side-bar-active')
+      var bar = document.getElementById('bar')
+      bar.classList.remove('bar-active')
+      var times = document.getElementById('times')
+      times.classList.remove('times-active')
 
- }
-        </script>
+    }
+  </script>
 
+
+  <script>
+
+
+    // ---profile pop up  script---
+
+    function profileToggle() {
+      const toggleProfile = document.querySelector(".nav-profile-pop-up");
+      toggleProfile.classList.toggle("active");
+    }
+
+  </script>
+
+  {{!-- <script>
+    const currentLocation = location.href();
+    const sidebar = document.querySelector('.side-bar-items')
+
+    const sidebarLength = sidebar.length;
+    for (let i = 0; i < sidebarLength; i++) {
+      sidebar[i].classList = "side-bar-items active";
+    }
+            
+  </script> --}}
 
 <script>
-
-
-  // ---profile pop up  script---
-
-  function profileToggle() {
-    const toggleProfile = document.querySelector(".nav-profile-pop-up");
-    toggleProfile.classList.toggle("active");
+  const currentLocation = location.href;
+  const sidebar = document.getElementsByClassName("side-bar-items");
+  const foodLength = sidebar.length;
+  for (let i = 0; i < foodLength; i++) {
+    if (sidebar[i].href === currentLocation) {
+      sidebar[i].classList = "side-bar-items active";
+    }
   }
+  </script>
 
-</script>
-
-   <script>
-            const currentLocation = location.href;
-            const sidebar = document.getElementsByClassName("side-bar-items");
-            const sidebarLength = sidebar.length;
-            for (let i = 0; i < sidebarLength; i++) {
-                    sidebar[i].classList = "side-bar-items active";
-                }
-            }
-        </script>
-
-        <script>
+  <script>
 
 
-  // ---profile pop up  script---
+    // ---profile pop up  script---
 
-  function profileToggle() {
-    const toggleProfile = document.querySelector(".nav-profile-pop-up");
-    toggleProfile.classList.toggle("profile-active");
-  }
+    function profileToggle() {
+      const toggleProfile = document.querySelector(".nav-profile-pop-up");
+      toggleProfile.classList.toggle("profile-active");
+    }
 
-</script>
+  </script>

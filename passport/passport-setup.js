@@ -6,61 +6,71 @@ const LocalStrategy = require("passport-local");
 var db = require("../config/connection");
 var collection = require("../config/collection");
 
-  //   //google
+//   //google
 
-  var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
-  var passport=require('passport')
-  require("dotenv").config();
-  var db = require("../config/connection");
-  var collection = require("../config/collection");
+var GoogleStrategy = require("passport-google-oauth2").Strategy;
+var passport = require("passport");
+require("dotenv").config();
+var db = require("../config/connection");
+var collection = require("../config/collection");
+const flash = require("express-flash");
 const objectId = require("mongodb").ObjectID;
 
 module.exports.initializePassport = (passport) => {
+  //google
 
-
-//google
-
-
-
-  passport.use("admin-google",new GoogleStrategy({
-      clientID:     process.env.GOOGLE_CLIENT_ID_ADMIN,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET_ADMIN,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL_ADMIN,
-      passReqToCallback   : true
-    },
-    function(request, accessToken, refreshToken, profile, done) {
-      db.get().collection(collection.ADMIN_COLLECTION).findOne({ adminEmail: profile.email }, function (err, user) {
-          console.log(user,"dgsidfgsiablifblkv");
-          console.log(profile);
-        return done(err, user,profile,{message:'Invalid Account'});
-      });
-    }
-  ));
+  passport.use(
+    "admin-google",
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID_ADMIN,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET_ADMIN,
+        callbackURL: process.env.GOOGLE_CALLBACK_URL_ADMIN,
+        passReqToCallback: true,
+      },
+      function (request, accessToken, refreshToken, profile, done) {
+        db.get()
+          .collection(collection.ADMIN_COLLECTION)
+          .findOne({ adminEmail: profile.email }, function (err, user) {
+            console.log(user, "dgsidfgsiablifblkv");
+            console.log(profile);
+            if (err) {
+              return null, false, { message: "Invalid Account" };
+            } else {
+              return done(null, user, profile);
+            }
+          });
+      }
+    )
+  );
 
   //owner gogogle
 
-  passport.use("owner-google",new GoogleStrategy({
-      clientID:     process.env.GOOGLE_CLIENT_ID_OWNER,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET_OWNER,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL_OWNER,
-      passReqToCallback   : true
-    },
-    function(request, accessToken, refreshToken, profile, done) {
+  passport.use(
+    "owner-google",
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID_OWNER,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET_OWNER,
+        callbackURL: process.env.GOOGLE_CALLBACK_URL_OWNER,
+        passReqToCallback: true,
+      },
+      function (request, accessToken, refreshToken, profile, done) {
         console.log(profile);
-      db.get().collection(collection.OWNER_COLLECTION).findOne({ Email: profile.email }, function (err, user) {
-          console.log(user,"dgsidfgsiablifblkv");
-          console.log(profile);
-        return done(err, user,profile,{message:'Invalid Account'});
-      });
-    }
-  ));
-
-
-
-
-
-
-
+        db.get()
+          .collection(collection.OWNER_COLLECTION)
+          .findOne({ Email: profile.email }, function (err, user) {
+            console.log(user, "dgsidfgsiablifblkv");
+            console.log(profile);
+            if (err) {
+              return null, false, { message: "Invalid Account" };
+            } else {
+              return done(null, user, profile);
+            }
+          });
+      }
+    )
+  );
 
   passport.use(
     "admin-local",
@@ -97,9 +107,6 @@ module.exports.initializePassport = (passport) => {
     })
   );
 
-
-
-
   passport.use(
     "owner-local",
     new LocalStrategy(function (username, password, done) {
@@ -134,23 +141,18 @@ module.exports.initializePassport = (passport) => {
     })
   );
 
-
-
-
   passport.serializeUser(function (user, done) {
     console.log(user, "serialise");
-    done(null, { _id: user._id, role: user.role });
+    done(null, user);
   });
 
-  passport.deserializeUser(function ({ _id, role }, done) {
-    console.log(_id,role, "first");
-
-    if (role === "admin") {
+  passport.deserializeUser(function (user, done) {
+    if (user.role === "admin") {
       db.get()
         .collection(collection.ADMIN_COLLECTION)
         .findOne(
           {
-            _id: objectId(_id),
+            _id: objectId(user._id),
           },
           function (err, user) {
             if (err) {
@@ -160,12 +162,12 @@ module.exports.initializePassport = (passport) => {
             }
           }
         );
-    } else if (role === "owner") {
+    } else if (user.role === "owner") {
       db.get()
         .collection(collection.OWNER_COLLECTION)
         .findOne(
           {
-            _id: objectId(_id),
+            _id: objectId(user._id),
           },
           function (err, user) {
             if (err) {

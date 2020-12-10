@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="/stylesheets/owner/add.css">
+
+<div class="add-movie">
+  <form action="/owner/edit-movie/{{id}}" method="POST">
+      <div class="input-title">
+          <p>Edit Movie</p>
+      </div>
+    <div class="input-groups">
+      <input required type="text" name="Title" placeholder="Title" value="{{movie.Title}}" id="" />
+    </div>
+    <div class="input-groups">
+      <input required type="text" name="Cast" placeholder="Cast"value="{{movie.Cast}}"  id="" />
+    </div>
+    <div class="input-groups">
+      <input required type="text" name="Director" placeholder="Director"value="{{movie.Director}}"  id="" />
+    </div>
+    <div class="input-groups">
+      <label for="">Release Date</label>
+      <input required type="date" name="Date" placeholder="Release Date" value="{{movie.Date}}" id="" />
+    </div>
+    <div class="input-groups">
+        <select name="Category" id="">
+            <option value="">Category</option>
+            <option value="Horror">Horror</option>
+            <option value="Action">Action</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Drama">Drama</option>
+            <option value="Romance">Romance</option>
+        </select>
+    </div>
+    <div class="input-groups">
+      <input required type="text" name="Trailer" placeholder="Trailer"value="{{movie.Trailer}}" id="" />
+    </div>
+    <div class="input-groups">
+<label for="">Runtime</label>
+      <input required type="time" name="Runtime" placeholder="Minutes"value="{{movie.Runtime}}" id="" />
+    </div>
+    <div class="input-button">
+        <button class="btn btn-mdb-color" type="submit">Next</button>
+    </div>
+  </form>
+</div>

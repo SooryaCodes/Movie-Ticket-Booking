@@ -7,7 +7,7 @@
 
 <div class="add-owner">
     <div class="title-add-owner">
-      <p>Movie Poster</p>
+      <p>Edit Movie Poster</p>
     </div>
    <div class="image">
        <img src=""  id="image" alt="">
@@ -105,7 +105,7 @@ console.log('hey man')
             var formData = new FormData();
             formData.append('croppedImage', blob);
 
-            $.ajax("/owner/movie-image-upload/"+id, {
+            $.ajax("/owner/edit-movie-image-upload/"+id, {
                 
                 method: "post",
                 data: formData,

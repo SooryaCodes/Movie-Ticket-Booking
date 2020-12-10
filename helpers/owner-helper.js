@@ -70,9 +70,6 @@ module.exports = {
   //     });
   //   },
 
-
-
-
   // verifyPassword:(password,user)=>{
   //   return new Promise ((resolve,reject)=>{
   //     bcrypt.compare(password,user.Password).then((status)=>{
@@ -82,34 +79,48 @@ module.exports = {
   //   })
   // }
 
-getScreen:()=>{
-  return new Promise((resolve,reject)=>{
-    db.get().collection(collection.SCREEN_COLLECTION).find().toArray().then((response)=>{
-      resolve(response)
-    })
-  })
-},
-  addScreen:(data,id)=>{
-    return new Promise((resolve,reject)=>{
-      data.OwnerId=id
-      db.get().collection(collection.SCREEN_COLLECTION).insertOne(data).then((response)=>{
-        resolve(response)
-      })
-    })
+  getScreens: (id) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.SCREEN_COLLECTION)
+        .find({ OwnerId: objectId(id) })
+        .toArray()
+        .then((response) => {
+          console.log(response, "screen");
+          resolve(response);
+        });
+    });
   },
-  editScreen:(id,data)=>{
-    return new Promise((resolve,reject)=>{
+  addScreen: (data, id) => {
+    return new Promise((resolve, reject) => {
+      data.OwnerId = id;
+      db.get()
+        .collection(collection.SCREEN_COLLECTION)
+        .insertOne(data)
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
+  editScreen: (id, data) => {
+    return new Promise((resolve, reject) => {
       console.log(data);
-      db.get().collection(collection.SCREEN_COLLECTION).updateOne({_id:objectId(id)},{
-        $set:{
-          Name:data.Name,
-          Seat:data.Seat,
-        }
-      }).then((response)=>{
-        resolve(response)
-        console.log(response);
-      })
-    })
+      db.get()
+        .collection(collection.SCREEN_COLLECTION)
+        .updateOne(
+          { _id: objectId(id) },
+          {
+            $set: {
+              Name: data.Name,
+              Seat: data.Seat,
+            },
+          }
+        )
+        .then((response) => {
+          resolve(response);
+          console.log(response);
+        });
+    });
   },
   deleteScreen: (screenId) => {
     return new Promise((resolve, reject) => {
@@ -122,7 +133,81 @@ getScreen:()=>{
         });
     });
   },
+  getScreen: (id) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.SCREEN_COLLECTION)
+        .findOne({ _id: objectId(id) })
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
+  addMovie: (data, id) => {
+    return new Promise((resolve, reject) => {
+      data.OwnerId = id;
+      db.get()
+        .collection(collection.MOVIE_COLLECTION)
+        .insertOne(data)
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
 
-  
+  getMovies: (id) => {
+    console.log(id);
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.MOVIE_COLLECTION)
+        .find({ OwnerId: objectId(id) })
+        .toArray()
+        .then((response) => {
+          console.log(response, "screen");
+          resolve(response);
+        });
+    });
+  },
 
-}
+  editMovie: (data, id) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.MOVIE_COLLECTION)
+        .updateOne(
+          { _id: objectId(id) },
+          {
+            $set: {
+              Title: data.Title,
+              Cast: data.Cast,
+              Director: data.Director,
+              Date: data.Date,
+              Category: data.Category,
+              Trailer: data.Trailer,
+              Runtime: data.Runtime,
+            },
+          }
+        );
+    });
+  },
+  getMovie:(id) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.MOVIE_COLLECTION)
+        .findOne({ _id: objectId(id) })
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
+  deleteMovie: (id) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.MOVIE_COLLECTION)
+        .removeOne({ _id: objectId(id) })
+        .then((response) => {
+          console.log("success");
+          resolve({ status: true });
+        });
+    });
+  },
+};
