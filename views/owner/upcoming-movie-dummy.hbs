@@ -1,0 +1,122 @@
+<link rel="stylesheet" href="/stylesheets/owner/home.css">
+
+    <div class="over-view">
+        <div class="over-view-title">
+            <p>Dashboard</p>
+        </div>
+        <div class="boxes-wrapper">
+
+        <div class="box-wrapper">
+
+            <div class="boxes">
+                <div class="text">
+                    <p>Income</p>
+                    <span>$.200</span>
+                </div>
+                <div class="progress" style="height: 10px; width: 90%; ">
+
+                    <div style="background:#ff5e46!important;width: 25%" class="progress-bar bg-danger"
+                        role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                </div>
+            </div>
+
+            <div class="boxes">
+                <div class="text">
+                    <p>Income</p>
+                    <span>$.200</span>
+                </div>
+
+                <div class="progress" style="height: 10px; width: 90%; ">
+                    <div style="background:#ff5e46!important;width: 25%" class="progress-bar bg-danger"
+                        role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="box-wrapper2">
+        
+            <div class="boxes">
+                <div class="text">
+                    <p>Income</p>
+                    <span>$.200</span>
+                </div>
+                <div class="progress" style="height: 10px; width: 90%; ">
+
+                    <div style="background:#ff5e46!important;width: 25%" class="progress-bar bg-danger"
+                        role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                </div>
+            </div>
+
+            <div class="boxes">
+                <div class="text">
+                    <p>Income</p>
+                    <span>$.200</span>
+                </div>
+                <div class="progress" style="height: 10px; width: 90%; ">
+
+                    <div style="background:#ff5e46!important;width: 25%" class="progress-bar bg-danger"
+                        role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                </div>
+            </div>
+      </div>
+      </div>
+        </div>
+     
+            
+            <!-- table -->
+
+            
+<!--table -->
+<div class="owner-table">
+  <div class="table-title">
+      <p>Now Showing</p>
+<div class="movie">
+
+      <a href="/owner/movies" id="add-btn" class="btn btn-light-blue">Now Showing Movie</a>
+      <a href="/owner/add-upcoming-movie" id="add-btn" class="btn btn-mdb-color">Add Upcoming Movie</a>
+
+</div>
+  </div>
+    <table>
+     
+      <tr>
+        
+        <th class="no">
+          No
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+          Relsease Date
+        </th>
+        <th>
+            Run Time    
+        </th>
+        <th>
+          Action
+        </th>
+      </tr>
+        <tr>    
+<td class="empty" style="width: 100%; ">
+  <div id="empty" style="display: flex; align-items: center;">
+    <h1 style="font-size: 25px !important; font-weight: 600; color: rgb(116, 116, 116); margin-right: 20px;">Oops, there is no Movie</h1>
+    <a href="/owner/add-upcoming-movie" class="btn btn-mdb-color ">Add Now</a>
+  </div>
+</td>
+        </tr>
+    </table>
+  </div>
+
+
+
+
+        <script>
+            $(document).ready(function () {
+                $('#dtBasicExample').DataTable();
+                $('.dataTables_length').addClass('bs-select');
+            });
+        </script>

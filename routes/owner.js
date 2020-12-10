@@ -202,7 +202,8 @@ router.post("/edit-movie/:id", (req, res) => {
   //upcoming movie
   router.get("/upcoming-movies", verifyLogin, (req, res) => {
     console.log(req.user);
-    ownerHelper.getUpcomingMovie(req.user._id).then((details) => {
+    ownerHelper.getUpcomingMovies(req.user._id).then((details) => {
+      console.log(details);
       console.log(details);
       if (details.length < 1) {
         res.render("owner/movie-dummy", { owner: true });
@@ -210,7 +211,9 @@ router.post("/edit-movie/:id", (req, res) => {
         res.render("owner/upcoming-movie", { owner: true, movie: details });
       }
     });
-  });
+  });router.get('/add-upcoming-movie',(req,res)=>{
+    res.render('owner/upcoming-add-movie')
+  })
 
   router.post("/add-upcoming-movie", (req, res) => {
     ownerHelper.addUpcomingMovie(req.body, req.user._id).then((response) => {
@@ -223,13 +226,15 @@ router.post("/edit-movie/:id", (req, res) => {
     console.log(req.files);
     var id = req.params.id;
     var image = req.files.croppedImage;
+    console.log(image);
+
     image.mv("./public/images/owner/upcoming-movie/" + id + ".jpg");
     res.json({ status: true });
   });
   
   router.get("/edit-upcoming-movie/:id", verifyLogin, (req, res) => {
     ownerHelper.getUpcomingMovie(req.params.id).then((response) => {
-      res.render("owner/edit-upcoming-movie", {
+      res.render("owner/upcoming-edit-movie", {
         id: req.params.id,
         owner: true,
         movie: response,
@@ -241,13 +246,14 @@ router.post("/edit-movie/:id", (req, res) => {
     var id = req.params.id;
     ownerHelper.editUpcomingMovie(req.body, id).then((response) => {
     });
-    res.render("owner/edit-upcoming-movie-image-upload",{id,owner: true });
+    res.render("owner/upcoming-edit-movie-image-upload",{id,owner: true });
   });
   
     router.post("/edit-upcoming-movie-image-upload/:id", (req, res) => {
       if (req.files.croppedImage) {
         var id = req.params.id;
         var image = req.files.croppedImage;
+        console.log(image);
         image.mv("./public/images/owner/upcoming-movie/" + id + ".jpg");
         res.json({ status: true });
       }
