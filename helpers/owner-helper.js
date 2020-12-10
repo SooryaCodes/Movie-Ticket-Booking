@@ -189,7 +189,7 @@ module.exports = {
         );
     });
   },
-  getMovie:(id) => {
+  getMovie: (id) => {
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.MOVIE_COLLECTION)
@@ -259,7 +259,7 @@ module.exports = {
         );
     });
   },
-  getUpcomingMovie:(id) => {
+  getUpcomingMovie: (id) => {
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.UPCOMING_MOVIE_COLLECTION)
@@ -274,6 +274,93 @@ module.exports = {
       db.get()
         .collection(collection.UPCOMING_MOVIE_COLLECTION)
         .removeOne({ _id: objectId(id) })
+        .then((response) => {
+          console.log("success");
+          resolve({ status: true });
+        });
+    });
+  },
+
+  addShow: (data, screenId, OwnerId) => {
+    return new Promise((resolve, reject) => {
+      console.log(data);
+      data.screenId = screenId;
+      data.ownerId = OwnerId;
+      db.get()
+        .collection(collection.MOVIE_COLLECTION)
+        .findOne({ _id: objectId(data.Movie) })
+        .then((showData) => {
+          console.log(showData, "show data");
+          data.MovieName = showData.Title;
+          db.get()
+            .collection(collection.SHOW_COLLECTION)
+            .insertOne(data)
+            .then((response) => {
+              resolve(response);
+            });
+        });
+    });
+  },
+  getShowSchedule: (Id) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.SHOW_COLLECTION)
+        .find({ screenId: Id })
+        .toArray()
+        .then((response) => {
+          console.log(response);
+          resolve(response);
+        });
+    });
+  },
+
+  editShow: (data, id) => {
+    console.log(data);
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.MOVIE_COLLECTION)
+        .findOne({ _id: objectId(data.Movie) })
+        .then((showData) => {
+          data.MovieName = showData.Title;
+          db.get()
+            .collection(collection.SHOW_COLLECTION)
+            .updateOne(
+              { _id: objectId(id) },
+              {
+                $set: {
+                  Movie: data.Movie,
+                  Time: data.Time,
+                  Date: data.Date,
+                  Vip: data.Vip,
+                  Premium: data.Premium,
+                  Excecutive: data.Excecutive,
+                  Normal: data.Normal,
+                  MovieName: data.MovieName,
+                },
+              }
+            );
+        });
+    });
+  },
+
+  getShow:(Id) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.SHOW_COLLECTION)
+        .findOne({ _id: objectId(Id) })
+        .then((response) => {
+          console.log(response);
+          resolve(response);
+        });
+    });
+  },
+
+
+  deleteShow: (showId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.SHOW_COLLECTION)
+        .removeOne({ _id: objectId(showId) })
         .then((response) => {
           console.log("success");
           resolve({ status: true });

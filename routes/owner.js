@@ -11,6 +11,7 @@ var db = require("../config/connection");
 var collection = require("../config/collection");
 const { getMovies } = require("../helpers/owner-helper");
 const { response } = require("express");
+const { route } = require("./admin");
 const verifyLogin = (req, res, next) => {
   if (req.isAuthenticated() && req.user.role === "owner") {
     next();
@@ -130,9 +131,7 @@ router.get("/bookings", verifyLogin, (req, res) => {
   res.render("owner/bookings", { owner: true });
 });
 
-router.get("/screen/schedule", verifyLogin, (req, res) => {
-  res.render("owner/schedule", { owner: true });
-});
+
 
 router.get("/movies", verifyLogin, (req, res) => {
   console.log(req.user);
@@ -206,7 +205,7 @@ router.post("/edit-movie/:id", (req, res) => {
       console.log(details);
       console.log(details);
       if (details.length < 1) {
-        res.render("owner/movie-dummy", { owner: true });
+        res.render("owner/upcoming-movie-dummy", { owner: true });
       } else {
         res.render("owner/upcoming-movie", { owner: true, movie: details });
       }
@@ -302,7 +301,68 @@ router.get("/edit-profile", verifyLogin, (req, res) => {
 
 
 
+//show schedule
 
+router.get('/screen/show/:id',(req,res)=>{
+  ownerHelper.getScreen(req.params.id).then((screen)=>{
+    ownerHelper.getShowSchedule(req.params.id).then((show)=>{
+
+      if(show.length<1){
+        res.render('owner/show-dummy',{owner:true,id:req.params.id,screen})
+      }else{
+
+        res.render('owner/show',{owner:true,id:req.params.id,screen,show})
+      }
+    })
+})
+})
+
+
+router.get('/add-show/:id',(req,res)=>{
+    ownerHelper.getMovies(req.user._id).then((movies)=>{
+      var id=req.params.id
+      res.render('owner/add-show',{owner:true,movies,id})
+  
+  })
+
+  
+})
+
+router.post('/add-show/:id',(req,res)=>{
+  
+  ownerHelper.addShow(req.body,req.params.id,req.user._id).then((response)=>{
+
+    res.redirect('/owner/screen')
+  })
+})
+
+
+router.get('/edit-show/:id',(req,res)=>{
+  var id=req.params.id
+
+  ownerHelper.getMovies(req.user._id).then((movies)=>{
+  ownerHelper.getShow(id).then((show)=>{
+
+    res.render('owner/edit-show',{owner:true,id,show,movies})
+  })
+})
+})
+
+
+router.post('/edit-show/:id',(req,res)=>{
+  ownerHelper.editShow(req.body,req.params.id).then((response)=>{
+    console.log(response);
+    
+  })
+  res.redirect('/owner/screen')
+})
+
+router.post("/delete-show/:id", (req, res) => {
+  ownerHelper.deleteShow(req.params.id).then((response) => {
+    console.log(response, "delete");
+    res.json({ status: true });
+  });
+});
 
 
 module.exports = router;

@@ -1,0 +1,36 @@
+<link rel="stylesheet" href="/stylesheets/owner/add.css">
+
+<div class="add-movie">
+  <form action="/owner/edit-show/{{id}}" method="POST">
+      <div class="input-title">
+          <p>Edit Show</p>
+      </div>
+    <div class="input-groups">
+        <select name="Movie" id="">
+          {{#each movies}}
+          <option value="{{../show.Movie}}">{{../show.MovieName}}</option>
+            <option value="{{this._id}}">{{this.Title}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="input-groups">
+      <label for="">Date </label>
+      <input required type="date" name="Date" placeholder="" value="{{show.Date}}" id="" />
+    </div>
+    <div class="input-groups">
+      <label for="">Time</label>
+      <input required type="time" name="Time" placeholder="Cast" id="" value="{{show.Time}}" />
+    </div>
+      <label for="" id="rate">Class Rates</label>
+    <div class="input-groups class-rate">
+      <input required type="number" name="Vip" placeholder="Vip" id="" value="{{show.Vip}}" />
+      <input required type="number" name="Premium" placeholder="Premium" id="" value="{{show.Premium}}"/>
+      <input required type="number" name="Excecutive" placeholder="Excecutive" id="" value="{{show.Excecutive}}"/>
+      <input required type="number" name="Normal" placeholder="Normal" id=""value="{{show.Normal}}" />
+    </div>
+  
+    <div class="input-button">
+        <button class="btn btn-mdb-color" type="submit">Add</button>
+    </div>
+  </form>
+</div>

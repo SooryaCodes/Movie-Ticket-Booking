@@ -3,6 +3,7 @@ module.exports={
     OWNER_COLLECTION:'owner',
     SCREEN_COLLECTION:"screen",
     MOVIE_COLLECTION:"movie",
-    UPCOMING_MOVIE_COLLECTION:"upcoming-movie"
+    UPCOMING_MOVIE_COLLECTION:"upcoming-movie",
+    SHOW_COLLECTION:"show",
     
 }

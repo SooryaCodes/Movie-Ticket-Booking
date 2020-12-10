@@ -137,7 +137,7 @@
           {{this.Seat}}
         </td>
         <td>
-          <a href="/owner/screen/schedule" class="btn btn-mdb-color">
+          <a href="/owner/screen/show/{{this._id}}" class="btn btn-mdb-color">
             View
           </a>
         </td>
@@ -145,7 +145,7 @@
           <a href="/owner/edit-screen/{{this._id}}">
             <img src="/images/admin/edit-2.svg" alt="" />
           </a>
-          <a onclick="deletScreen('{{this._id}}')">
+          <a onclick="deleteScreen('{{this._id}}')">
             <img src="/images/admin/trash (1).svg" alt="" />
           </a>
         </td>
@@ -161,7 +161,7 @@
             });
 </script>
 <script>
-  function deletScreen(Id) {
+  function deleteScreen(Id) {
     var confirmDelete = confirm('Are You Sure Want To Delete')
     if (confirmDelete) {
       $.ajax({
