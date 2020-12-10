@@ -82,7 +82,13 @@ module.exports = {
   //   })
   // }
 
-
+getScreen:()=>{
+  return new Promise((resolve,reject)=>{
+    db.get().collection(collection.SCREEN_COLLECTION).find().toArray().then((response)=>{
+      resolve(response)
+    })
+  })
+},
   addScreen:(data,id)=>{
     return new Promise((resolve,reject)=>{
       data.OwnerId=id
@@ -90,6 +96,33 @@ module.exports = {
         resolve(response)
       })
     })
-  }
+  },
+  editScreen:(id,data)=>{
+    return new Promise((resolve,reject)=>{
+      console.log(data);
+      db.get().collection(collection.SCREEN_COLLECTION).updateOne({_id:objectId(id)},{
+        $set:{
+          Name:data.Name,
+          Seat:data.Seat,
+        }
+      }).then((response)=>{
+        resolve(response)
+        console.log(response);
+      })
+    })
+  },
+  deleteScreen: (screenId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.SCREEN_COLLECTION)
+        .removeOne({ _id: objectId(screenId) })
+        .then((response) => {
+          console.log("success");
+          resolve({ status: true });
+        });
+    });
+  },
+
+  
 
 }

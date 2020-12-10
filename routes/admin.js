@@ -9,26 +9,21 @@ const hbs = require("nodemailer-express-handlebars");
 const { response } = require("express");
 const Swal = require("sweetalert2");
 const bcrypt = require("bcrypt");
-require('../passport/admin-local')
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
-var db = require("../config/connection");
-var collection = require("../config/collection");
 
-require('../passport/passport-setup-google-admin')
-// // ------
-const verifyLogin = (req, res, next) => {
-  if (req.isAuthenticated() && req.session.passport.user.role==="admin") {
-    res.set(
-      "Cache-Control",
-      "no-cache , private,no-store,must-revalidate,post-check=0,pre-check=0"
-    );
-    return next();
-  } else {
-    res.redirect("/admin/login");
+const verifyLogin=(req,res,next)=>{
+  if(req.isAuthenticated() && req.user.role==="admin"){
+    next()
+  }else{
+    res.redirect('/admin/login')
   }
-};
+}
+
+
+
+
 
 var ownersLength = {
   oLength: "",
@@ -55,7 +50,7 @@ var options = {
 mailer.use("compile", hbs(options));
 
 /* GET home page. */
-router.get("/", verifyLogin, function (req, res, next) {
+router.get("/",verifyLogin, function (req, res, next) {
   
   console.log(ownersLength, "skbskb");
   adminHelper.getAdminDetails().then((adminDetails) => {
@@ -83,7 +78,7 @@ router.get("/", verifyLogin, function (req, res, next) {
 });
 
 router.get("/login", (req, res) => {
-  if (req.isAuthenticated() && req.session.passport.user.role==="admin") {
+  if (req.isAuthenticated() && req.user.role==="admin") {
     res.set(
       "Cache-Control",
       "no-cache , private,no-store,must-revalidate,post-check=0,pre-check=0"
@@ -110,6 +105,9 @@ function(req, res) {
   }
 }
 );
+
+
+
 router.post(
   "/login",
   passport.authenticate("admin-local", {
@@ -127,7 +125,7 @@ router.post(
 
 //---post logout---
 
-router.get("/logout", verifyLogin, (req, res) => {
+router.get("/logout",verifyLogin, (req, res) => {
   req.session.destroy();
   req.logout()
   res.redirect("/admin/login");
@@ -135,7 +133,7 @@ router.get("/logout", verifyLogin, (req, res) => {
 
 //get theater details
 
-router.get("/theater-details", verifyLogin, (req, res) => {
+router.get("/theater-details",verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
     res.render("admin/theater-details", {
       admin: true,
@@ -147,7 +145,7 @@ router.get("/theater-details", verifyLogin, (req, res) => {
 
 //get user details
 
-router.get("/user-details", verifyLogin, (req, res) => {
+router.get("/user-details",verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
     console.log(req.session.admin);
     res.render("admin/user-details", {
@@ -160,7 +158,7 @@ router.get("/user-details", verifyLogin, (req, res) => {
 
 //get update password
 
-router.get("/update-password", verifyLogin, (req, res) => {
+router.get("/update-password",verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
     res.render("admin/update-password", {
       admin: true,
@@ -173,7 +171,7 @@ router.get("/update-password", verifyLogin, (req, res) => {
 
 //post update password
 
-router.post("/update-password", (req, res) => {
+router.post("/update-password",verifyLogin, (req, res) => {
   adminHelper.updatePassword(req.body).then((response) => {
     if (response.status) {
       adminHelper.getAdminDetails().then((data) => {
@@ -189,7 +187,7 @@ router.post("/update-password", (req, res) => {
 
 //get edit profile
 
-router.get("/edit-profile", verifyLogin, (req, res) => {
+router.get("/edit-profile",verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
     res.render("admin/edit-profile", {
       admin: true,
@@ -201,7 +199,7 @@ router.get("/edit-profile", verifyLogin, (req, res) => {
 
 //post edit profile
 
-router.post("/edit-profile/:id", (req, res) => {
+router.post("/edit-profile/:id",verifyLogin, (req, res) => {
   let id = req.params.id;
   adminHelper.editProfile(id, req.body).then((data) => {
     res.redirect("/admin");
@@ -217,7 +215,7 @@ router.post("/edit-profile/:id", (req, res) => {
 
 //---owner-details---
 
-router.get("/owner-details", verifyLogin, (req, res) => {
+router.get("/owner-details",verifyLogin, (req, res) => {
   adminHelper.getOwnerDetails().then((details) => {
     console.log(details.length, "length");
     ownersLength.oLength = details.length;
@@ -241,7 +239,7 @@ router.get("/owner-details", verifyLogin, (req, res) => {
 
 //add owner
 
-router.get("/add-owner", verifyLogin, (req, res) => {
+router.get("/add-owner",verifyLogin, (req, res) => {
   console.log("hi");
   res.render("admin/add-owner", {
     admin: true,
@@ -287,7 +285,7 @@ router.post("/add-owner", async (req, res) => {
 
 //edit owner
 
-router.get("/edit-owner/:id", verifyLogin, (req, res) => {
+router.get("/edit-owner/:id",verifyLogin, (req, res) => {
   var id = req.params.id.toString();
 
   console.log(id, "hey");
@@ -303,7 +301,7 @@ router.get("/edit-owner/:id", verifyLogin, (req, res) => {
 
 //post edit owner
 
-router.post("/edit-owner/:id", (req, res) => {
+router.post("/edit-owner/:id",verifyLogin, (req, res) => {
   var id = req.params.id;
   var OwnerPasswordNew = "";
 
@@ -340,7 +338,7 @@ router.post("/edit-owner/:id", (req, res) => {
     });
 });
 // edit owner image upload
-router.post("/edit-owner-image-upload/:id", (req, res) => {
+router.post("/edit-owner-image-upload/:id",verifyLogin, (req, res) => {
   res.json({ status: true });
   var id = req.params.id;
   var image = req.files.croppedImage;
@@ -349,7 +347,7 @@ router.post("/edit-owner-image-upload/:id", (req, res) => {
 });
 //delet owner
 
-router.post("/delete-owner/:id", (req, res) => {
+router.post("/delete-owner/:id",verifyLogin, (req, res) => {
   console.log(req.params.id);
   console.log("del");
   adminHelper.getOwner(req.params.id).then((response) => {
@@ -380,7 +378,7 @@ router.post("/delete-owner/:id", (req, res) => {
 
 //post owner image upload
 
-router.post("/owner-image-upload/:id", (req, res) => {
+router.post("/owner-image-upload/:id",verifyLogin, (req, res) => {
   res.json({ status: true });
   var id = req.params.id;
   var image = req.files.croppedImage;
@@ -389,7 +387,7 @@ router.post("/owner-image-upload/:id", (req, res) => {
 });
 //bookings
 
-router.get("/bookings", verifyLogin, (req, res) => {
+router.get("/bookings",verifyLogin, (req, res) => {
   res.render("admin/booking", {
     admin: true,
     ownersLength,
@@ -399,7 +397,7 @@ router.get("/bookings", verifyLogin, (req, res) => {
 
 //movies
 
-router.get("/movies", verifyLogin, (req, res) => {
+router.get("/movies",verifyLogin, (req, res) => {
   res.render("admin/movie", {
     admin: true,
     ownersLength,

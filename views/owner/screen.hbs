@@ -1,133 +1,191 @@
-<link rel="stylesheet" href="/stylesheets/owner/home.css">
-
-    <div class="over-view">
-        <div class="over-view-title">
-            <p>Dashboard</p>
+<link rel="stylesheet" href="/stylesheets/owner/home.css" />
+<div class="over-view">
+  <div class="over-view-title">
+    <p>
+      Dashboard
+    </p>
+  </div>
+  <div class="boxes-wrapper">
+    <div class="box-wrapper">
+      <div class="boxes">
+        <div class="text">
+          <p>
+            Income
+          </p>
+          <span>
+            $.200
+          </span>
         </div>
-        <div class="boxes-wrapper">
-
-        <div class="box-wrapper">
-
-            <div class="boxes">
-                <div class="text">
-                    <p>Income</p>
-                    <span>$.200</span>
-                </div>
-                <div class="progress" style="height: 10px; width: 90%; ">
-
-                    <div style="background:#ff5e46!important;width: 25%" class="progress-bar bg-danger"
-                        role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-
-                </div>
-            </div>
-
-            <div class="boxes">
-                <div class="text">
-                    <p>Income</p>
-                    <span>$.200</span>
-                </div>
-
-                <div class="progress" style="height: 10px; width: 90%; ">
-                    <div style="background:#ff5e46!important;width: 25%" class="progress-bar bg-danger"
-                        role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-
-                </div>
-            </div>
+        <div class="progress" style="height: 10px; width: 90%;">
+          <div
+            style="background:#ff5e46!important;width: 25%"
+            class="progress-bar bg-danger"
+            role="progressbar"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
         </div>
-        <div class="box-wrapper2">
-        
-            <div class="boxes">
-                <div class="text">
-                    <p>Income</p>
-                    <span>$.200</span>
-                </div>
-                <div class="progress" style="height: 10px; width: 90%; ">
-
-                    <div style="background:#ff5e46!important;width: 25%" class="progress-bar bg-danger"
-                        role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-
-                </div>
-            </div>
-
-            <div class="boxes">
-                <div class="text">
-                    <p>Income</p>
-                    <span>$.200</span>
-                </div>
-                <div class="progress" style="height: 10px; width: 90%; ">
-
-                    <div style="background:#ff5e46!important;width: 25%" class="progress-bar bg-danger"
-                        role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-
-                </div>
-            </div>
       </div>
-      </div>
+      <div class="boxes">
+        <div class="text">
+          <p>
+            Income
+          </p>
+          <span>
+            $.200
+          </span>
         </div>
-     
-            
-            <!-- table -->
-
-            
+        <div class="progress" style="height: 10px; width: 90%;">
+          <div
+            style="background:#ff5e46!important;width: 25%"
+            class="progress-bar bg-danger"
+            role="progressbar"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <div class="box-wrapper2">
+      <div class="boxes">
+        <div class="text">
+          <p>
+            Income
+          </p>
+          <span>
+            $.200
+          </span>
+        </div>
+        <div class="progress" style="height: 10px; width: 90%;">
+          <div
+            style="background:#ff5e46!important;width: 25%"
+            class="progress-bar bg-danger"
+            role="progressbar"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
+      </div>
+      <div class="boxes">
+        <div class="text">
+          <p>
+            Income
+          </p>
+          <span>
+            $.200
+          </span>
+        </div>
+        <div class="progress" style="height: 10px; width: 90%;">
+          <div
+            style="background:#ff5e46!important;width: 25%"
+            class="progress-bar bg-danger"
+            role="progressbar"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- table -->
 <!--table -->
 <div class="owner-table">
   <div class="table-title">
-      <p>Screens</p>
-      <a href="/owner/add-screen" id="add-btn" onclick="addToggle()" class="btn btn-elegant">Add Screen</a>
+    <p>
+      Screens
+    </p>
+    <a
+      href="/owner/add-screen"
+      id="add-btn"
+      onclick="addToggle()"
+      class="btn btn-elegant"
+    >
+      Add Screen
+    </a>
   </div>
-    <table>
-     
+  <table>
+    <tr>
+      <th class="no">
+        No
+      </th>
+      <th>
+        Name
+      </th>
+      <th>
+        Seats
+      </th>
+      <th>
+        Schedule
+      </th>
+      <th>
+        Action
+      </th>
+    </tr>
+    {{#each Screen}}
       <tr>
-        
-        <th class="no">
-          No
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-          Seats
-        </th>
-        <th>
-            Schedule    
-        </th>
-        <th>
-          Action
-        </th>
-      </tr>
-       {{#each Screen}}
-        <tr>
-          <td id="row" >
-            
-          </td>
-          <td>
-           {{this.Name}}<!-- <img src="/images/owner/profile/owner{{this._id}}.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" alt=""> {{this.Name}} -->
-          </td>
-          <td>
-              {{this.Seat}}
+        <td id="row"></td>
+        <td>
+          {{this.Name}}
+          <!-- <img src="/images/owner/profile/owner{{this._id}}.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" alt=""> {{this.Name}} -->
         </td>
         <td>
-            <a href="/owner/screen/schedule" class="btn btn-mdb-color">View</a>
+          {{this.Seat}}
         </td>
-          <td>
-            <a href="/owner/edit-screen/{{this._id}}">
-              <img src="/images/admin/edit-2.svg" alt="" />
-            </a>
-            <a onclick="deleteOwner('{{this._id}}')">
-              <img src="/images/admin/trash (1).svg" alt="" />
-            </a>
-          </td>
-        </tr>
-        {{/each}}
-    </table>
-  </div>
-
-
-
-      <!-- ----tables--- -->
-        <script>
-            $(document).ready(function () {
+        <td>
+          <a href="/owner/screen/schedule" class="btn btn-mdb-color">
+            View
+          </a>
+        </td>
+        <td>
+          <a href="/owner/edit-screen/{{this._id}}">
+            <img src="/images/admin/edit-2.svg" alt="" />
+          </a>
+          <a onclick="deletScreen('{{this._id}}')">
+            <img src="/images/admin/trash (1).svg" alt="" />
+          </a>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+</div>
+<!-- ----tables--- -->
+<script>
+  $(document).ready(function () {
                 $('#dtBasicExample').DataTable();
                 $('.dataTables_length').addClass('bs-select');
             });
-        </script>
+</script>
+<script>
+  function deletScreen(Id) {
+    var confirmDelete = confirm('Are You Sure Want To Delete')
+    if (confirmDelete) {
+      $.ajax({
+        url: '/owner/delete-screen/' + Id,
+        data: Id,
+        method: 'post',
+        success: (response) => {
+
+          console.log(response.status)
+          if (response.status) {
+swal({
+  title: "Deleted",
+  text: "Successfully",
+  icon: "success",
+  button:false
+});        setTimeout(function(){
+              location.reload()
+            },2000)
+
+
+          }
+        }
+      })
+    }
+
+  }
+</script>

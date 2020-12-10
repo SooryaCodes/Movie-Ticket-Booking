@@ -9,40 +9,43 @@ const LocalStrategy = require("passport-local");
 
 var db = require("../config/connection");
 var collection = require("../config/collection");
+const { response } = require("../app");
 
 
-require('../passport/passport-setup-google-owner')
-require('../passport/owner-local')
-// // ------
-const verifyLoginHome = (req, res, next) => {
-  if (req.isAuthenticated() && req.session.passport.user.role==="owner") {
-    // res.redirect('/owner')
-    return next();
-  } else {
-    res.redirect("/owner/login");
-  }
-};
-const verifyLogin=(req,res,next)=>{
-if(req.isAuthenticated() && req.session.passport.user.role==="owner"){
+// require('../passport/passport-setup-google-owner')
+// require('../passport/owner-local')
+// // // ------
+// const ome = (req, res, next) => {
+//   if (req.isAuthenticated() && req.session.passport.user.role==="owner") {
+//     // res.redirect('/owner')
+//     return next();
+//   } else {
+//     res.redirect("/owner/login");
+//   }
+// };
+// const verifyLogin=(req,res,next)=>{
+// if(req.isAuthenticated() ){
 
-  next()
-}
-}
+//   next()
+// }
+// }
 
 /* GET users listing. */
-router.get("/",verifyLoginHome, function (req, res, next) {
+router.get("/", function (req, res, next) {
   adminHelper.getOwnerDetails().then((details) => {
+    console.log("hikjbcs");
+    // console.log(req.session.passport.user);
     res.render("owner/home", { owner: true });
   });
 });
 
-router.get("/login",verifyLogin, (req, res) => {
+router.get("/login", (req, res) => {
     res.render("owner/login");
 });
 
-router.get('/google',verifyLogin, passport.authenticate('owner-google', { scope: ['profile', 'email'] }));
+router.get('/google', passport.authenticate('owner-google', { scope: ['profile', 'email'] }));
 
-router.get('/google/callback', verifyLogin,passport.authenticate('owner-google', { failureRedirect: '/owner/login',successRedirect:'/owner' ,failureFlash:true}),
+router.get('/google/callback',passport.authenticate('owner-google', { failureRedirect: '/owner/login',successRedirect:'/owner' ,failureFlash:true}),
 function(req, res) {
   // Successful authentication, redirect home.
   if(req.isAuthenticated()){
@@ -55,13 +58,14 @@ function(req, res) {
 );
 router.post(
   "/login",
-  verifyLogin,
+  
   passport.authenticate("owner-local", {
     failureRedirect: "/owner/login",
     successRedirect: "/owner",
     failureFlash: true,
   }),
   (req, res) => {
+
     res.redirect("/owner");
     // console.log(response);
   }
@@ -73,22 +77,23 @@ router.get("/logout", (req, res) => {
   res.redirect("/owner/login");
 });
 
-router.get("/user-details", verifyLogin, (req, res) => {
+router.get("/user-details", (req, res) => {
   res.render("owner/user", { owner: true });
 });
 
-router.get("/screen", verifyLogin, (req, res) => {
-ownerHelper.getScreen(req.session.passport.user._id).then((data)=>{
-  console.log(data.Screen.length);
-  if(data.Screen.length<1){
+router.get("/screen",  (req, res) => {
+ownerHelper.getScreen().then((data)=>{
+  console.log(data.length);
+  if(data.length<1){
     res.render('owner/screen-dummy',{owner:true})
   }else{
-    res.render("owner/screen", { owner: true ,Screen:data.Screen});
+    console.log(data.length);
+    res.render("owner/screen", { owner: true ,Screen:data});
   }
 })
 });
 
-router.get('/add-screen',verifyLogin, (req,res)=>{
+router.get('/add-screen', (req,res)=>{
   res.render('owner/add-screen',{owner:true})
 
 })
@@ -102,7 +107,7 @@ router.post('/add-screen',(req,res)=>{
 })
 
 
-router.get('/edit-screen/:id',verifyLogin,(req,res)=>{
+router.get('/edit-screen/:id',(req,res)=>{
   console.log(req.params.id);
  var id=req.params.id
   res.render("owner/edit-screen",{owner:true,id})
@@ -110,36 +115,44 @@ router.get('/edit-screen/:id',verifyLogin,(req,res)=>{
 
 router.post('/edit-screen/:id',(req,res)=>{
   ownerHelper.editScreen(req.params.id,req.body).then((response)=>{
+    console.log(response);
     res.redirect('/owner/screen')
   })
 })
-router.get("/bookings", verifyLogin, (req, res) => {
+
+router.post('/delete-screen/:id',(req,res)=>{
+  ownerHelper.deleteScreen(req.params.id).then((response)=>{
+    console.log(response,"delete");
+    res.json({status:true})
+  })
+})
+router.get("/bookings",  (req, res) => {
   res.render("owner/bookings", { owner: true });
 });
 
-router.get("/screen/schedule", verifyLogin, (req, res) => {
+router.get("/screen/schedule",  (req, res) => {
   res.render("owner/schedule", { owner: true });
 });
 
-router.get("/movies", verifyLogin, (req, res) => {
+router.get("/movies",  (req, res) => {
   res.render("owner/movie", { owner: true });
 });
 
-router.get("/upcoming-movies", verifyLogin, (req, res) => {
+router.get("/upcoming-movies",  (req, res) => {
   res.render("owner/upcoming", { owner: true });
 });
 
-router.get("/add-movie", verifyLogin, (req, res) => {
+router.get("/add-movie",  (req, res) => {
   res.render("owner/add-movie", { owner: true });
 });
 
-router.get("/movie-image-upload", verifyLogin, (req, res) => {
+router.get("/movie-image-upload",  (req, res) => {
   res.render("owner/movie-image-upload", { owner: true });
 });
 
 //get update password
 
-router.get("/update-password", verifyLogin, (req, res) => {
+router.get("/update-password",  (req, res) => {
   res.render("owner/update-password", {
     owner: true,
   });
@@ -147,7 +160,7 @@ router.get("/update-password", verifyLogin, (req, res) => {
 
 // //post update password
 
-// router.post("/update-password",verifyLogin, (req, res) => {
+// router.post("/update-password", (req, res) => {
 //   ownerHelper.updatePassword(req.body).then((response) => {
 //     if (response.status) {
 //       adminHelper.getOwnerDetails().then((data) => {
@@ -161,7 +174,7 @@ router.get("/update-password", verifyLogin, (req, res) => {
 //   });
 // });
 
-router.get("/edit-profile", verifyLogin, (req, res) => {
+router.get("/edit-profile",  (req, res) => {
   res.render("owner/edit-profile", { owner: true });
 });
 

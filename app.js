@@ -42,8 +42,12 @@ app.use(
     }),
   })
 );
+var initializePassport=require('./passport/passport-setup').initializePassport
+initializePassport(passport)
 app.use(passport.initialize())
 app.use(passport.session())
+
+
 app.use(flash())
 db.connect((err) => {
   if (err) console.log("Connection Invalid" + err);
