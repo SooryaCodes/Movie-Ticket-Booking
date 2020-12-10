@@ -23,6 +23,10 @@ const verifyLogin=(req,res,next)=>{
 
 
 
+router.get('/popup', (req, res, next) => {
+  res.render('owner/auth-popup-callback', {layout: false});
+});
+
 
 
 var ownersLength = {
@@ -94,7 +98,7 @@ router.get("/login", (req, res) => {
 
 router.get('/google', passport.authenticate('admin-google', { scope: ['profile', 'email'] }));
 
-router.get('/google/callback',passport.authenticate('admin-google', { failureRedirect: '/admin/login',successRedirect:'/admin' ,failureFlash:true}),
+router.get('/google/callback',passport.authenticate('admin-google', { failureRedirect: '/admin/popup',successRedirect:'/admin/popup' ,failureFlash:true}),
 function(req, res) {
   // Successful authentication, redirect home.
   if(req.isAuthenticated()){

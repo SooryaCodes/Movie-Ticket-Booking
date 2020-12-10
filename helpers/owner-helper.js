@@ -210,4 +210,74 @@ module.exports = {
         });
     });
   },
+
+  //upcoming movie
+
+  addUpcomingMovie: (data, id) => {
+    return new Promise((resolve, reject) => {
+      data.OwnerId = id;
+      db.get()
+        .collection(collection.UPCOMING_MOVIE_COLLECTION)
+        .insertOne(data)
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
+
+  getUpcomingMovies: (id) => {
+    console.log(id);
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.UPCOMING_MOVIE_COLLECTION)
+        .find({ OwnerId: objectId(id) })
+        .toArray()
+        .then((response) => {
+          console.log(response, "screen");
+          resolve(response);
+        });
+    });
+  },
+
+  editUpcomingMovie: (data, id) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.UPCOMING_MOVIE_COLLECTION)
+        .updateOne(
+          { _id: objectId(id) },
+          {
+            $set: {
+              Title: data.Title,
+              Cast: data.Cast,
+              Director: data.Director,
+              Date: data.Date,
+              Category: data.Category,
+              Trailer: data.Trailer,
+              Runtime: data.Runtime,
+            },
+          }
+        );
+    });
+  },
+  getUpcomingMovie:(id) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.UPCOMING_MOVIE_COLLECTION)
+        .findOne({ _id: objectId(id) })
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
+  deleteUpcomingMovie: (id) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.UPCOMING_MOVIE_COLLECTION)
+        .removeOne({ _id: objectId(id) })
+        .then((response) => {
+          console.log("success");
+          resolve({ status: true });
+        });
+    });
+  },
 };

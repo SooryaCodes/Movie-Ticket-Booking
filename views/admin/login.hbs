@@ -11,23 +11,51 @@
     {{!-- <!-- ---login input field--- --> --}}
     <form action="/admin/login" method="POST">
       <div class="input-group">
-        <input type="email" name="username" id=""  />
+        <input type="email" name="username" id="" />
         <label for=""><i class="fa fa-envelope" aria-hidden="true"></i> Email</label>
       </div>
       <div class="input-group">
-        <input type="password" name="password" id=""  />
+        <input type="password" name="password" id="" />
         <label for=""><i class="fa fa-lock" aria-hidden="true"></i> Password</label>
       </div>
-       {{#if messages.error}}
-        <div class="alert alert-danger" role="alert">
-          {{messages.error}}!
-        </div>
+      {{#if messages.error}}
+      <div class="alert alert-danger" role="alert">
+        {{messages.error}}!
+      </div>
       {{/if}}
       <div class="input-submit">
-         <div class="input-submit">
-<a href="/admin/google" class=""><i class="fa fa-google" aria-hidden="true">oogle</i>  </a>
-        <input type="submit" name="" id="" value="Login" />
-      </div>
+        <div class="input-submit">
+          <a href="/admin/google" class="loginLink" ><i class="fa fa-google" aria-hidden="true">oogle</i> </a>
+          <input type="submit" name="" id="" value="Login" />
+        </div>
     </form>
   </div>
 </div>
+
+<script>
+	var loginWindow;
+
+	window.addEventListener('message', function(e) {
+		if (e.data !== 'popup-done') { return; }
+window.location.reload()
+	});
+
+
+	document.querySelectorAll('.loginLink').forEach(function(link) {
+		link.addEventListener('click', function(e) {
+			e.preventDefault();
+			var url = link.getAttribute('href');
+			var width = 500, height = 370;
+			if (url.indexOf('/admin/google') === 0) {
+				width = 470; height = 580;
+			}
+			var w = window.outerWidth - width, h = window.outerHeight - height;
+			var left = Math.round(window.screenX + (w / 2));
+			var top = Math.round(window.screenY + (h / 2.5));
+
+			loginWindow = window.open(url, 'LogIn', 
+				'width='+width+',height='+height+',left='+left+',top='+top+
+				',toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0');
+		});
+	});
+</script>

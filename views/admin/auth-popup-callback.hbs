@@ -1,0 +1,8 @@
+
+<script>
+	if (window.opener) {
+		window.opener.postMessage("popup-done", "*"); 
+		setTimeout(function() { window.close() }, 0);
+	}
+</script>
+	{{#if user}} <h1 style="text-align: center">Logging in...</h1> {{/if}}
