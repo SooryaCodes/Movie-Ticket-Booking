@@ -1,0 +1,99 @@
+  <link rel="stylesheet" href="/stylesheets/user/login.css">
+           {{#if ErrMessage.otp}}
+                <div class="alert alert-danger" id="alert" role="alert">
+                    {{ErrMessage.otp}}
+                </div>
+                {{/if}}
+    <div class="login-wrapper">
+        <div class="left-section">
+            <img src="/images/user/login-image.svg" alt="">
+        </div>
+        <div class="right-section">
+            <form action="/verify-otp" autocomplete="off" method="POST">
+                <div class="title">
+                    <p style="font-size: 20px;">Enter the verifcation code
+                         <br>
+                         sent to your no:+91 {{mobile}} </p>
+                </div>
+                <div class="input">
+                    <div class="input-groups">
+                        <input type="text" id="one" name="one" placeholder="0" maxlength="1"
+                            onkeyup="clickEvent(this,'two')" id="">
+                            <input type="text" id="two" name="two" placeholder="0" maxlength="1"  onkeyup="clickEvent(this,'three')" >
+                            <input type="text" id="three" name="three" placeholder="0" maxlength="1"  onkeyup="clickEvent(this,'four')">
+                            <input type="text" id="four" name="four" placeholder="0" maxlength="1"  onkeyup="clickEvent(this,'five')">
+                            
+                            <input type="text" id="five" name="five" placeholder="0" maxlength="1"  onkeyup="clickEvent(this,'six')">
+                            <input type="text" id="six" name="six" placeholder="0" maxlength="1"  >
+                            <input type="text" style="display: none;" name="mobile" value="{{mobile}}" id="">
+                    </div>
+                    <div class="input-submit">
+                        <button class="mask waves-effect waves-light rgba-white-slight" id="login" type="submit">Verify</button>
+                    </div>
+                </div>
+             
+            </form>
+        </div>
+    </div>
+    <script>
+        const clickEvent = (first, last) => {
+            if (first.value.length) {
+document.getElementById(last).focus()
+            }
+        }
+    </script>
+
+    <script>
+	var loginWindow;
+
+	window.addEventListener('message', function(e) {
+		if (e.data !== 'popup-done') { return; }
+window.location.reload()
+	});
+
+
+	document.querySelectorAll('.loginLink').forEach(function(link) {
+		link.addEventListener('click', function(e) {
+			e.preventDefault();
+			var url = link.getAttribute('href');
+			var width = 500, height = 370;
+			if (url.indexOf('/google') === 0) {
+				width = 470; height = 580;
+			}
+			var w = window.outerWidth - width, h = window.outerHeight - height;
+			var left = Math.round(window.screenX + (w / 2));
+			var top = Math.round(window.screenY + (h / 2.5));
+
+			loginWindow = window.open(url, 'LogIn', 
+				'width='+width+',height='+height+',left='+left+',top='+top+
+				',toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0');
+		});
+	});
+</script>
+    <script>
+	var loginWindow;
+
+	window.addEventListener('message', function(e) {
+		if (e.data !== 'popup-done') { return; }
+window.location.reload()
+	});
+
+
+	document.querySelectorAll('.loginLinkFacebook').forEach(function(link) {
+		link.addEventListener('click', function(e) {
+			e.preventDefault();
+			var url = link.getAttribute('href');
+			var width = 500, height = 370;
+			if (url.indexOf('/facebook') === 0) {
+				width = 470; height = 580;
+			}
+			var w = window.outerWidth - width, h = window.outerHeight - height;
+			var left = Math.round(window.screenX + (w / 2));
+			var top = Math.round(window.screenY + (h / 2.5));
+
+			loginWindow = window.open(url, 'LogIn', 
+				'width='+width+',height='+height+',left='+left+',top='+top+
+				',toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0');
+		});
+	});
+</script>

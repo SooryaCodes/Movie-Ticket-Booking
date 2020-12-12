@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 
 // const passport = require("passport");
 const LocalStrategy = require("passport-local");
-
+const FacebookStrategy = require("passport-facebook");
 var db = require("../config/connection");
 var collection = require("../config/collection");
 
@@ -72,6 +72,42 @@ module.exports.initializePassport = (passport) => {
     )
   );
 
+  //user gogogle
+
+  passport.use(
+    "user-google",
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID_USER,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET_USER,
+        callbackURL: process.env.GOOGLE_CALLBACK_URL_USER,
+        passReqToCallback: true,
+      },
+      function (request, accessToken, refreshToken, profile, done) {
+        console.log(profile);
+
+        return done(null, profile);
+      }
+    )
+  );
+
+  //user facebook
+
+  passport.use(
+    "user-facebook",
+    new FacebookStrategy(
+      {
+        clientID: process.env.FACEBOOK_CLIENT_ID_USER,
+        clientSecret: process.env.FACEBOOK_CLIENT_SECRET_USER,
+        callbackURL: process.env.FACEBOOK_CALLBACK_URL_USER,
+        profileFields: ["id", "displayName", "photos", "email"],
+      },
+      function (accessToken, refreshToken, profile, cb) {
+        console.log(profile, "profile");
+        return cb(null, profile);
+      }
+    )
+  );
   passport.use(
     "admin-local",
     new LocalStrategy(function (username, password, done) {
@@ -142,8 +178,14 @@ module.exports.initializePassport = (passport) => {
   );
 
   passport.serializeUser(function (user, done) {
+    if (!user.role) {
+      user.role = "user";
+      done(null, user);
+    }else{
+
+      done(null, user);
+    }
     console.log(user, "serialise");
-    done(null, user);
   });
 
   passport.deserializeUser(function (user, done) {
@@ -177,6 +219,8 @@ module.exports.initializePassport = (passport) => {
             }
           }
         );
+    } else {
+      done(null, user);
     }
   });
 };

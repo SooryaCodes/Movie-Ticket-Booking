@@ -367,4 +367,19 @@ module.exports = {
         });
     });
   },
+
+  getCode: () => {
+    return new Promise((resolve, reject) => {
+      var chars = "123456789101234567891012345678910";
+      var passwordLength = 6;
+      var password = "";
+
+      for (var i = 0; i < passwordLength; i++) {
+        var randomPassword = Math.floor(Math.random() * chars.length);
+        password += chars.substring(randomPassword, randomPassword + 6);
+        resolve(password);
+      }
+    });
+  },
+
 };

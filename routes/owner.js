@@ -3,15 +3,41 @@ var router = express.Router();
 const ownerHelper = require("../helpers/owner-helper");
 const adminHelper = require("../helpers/admin-helpers");
 const bcrypt = require("bcrypt");
+const hbs = require("nodemailer-express-handlebars");
 
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-
+const nodemailer = require("nodemailer")
 var db = require("../config/connection");
 var collection = require("../config/collection");
 const { getMovies } = require("../helpers/owner-helper");
 const { response } = require("express");
 const { route } = require("./admin");
+
+
+//nodemailer
+
+let mailer = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.MY_EMAIL, // generated ethereal user
+    pass: process.env.MY_PASSWORD, // generated ethereal password
+  },
+});
+
+var options = {
+  viewEngine: {
+    extname: ".hbs",
+    layoutsDir: "views/email/",
+    defaultLayout: "layout",
+  },
+  viewPath: "views/email/",
+};
+
+mailer.use("compile", hbs(options));
+
+
+
 const verifyLogin = (req, res, next) => {
   if (req.isAuthenticated() && req.user.role === "owner") {
     next();

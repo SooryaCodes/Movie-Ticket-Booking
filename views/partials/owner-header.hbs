@@ -117,8 +117,8 @@
 <script>
   const currentLocation = location.href;
   const sidebar = document.getElementsByClassName("side-bar-items");
-  const foodLength = sidebar.length;
-  for (let i = 0; i < foodLength; i++) {
+  const sidebarLength = sidebar.length;
+  for (let i = 0; i < sidebarLength; i++) {
     if (sidebar[i].href === currentLocation) {
       sidebar[i].classList = "side-bar-items active";
     }

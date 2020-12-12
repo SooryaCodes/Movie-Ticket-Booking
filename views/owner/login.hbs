@@ -1,5 +1,13 @@
 <link rel="stylesheet" href="/stylesheets/admin/login.css" />
 {{! <!-- ------wrapper----- --> }}
+
+<style>
+  #forgot{
+    padding-left: 20px;
+    color: red;
+
+  }
+</style>
 <div class="wrapper">
   {{! <!-- ---Login-section--- --> }}
   <div class="login-section">
@@ -30,7 +38,8 @@
           {{messages.error}}!
         </div>
       {{/if}}
-      <div class="input-submit">
+<a id="forgot" href="/owner/forgot-password">Forgot Password ?</a>
+      <div class="input-submit" style="margin-top: 20px;">
 
 <a href="/owner/google"  class="loginLink"><i class="fa fa-google" aria-hidden="true">oogle</i>  </a>
         <input type="submit" name="" id="" value="Login" />
