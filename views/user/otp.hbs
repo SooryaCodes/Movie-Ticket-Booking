@@ -17,15 +17,15 @@
                 </div>
                 <div class="input">
                     <div class="input-groups">
-                        <input type="text" id="one" name="one" placeholder="0" maxlength="1"
-                            onkeyup="clickEvent(this,'two')" id="">
-                            <input type="text" id="two" name="two" placeholder="0" maxlength="1"  onkeyup="clickEvent(this,'three')" >
-                            <input type="text" id="three" name="three" placeholder="0" maxlength="1"  onkeyup="clickEvent(this,'four')">
-                            <input type="text" id="four" name="four" placeholder="0" maxlength="1"  onkeyup="clickEvent(this,'five')">
+                        <input class="Box productkey1" type="text" id="one" name="one" placeholder="0" maxlength="1"
+                            id="">
+                            <input class="Box productkey1" type="text" id="two" name="two" placeholder="0" maxlength="1"  >
+                            <input class="Box productkey1" type="text" id="three" name="three" placeholder="0" maxlength="1"  >
+                            <input class="Box productkey1" type="text" id="four" name="four" placeholder="0" maxlength="1" >
                             
-                            <input type="text" id="five" name="five" placeholder="0" maxlength="1"  onkeyup="clickEvent(this,'six')">
-                            <input type="text" id="six" name="six" placeholder="0" maxlength="1"  >
-                            <input type="text" style="display: none;" name="mobile" value="{{mobile}}" id="">
+                            <input class="Box productkey1" type="text" id="five" name="five" placeholder="0" maxlength="1" >
+                            <input class="Box productkey1" type="text" id="six" name="six" placeholder="0" maxlength="1"  >
+                            <input class="Box productkey1" type="text" style="display: none;" name="mobile" value="{{mobile}}" id="">
                     </div>
                     <div class="input-submit">
                         <button class="mask waves-effect waves-light rgba-white-slight" id="login" type="submit">Verify</button>
@@ -35,6 +35,20 @@
             </form>
         </div>
     </div>
+
+<script>
+    $(document).ready(function() {
+  $('.Box').on("keyup", function(e) {
+      var $input = $(this);
+      if ($input.val().length == 0 && e.which == 8) {
+        $input.toggleClass("productkey2 productkey1").prev('.Box').focus();
+      }
+      else if ($input.val().length >= parseInt($input.attr("maxlength"), 10)) {
+        $input.toggleClass("productkey1 productkey2").next('.Box').focus();
+      }
+  });
+});
+</script>
     <script>
         const clickEvent = (first, last) => {
             if (first.value.length) {

@@ -1,36 +1,77 @@
 <link rel="stylesheet" href="/stylesheets/owner/add.css">
-
+<div class="alert alert-info alert-dismissible fade show " id="alert" role="alert">
+      This <strong>Screen</strong> has already show in this time.Try changing the time or date.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<input type="text" name="" value="{{id}}" id="id">
 <div class="add-movie">
   <form action="/owner/add-show/{{id}}" method="POST">
-      <div class="input-title">
-          <p>Add Show</p>
-      </div>
+  
+    <div class="input-title">
+      <p>Add Show</p>
+    </div>
     <div class="input-groups">
-        <select name="Movie" id="">
-          {{#each movies}}
-          <option value="Movie">Movie</option>
-            <option value="{{this._id}}">{{this.Title}}</option>
-            {{/each}}
-        </select>
+      <label for="">Movie</label>
+      <select name="Movie" id="">
+        {{#each movies}}
+        <option value="{{this._id}}">{{this.Title}}</option>
+        {{/each}}
+      </select>
     </div>
     <div class="input-groups">
       <label for="">Date</label>
-      <input required type="date" name="Date" placeholder="" id="" />
+      <input required type="date" id="date" name="Date" placeholder="" id="" />
     </div>
     <div class="input-groups">
       <label for="">Time</label>
-      <input required type="time" name="Time" placeholder="Cast" id="" />
+      <input required type="time" id="time" name="Time" onchange="dateTime()" placeholder="Cast" id="" />
     </div>
-      <label for="" id="rate">Class Rates</label>
+    <label for="" id="rate">Class Rates</label>
     <div class="input-groups class-rate">
       <input required type="number" name="Vip" placeholder="Vip" id="" />
       <input required type="number" name="Premium" placeholder="Premium" id="" />
       <input required type="number" name="Excecutive" placeholder="Excecutive" id="" />
       <input required type="number" name="Normal" placeholder="Normal" id="" />
     </div>
-  
+
     <div class="input-button">
-        <button class="btn btn-mdb-color" type="submit">Add</button>
+      <button class="btn btn-mdb-color" type="submit">Add</button>
+      
+    </div>
+     
     </div>
   </form>
-</div>
+   
+
+<script>
+
+  function dateTime() {
+    var date = document.getElementById('date').value
+    var time = document.getElementById('time').value
+    var id = document.getElementById('id').value
+    console.log('hey')
+    $.ajax({
+      url: "/owner/date-time/" + id,
+      data: {
+        date: date,
+        time: time
+      },
+      method: "post",
+      success: (response) => {
+        console.log(response)
+        if (response.status) {
+          console.log('success')
+        } else {
+          var alerts = document.getElementById('alert')
+          alerts.classList.toggle('active')
+                  }
+      }
+    })
+
+
+  }
+
+
+</script>

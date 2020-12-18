@@ -343,7 +343,7 @@ module.exports = {
     });
   },
 
-  getShow:(Id) => {
+  getShow: (Id) => {
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.SHOW_COLLECTION)
@@ -354,7 +354,6 @@ module.exports = {
         });
     });
   },
-
 
   deleteShow: (showId) => {
     return new Promise((resolve, reject) => {
@@ -381,5 +380,35 @@ module.exports = {
       }
     });
   },
+  getDateTime: (data, id) => {
+    console.log(data);
+    return new Promise((resolve, reject) => {
+      console.log(id);
+      db.get()
+        .collection(collection.SHOW_COLLECTION)
+        .find({ screenId: id, Date: data.date })
+        .toArray()
+        .then((dateData) => {
+          // console.log(response);
 
+          var date = new Date(data.date + " " + data.time);
+          var hoursLater = new Date(
+            new Date(date).setHours(new Date(date).getHours())
+          );
+          for (var i = 0; i < dateData.length; i++) {
+            var oldDate = new Date(dateData[i].Date + " " + dateData[i].Time);
+
+            var oldHour = new Date(
+              new Date(oldDate).setHours(new Date(oldDate).getHours() + 3)
+            );
+            if (new Date(hoursLater).toLocaleTimeString() >= new Date(oldHour).toLocaleTimeString()){
+              console.log("success");
+              resolve({ status: true });
+            } else {
+              resolve({ status: false });
+            }
+          }
+        });
+    });
+  },
 };

@@ -8,49 +8,21 @@
     </div>
     <div class="right-section">
 
-        <form action="/login" autocomplete="off" method="POST">
+        <form action="/signup/{{mobile}}" autocomplete="off" method="POST">
             <div class="title">
                 <p>Welcome</p>
             </div>
             <div class="input">
-                <div class="input-groups">
-                    <input class="Box productkey1" type="text"  id="one" name="one" placeholder="M" maxlength="1"
-                         id="">
-                    <input class="Box productkey1" type="text" id="two" name="two" placeholder="O" maxlength="1"
-                        >
-                    <input class="Box productkey1" type="text" id="three" name="three" placeholder="B" maxlength="1"
-                        >
-                    <input class="Box productkey1" type="text" id="four" name="four" placeholder="I" maxlength="1"
-                        >
-                    <input class="Box productkey1" type="text" id="five" name="five" placeholder="L" maxlength="1"
-                        >
-                    <input class="Box productkey1" type="text" id="six" name="six" placeholder="E" maxlength="1"
-                        >
-                    <input class="Box productkey1" type="text" id="seven" name="seven" placeholder="" maxlength="1"
-                    >
-                    <input class="Box productkey1" type="text" id="eight" name="eight" placeholder="N" maxlength="1"
-                        >
-                    <input class="Box productkey1" type="text" id="nine" name="nine" placeholder="0" maxlength="1"
-                        >
-                    <input class="Box productkey1" type="text" id="ten" name="ten" placeholder=":" maxlength="1">
+                <div class="input-signup">
+                <input type="text" name="Name" placeholder="Name" id="">
+                <input type="text" name="Email" placeholder="Email" id="">
                 </div>
                
                 <div class="input-submit">
-                    <button class="mask waves-effect waves-light rgba-white-slight" id="login">Next</button>
+                    <button class="mask waves-effect waves-light rgba-white-slight" id="login">Signup</button>
                 </div>
             </div>
-            <div class="social">
-                <a href="/google" class="loginLink"><img src="/images/user/google.svg" alt=""></a>
-                <a href=""><img src="/images/user/twitter.svg" alt=""></a>
-                <a href="/facebook" class="loginLinkFacebook"><img src="/images/user/facebook.svg" alt=""></a>
-
-
-
-
-
-
-
-            </div>
+          
         </form>
     </div>
 </div>

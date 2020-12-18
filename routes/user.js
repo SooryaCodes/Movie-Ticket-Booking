@@ -1,20 +1,32 @@
 var express = require("express");
 var router = express.Router();
 require("dotenv").config();
-var ErrMessage={};
-
+var ErrMessage = {};
+const userHelpers = require("../helpers/user-helpers");
 var passport = require("passport");
 /* GET users listing. */
 var client = require("twilio")(
   process.env.TWILIO_ACCOUNT_ID,
   process.env.TWILIO_AUTH_TOKEN
 );
-router.get("/", function (req, res, next) {
+const verifyLogin = (req, res, next) => {
+  if (req.isAuthenticated() && req.user.role === "user") {
+    next();
+  } else if (req.session.loggedIn) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+};
+router.get("/", verifyLogin,function (req, res, next) {
   res.render("user/sample");
 });
 
 router.get("/login", (req, res) => {
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() && req.user.role === "user") {
+    console.log(req.user);
+    res.redirect("/");
+  } else if (req.session.loggedIn) {
     res.redirect("/");
   } else {
     res.render("user/login");
@@ -41,13 +53,15 @@ router.post("/login", (req, res) => {
     })
     .then((data) => {
       console.log(data);
-        res.redirect("/verify-otp/"+mobile);
-      
+      res.redirect("/verify-otp/" + mobile);
+    })
+    .catch((response) => {
+      console.log(response);
     });
 });
-router.get('/verify-otp/:id',(req,res)=>{
-  res.render('user/otp',{mobile:req.params.id,ErrMessage})
-})
+router.get("/verify-otp/:id", (req, res) => {
+  res.render("user/otp", { mobile: req.params.id, ErrMessage });
+});
 router.post("/verify-otp", (req, res) => {
   var otp =
     req.body.one +
@@ -67,12 +81,30 @@ router.post("/verify-otp", (req, res) => {
     .then((data) => {
       console.log(data);
       if (data.status === "pending") {
-        ErrMessage.otp=  "Invalid Verification Code";
-res.redirect('/verify-otp/'+req.body.mobile)
+        ErrMessage.otp = "Invalid Verification Code";
+        res.redirect("/verify-otp/" + req.body.mobile);
       } else {
-        res.redirect("/");
+        userHelpers.checkLogin(req.body.mobile).then((response) => {
+          console.log(response);
+          if (response.userExist) {
+            req.session.loggedIn = true;
+            req.session.user = response.user;
+            res.redirect("/");
+          } else {
+            res.render("user/signup", { mobile: req.body.mobile });
+          }
+        });
       }
     });
+});
+
+router.post("/signup/:id", (req, res) => {
+  userHelpers.signup(req.params.id, req.body).then((response) => {
+    req.session.loggedIn = true;
+    req.session.user = response;
+
+    res.redirect("/");
+  });
 });
 
 router.get(

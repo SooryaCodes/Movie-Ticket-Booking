@@ -85,8 +85,12 @@ module.exports.initializePassport = (passport) => {
       },
       function (request, accessToken, refreshToken, profile, done) {
         console.log(profile);
+        var user={}
+        user.Name=profile.displayName
+        user.Email=profile.email
+        user.role=profile.role
 
-        return done(null, profile);
+        return done(null, user);
       }
     )
   );
@@ -182,7 +186,6 @@ module.exports.initializePassport = (passport) => {
       user.role = "user";
       done(null, user);
     }else{
-
       done(null, user);
     }
     console.log(user, "serialise");

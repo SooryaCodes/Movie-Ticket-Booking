@@ -80,7 +80,26 @@ body {
   border: none;
   border-bottom: 4px solid rgba(31, 147, 255, 0.151);
 }
-input:focus {
+.input-signup{
+  width: 100%;
+  display: flex;
+  align-items: center;justify-content: center;
+  flex-direction: column;
+}
+.input-signup input{
+  margin-top: 20px;
+  height: 40px;  padding-left: 10px;
+color:  rgba(0, 132, 255, 0.801);
+  background: rgba(236, 236, 236, 0.301);
+  border-radius: 5px;
+  border: none;
+
+  width: 300px;
+}
+.input-signup input:focus{
+  outline: none;
+}
+.input-groups input:focus {
     border-bottom: 4px solid rgba(0, 132, 255, 0.582) !important;
 
   outline: none;
@@ -91,6 +110,7 @@ button:focus {
 }
 
 ::placeholder {
+  margin-left: 10px;
   color: rgba(116, 170, 252, 0.562);
 }
 .input-submit {
@@ -130,10 +150,10 @@ button:focus {
   .left-section {
     display: none !important;
   }
-  .input {
+  .input-groups {
     width: 360px;
   }
-  .input input {
+  .input-groups input {
     width: 28px;
   }
 }
