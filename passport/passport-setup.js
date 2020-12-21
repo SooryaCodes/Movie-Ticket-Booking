@@ -85,10 +85,21 @@ module.exports.initializePassport = (passport) => {
       },
       function (request, accessToken, refreshToken, profile, done) {
         console.log(profile);
-        var user={}
-        user.Name=profile.displayName
-        user.Email=profile.email
-        user.role=profile.role
+        db.get().collection(collection.USER_COLLECTION).findOne({Email:profile.email}).then((user)=>{
+          if(user){
+            return done(null,user)
+          }else{
+            var userData={}
+            userData.Name=profile.displayName
+            userData.Email=profile.email
+            userData.role="user"
+
+            db.get().collection(collection.USER_COLLECTION).insertOne(userData).then((response)=>{
+              return done(null,response.ops[0])
+            })
+          }
+        })
+     
 
         return done(null, user);
       }
@@ -182,13 +193,9 @@ module.exports.initializePassport = (passport) => {
   );
 
   passport.serializeUser(function (user, done) {
-    if (!user.role) {
-      user.role = "user";
+    
       done(null, user);
-    }else{
-      done(null, user);
-    }
-    console.log(user, "serialise");
+    
   });
 
   passport.deserializeUser(function (user, done) {
@@ -222,8 +229,21 @@ module.exports.initializePassport = (passport) => {
             }
           }
         );
-    } else {
-      done(null, user);
+    }  else if (user.role === "user") {
+      db.get()
+        .collection(collection.USER_COLLECTION)
+        .findOne(
+          {
+            _id: objectId(user._id),
+          },
+          function (err, user) {
+            if (err) {
+              throw err;
+            } else {
+              done(null, user);
+            }
+          }
+        );
     }
   });
 };

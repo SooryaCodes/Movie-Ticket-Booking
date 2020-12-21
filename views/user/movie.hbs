@@ -1,0 +1,118 @@
+
+
+
+    <link rel="stylesheet" href="/stylesheets/user/movie.css">
+
+
+
+
+
+    <div class="movie-view">
+        <div class="left-section">
+            <div class="movie-poster">
+
+                <div class="card">
+                    <img src="https://cdn.shopify.com/s/files/1/0969/9128/products/Joker_-_Put_On_A_Happy_Face_-_Joaquin_Phoenix_-_Hollywood_English_Movie_Poster_3_1f3f78b1-3366-4394-a8b2-4d8431592dac.jpg?v=1579504957"
+                        alt="">
+                    <button class="rating-btn mask waves-effect waves-light rgba-white-slight"><i class="fa fa-star"
+                            aria-hidden="true"></i></button>
+                </div>
+            </div>
+            <div class="content">
+                <h1>Joker(2018)</h1>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star unselected"></i>
+                    <i class="fas fa-star unselected"></i>
+                </div>
+                <div class="movie-details">
+                    <p>Action Drama</p>
+                    <p>2H 20M</p>
+                    <p>2D</p>
+                    <p>English</p>
+                </div>
+                <p>Lorem ipsum dolor, sit amet dolor elit. Accusantium corrupti molestias officiis <br>eum unde
+                    blanditiis a eaque inventore amet aspernatur </p>
+                <h6>Director : <span class="director-cast"> John King</span></h6>
+                <h6>Cast : <span class="director-cast"> Sony | Ibrahim | Sukai </span></h6>
+                <div class="movie-button">
+                    <button class="trailer-btn mask waves-effect waves-light rgba-white-slight">
+                        <div id="bm"></div>
+                    </button>
+                    <button class="mask waves-effect waves-light rgba-white-slight">Book Now</button>
+                </div>
+            </div>
+        </div>
+        <div class="right-section">
+            <img src="https://i.ytimg.com/vi/nTVdN6s3rXY/maxresdefault.jpg"
+                alt="">
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- ---modal---- -->
+    <div class="trailer-wrapper">
+        <div class="trailer">
+            <iframe src="https://www.youtube.com/embed/zAGVQLHvwOY" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+    </div>
+    <script>
+        var modal = document.querySelector('.trailer-wrapper')
+        var btn = document.querySelector('.trailer-btn')
+        btn.addEventListener('click', () => {
+            modal.classList.toggle('active')
+        })
+        modal.addEventListener('click', () => {
+            modal.classList.remove('active')
+        })
+    </script>
+    <!-- ---profile pop up --- -->
+    <script>
+        const profilePopUp = () => {
+            var btn = document.querySelector('.profile')
+            var popUp = document.querySelector('.profile-pop-up')
+            var down = document.querySelector('.down')
+
+
+            popUp.classList.toggle('active')
+            down.classList.toggle('down-active')
+
+
+        }
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.5.9/lottie.js"></script>
+    <script>
+        var animation = bodymovin.loadAnimation({
+            container: document.getElementById('bm'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: '/javascripts/admin/user/lottieflow-play-06-ffffff-easey.json'
+        })
+    </script>
+
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script>
+        // Tooltips Initialization
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+   

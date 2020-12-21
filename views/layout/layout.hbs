@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Movie Cafe</title>
   <!-- Required meta tags -->
@@ -9,11 +10,18 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-{{!-- <script src="sweetalert2.min.js"></script>
-<link rel="stylesheet" href="sweetalert2.min.css"> --}}
+  {{!--
+  <script src="sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="sweetalert2.min.css"> --}}
   <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
   <!-- Google Fonts -->
@@ -41,17 +49,20 @@
 
 <body>
 
-{{#if owner}}
-{{>owner-header}}
-{{/if}}
-{{#if admin}}
-{{>admin-header}}
-{{/if}}
-{{{body}}}
+  {{#if owner}}
+  {{>owner-header}}
+  {{/if}}
+  {{#if admin}}
+  {{>admin-header}}
+  {{/if}}
+  {{#if user}}
+  {{>user-header}}
+  {{/if}}
+  {{{body}}}
 
-{{#if admin}}
-{{>admin-footer}}
-{{/if}}
+  {{#if admin}}
+  {{>admin-footer}}
+  {{/if}}
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -61,5 +72,3 @@
 
 
 </html>
-
-

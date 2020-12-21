@@ -123,6 +123,9 @@ router.get("/add-screen", verifyLogin, (req, res) => {
 });
 
 router.post("/add-screen", (req, res) => {
+  console.log(req.body);
+
+
   ownerHelper
     .addScreen(req.body, req.session.passport.user._id)
     .then((data) => {});

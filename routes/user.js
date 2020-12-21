@@ -19,7 +19,10 @@ const verifyLogin = (req, res, next) => {
   }
 };
 router.get("/", verifyLogin,function (req, res, next) {
-  res.render("user/sample");
+  userHelpers.getMovies().then((Horror,Action,Comedy,Drama,Romance)=>{
+
+  })
+  res.render("user/home",{user:true});
 });
 
 router.get("/login", (req, res) => {
@@ -149,4 +152,10 @@ router.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
+
+
+
+router.get('/movie',verifyLogin,(req,res)=>{
+  res.render('user/movie',{user:true})
+})
 module.exports = router;

@@ -1,14 +1,12 @@
 <link rel="stylesheet" href="/stylesheets/owner/add.css">
-<div class="alert alert-info alert-dismissible fade show " id="alert" role="alert">
-      This <strong>Screen</strong> has already show in this time.Try changing the time or date.
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
+<div class="alert alert-info fade show " id="alert" role="alert">
+  This <strong>Screen</strong> has already show in this time.Try changing the time or date.
+
 </div>
 <input type="text" name="" value="{{id}}" id="id">
 <div class="add-movie">
   <form action="/owner/add-show/{{id}}" method="POST">
-  
+
     <div class="input-title">
       <p>Add Show</p>
     </div>
@@ -22,7 +20,7 @@
     </div>
     <div class="input-groups">
       <label for="">Date</label>
-      <input required type="date" id="date" name="Date" placeholder="" id="" />
+      <input required type="date" id="date" name="Date" onchange="disableChanging()" placeholder="" id="" />
     </div>
     <div class="input-groups">
       <label for="">Time</label>
@@ -37,21 +35,34 @@
     </div>
 
     <div class="input-button">
-      <button class="btn btn-mdb-color" type="submit">Add</button>
-      
+      <button class="btn btn-mdb-color" id="submit" type="submit">Add</button>
+
     </div>
-     
-    </div>
-  </form>
-   
+
+</div>
+</form>
+
 
 <script>
 
+  var dateCheck = document.getElementById('date')
+  var timeCheck = document.getElementById('time')
+  if (!dateCheck.value) {
+    timeCheck.disabled = true
+  }
+
+  function disableChanging() {
+    var timeCheck = document.getElementById('time')
+    timeCheck.disabled = false
+
+  }
   function dateTime() {
     var date = document.getElementById('date').value
     var time = document.getElementById('time').value
+    console.log(typeof (date))
     var id = document.getElementById('id').value
     console.log('hey')
+
     $.ajax({
       url: "/owner/date-time/" + id,
       data: {
@@ -62,16 +73,28 @@
       success: (response) => {
         console.log(response)
         if (response.status) {
-          console.log('success')
+          var btn = document.getElementById('submit')
+          btn.disabled = false
+          var alerts = document.getElementById('alert')
+          alerts.classList.remove('active')
+
         } else {
           var alerts = document.getElementById('alert')
           alerts.classList.toggle('active')
-                  }
+          var btn = document.getElementById('submit')
+          btn.disabled = true
+          
+          //btn.setAttribute("disabled",null)
+
+        }
       }
     })
 
 
   }
+
+
+
 
 
 </script>

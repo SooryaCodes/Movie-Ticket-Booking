@@ -1,0 +1,556 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap"); /* ---universal--- */
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap");
+
+* {
+  margin: 0;
+  bottom: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ---body--- */
+body {
+  width: 100%;
+  height: 100%;
+  background: #222831 !important;
+  position: relative;
+}
+
+/* ---common--- */
+a,
+button,
+input:focus {
+  outline: none;
+}
+
+
+/* ---movie-view--- */
+
+.movie-view{
+  margin-top: 55px;
+  width: 100%;
+  height: 600px;
+  display: flex;
+  align-items: center;justify-content: center;
+}
+.movie-view .left-section{
+  display: flex;
+
+  align-items: center;justify-content: center;
+  width: 40%;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.719) 0%, rgb(0, 0, 0) 46%, rgb(0, 0, 0) 100%);  width: 50%;
+  height: 100%;
+}
+.movie-view .left-section .movie-poster{
+  width: 40%;
+  display: flex;
+  align-items: center;justify-content: flex-end;
+  height: 100%;
+}
+.movie-view .left-section .card{
+  width: 230px;
+  position: relative;
+  height: 320px;
+  border-radius: 6px;
+}
+.movie-view .left-section .card img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+
+}
+.movie-view .left-section .card button{
+  cursor: pointer;
+  position: absolute;
+  right: -10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgb(70, 70, 70);
+  border: none;
+  bottom: -10px;
+}
+.left-section .card .fa-star{
+  color: rgb(255, 255, 255);
+}
+.left-section .card button:hover .fa-star{
+color: yellow;
+}
+.movie-view .left-section .content{
+  font-family: "poppins",sans-serif;
+  padding-left: 10px;
+  color: honeydew;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  width: 60%;
+  margin-left: 5px;
+  height: 100%;
+}
+.movie-view .left-section .content .rating .fa-star{
+  margin-bottom: 5px;
+  color: yellow;
+  font-size: 14px;
+}
+.content h1{
+  margin-bottom: 5px;
+font-size: 30px;
+font-weight: 600;
+color: rgb(179, 179, 179);
+}
+ .content p{
+  margin-bottom: 5px;
+  font-size: 13px;
+font-weight: 700;
+color: rgb(155, 155, 155);
+}
+.content h6{
+  font-size: 16px;
+  font-weight: 600;
+  color: #929292;
+}
+.content .movie-button button{
+height: 35px;
+font-size: 14px;
+color: white !important;
+margin-right: 10px;
+
+border-radius: 3px;
+background: rgb(133, 176, 255);
+border: none;
+  width: 125px;
+  }
+  .content .movie-button button:nth-child(2){
+    background: rgb(133, 186, 255);
+  }
+  .content .movie-button{
+display: flex;
+width: 250px;
+align-items: center;justify-content: flex-start;
+    height: 50px;
+    margin-top: 5px;
+  }
+
+
+
+
+.content .movie-button button svg{
+  /* width: 100px !important; */
+  height: 20px !important;
+}
+.director-cast{
+  font-weight: 600;
+  color: #bebebe !important;
+  font-size: 13px !important;
+}
+ .content span{
+font-size: 17px;
+  margin-bottom: 5px;
+  font-weight: 600;
+color: rgb(214, 214, 214);
+}
+.movie-details{
+  width: 300px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;justify-content: space-between;
+}
+.movie-details p{
+  font-size: 15px;
+  font-weight: 600;
+  color: #6b6b6b;
+}
+.cast{
+  /* width: 100%; */
+  display: flex;
+  align-items: center;justify-content: space-evenly;
+}
+.fa-star.unselected{
+  color: gray !important;
+}
+.movie-view .right-section{
+  width: 60%;
+  height: 100%;
+  position:relative;
+  display:inline-block;
+  
+}
+
+
+
+.movie-view .right-section::after {
+  content:'';
+  position:absolute;
+  left:0; top:0;
+  width:100%; height:100%;
+  display:inline-block;
+  background: -moz-linear-gradient(left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0, 0, 0, 0)), color-stop(100%,rgba(0, 0, 0, 0))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%,rgba(0, 0, 0, 0.116) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%,rgba(3, 3, 3, 0) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%,rgba(0, 0, 0, 0) 100%); /* IE10+ */
+  background: linear-gradient(to right, rgb(0, 0, 0) 0%,rgba(255, 255, 255, 0) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#002f4b', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+}
+.movie-view .right-section img{
+
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display:block;
+
+}
+
+
+/* ---modal--- */
+
+.trailer-wrapper{
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+visibility: hidden;
+opacity: 0;
+display: flex;
+align-items: center;justify-content: center;
+background: rgba(0, 0, 0, 0.596);
+transition: visibility 0s,opacity 0.5s;
+}
+.trailer{
+  width: 65%;
+  height: 55%;
+  
+}
+iframe{
+  width: 100%;
+  height: 100%;
+  border: navajowhite;
+}
+.trailer-wrapper.active{
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
+
+
+
+
+/* ---responsive---- */
+
+@media screen and (max-width:1540px){
+  .movie-view .right-section::after {
+
+    background: -moz-linear-gradient(left, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.37) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0, 0, 0, 0)), color-stop(100%,rgba(0, 0, 0, 0))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgb(0, 0, 0) 0%,rgba(0, 0, 0, 0.116) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%,rgba(3, 3, 3, 0.5) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%,rgba(0, 0, 0, 0.096) 100%); /* IE10+ */
+    background: linear-gradient(to right, rgb(0, 0, 0) 0%,rgba(255, 255, 255, 0) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#002f4b', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+  }
+}
+
+/* @media screen and (max-width:1408px){
+ .movie-view{
+   flex-direction: column-reverse;
+ }
+ .movie-view .left-section{
+   width: 100%;
+ }
+ .movie-poster{
+   width: 50%;
+ }
+ .content{
+   width: 50%;
+ }
+ .movie-view .right-section{
+   width: 100%;
+   height: 700px;
+ }
+ .movie-poster .right-section::after{
+  width: 100%;
+  height: 700px;  
+   }
+} */        
+
+
+
+@media screen and (max-width:1409px){
+ 
+  .movie-view .right-section{
+    width: 40%;
+  }
+  .movie-view .left-section{
+    width: 60%;
+  }
+}
+@media screen and (max-width:1200px){
+  .movie-details{
+    width: 100%;
+
+   
+  }
+  .movie-view{
+    height: 500px;
+  }
+  .movie-view .left-section {
+    width: 60%;
+  }
+
+  .movie-view .left-section .card{
+    width: 170px;
+    position: relative;
+    height: 250px;
+  }
+
+
+
+
+
+.movie-view .left-section .content .rating .fa-star{
+
+  font-size: 10px;
+}
+.content h1{
+
+font-size: 22px;
+font-weight: 600;
+}
+ .content p{
+  font-size: 10px;
+
+}
+.content h6{
+  font-size: 12px;
+  
+}
+.content .movie-button button{
+height: 30px;
+font-size: 12px;
+
+  width: 90px;
+  }
+
+  .content .movie-button{
+width: 200px;
+
+  }
+
+
+
+
+.content .movie-button button svg{
+  /* width: 100px !important; */
+  height: 15px !important;
+}
+.director-cast{
+  font-weight: 600;
+  color: #bebebe !important;
+  font-size: 12px !important;
+}
+ .content span{
+font-size: 17px;
+  margin-bottom: 5px;
+  font-weight: 600;
+color: rgb(214, 214, 214);
+}
+.movie-details{
+  width: 300px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;justify-content: space-between;
+}
+.movie-details p{
+  font-size: 15px;
+  font-weight: 600;
+  color: #6b6b6b;
+}
+.cast{
+  /* width: 100%; */
+  display: flex;
+  align-items: center;justify-content: space-evenly;
+}
+.fa-star.unselected{
+  color: gray !important;
+}
+.movie-view .right-section{
+  width: 40%;
+  height: 100%;
+  position:relative;
+  display:inline-block;
+  
+}
+.movie-view .left-section .card button{
+  width: 30px;
+  height: 30px;
+  font-size: 10px;
+
+}
+
+
+}
+
+@media screen and (max-width:1000px){
+  .movie-details{
+    width: 100%;
+
+   
+  }.trailer{
+    width: 80%;
+    height: 50%;
+    
+  }
+  
+  .movie-view{
+    height: 400px;
+  }
+  .movie-view .left-section {
+    width: 60%;
+  }
+
+  .movie-view .left-section .card{
+    width: 150px;
+    position: relative;
+    height: 210px;
+  }
+
+
+
+
+
+.movie-view .left-section .content .rating .fa-star{
+  margin-bottom: 0px;
+
+  font-size: 9px;
+}
+.content h1{
+  margin-bottom: 0px;
+
+font-size: 20px;
+font-weight: 600;
+}
+ .content p{  margin-bottom: 0px;
+
+  font-size: 9px !important;
+
+}
+.content h6{  margin-bottom: 0px;
+
+  font-size: 11px;
+  font-weight: 600;
+  
+}
+.content .movie-button button{
+height: 20px;
+font-size: 10px;
+
+  width: 80px;
+  }
+
+  .content .movie-button{
+width: 200px;
+height: 30px;
+
+  }
+
+
+
+
+.content .movie-button button svg{
+  /* width: 100px !important; */
+  height: 12px !important;
+}
+.director-cast{
+  font-weight: 600;
+  color: #bebebe !important;
+  font-size: 10px !important;
+}
+ .content span{
+font-size: 10px;
+margin-bottom: 0px;
+font-weight: 600;
+color: rgb(214, 214, 214);
+}
+.movie-details{
+  width: 100%;
+  margin-bottom: 0px;
+  display: flex;
+  align-items: center;
+  
+}
+.movie-details p{
+  font-size: 11px !important;
+  font-weight: 600;
+  color: #6b6b6b;
+}
+.cast{
+  /* width: 100%; */
+  display: flex;
+  align-items: center;justify-content: space-evenly;
+}
+.fa-star.unselected{
+  color: gray !important;
+}
+.movie-view .right-section{
+  width: 40%;
+  height: 100%;
+  position:relative;
+  display:inline-block;
+  
+}
+.movie-view .left-section .card button{
+  width: 30px;
+  height: 30px;
+  font-size: 10px;
+
+}
+
+
+}
+
+@media screen and (max-width:684px){
+  .movie-view{
+    height: 550px;
+    flex-direction: column-reverse;
+  }
+  .trailer{
+    width: 90%;
+    height: 40%;
+    
+  }
+  .movie-view .right-section{
+    width: 100%;
+    height: 300px;
+  }
+  .movie-view .left-section{
+    /* background:linear-gradient(rgba(0, 0, 0, 0.096),rgba(0, 0, 0, 0.582)); */
+    width: 100%;
+background: rgba(0, 0, 0, 0);
+    height: 250px;
+  }
+
+  .movie-details{
+    width: 200px;
+  }
+}
+@media screen and (max-width:428px){
+  .movie-view{
+    height: 450px;
+    flex-direction: column-reverse;
+  }
+  .movie-view .right-section{
+    width: 100%;
+    height: 200px;
+  }
+
+  .movie-view .left-section .card{
+    width: 130px;
+    height: 200px;
+  }
+}

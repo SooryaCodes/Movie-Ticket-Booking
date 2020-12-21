@@ -93,7 +93,9 @@ module.exports = {
   },
   addScreen: (data, id) => {
     return new Promise((resolve, reject) => {
-      data.OwnerId = id;
+        data.OwnerId = id,
+
+
       db.get()
         .collection(collection.SCREEN_COLLECTION)
         .insertOne(data)
@@ -390,7 +392,6 @@ module.exports = {
         .toArray()
         .then((dateData) => {
           // console.log(response);
-
           var date = new Date(data.date + " " + data.time);
           var hoursLater = new Date(
             new Date(date).setHours(new Date(date).getHours())
@@ -401,7 +402,10 @@ module.exports = {
             var oldHour = new Date(
               new Date(oldDate).setHours(new Date(oldDate).getHours() + 3)
             );
-            if (new Date(hoursLater).toLocaleTimeString() >= new Date(oldHour).toLocaleTimeString()){
+            if (
+              new Date(hoursLater).toLocaleTimeString() >=
+              new Date(oldHour).toLocaleTimeString()
+            ) {
               console.log("success");
               resolve({ status: true });
             } else {
