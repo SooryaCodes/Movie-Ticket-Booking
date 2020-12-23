@@ -74,7 +74,6 @@
 
         canvas.width = width;
         canvas.height = height;
-        context.imageSmoothingEnabled = true;
         context.drawImage(sourceCanvas, 0, 0, width, height);
         context.globalCompositeOperation = 'destination-in';
         context.beginPath();
@@ -89,18 +88,17 @@
             var result = document.getElementById('result');
             var croppable = false;
             var cropper = new Cropper(image, {
-                aspectRatio: 1,
                 viewMode: 1,
                 ready: function () {
                     croppable = true;
                 },
             });
-                        var upload = document.getElementById('upload');
+              var upload = document.getElementById('upload');
              upload.onclick = function (){
-                 var id=document.getElementById('id').value
-  console.log('hi')
- cropper.getCroppedCanvas().toBlob(function (blob) {
-console.log('hey man')
+                var id=document.getElementById('id').value
+            console.log('hi')
+            cropper.getCroppedCanvas().toBlob(function (blob) {
+                console.log('hey man')
             var formData = new FormData();
             formData.append('croppedImage', blob);
 

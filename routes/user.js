@@ -4,6 +4,7 @@ require("dotenv").config();
 var ErrMessage = {};
 const userHelpers = require("../helpers/user-helpers");
 var passport = require("passport");
+const { ObjectId } = require("mongodb");
 /* GET users listing. */
 var client = require("twilio")(
   process.env.TWILIO_ACCOUNT_ID,
@@ -18,11 +19,24 @@ const verifyLogin = (req, res, next) => {
     res.redirect("/login");
   }
 };
-router.get("/", verifyLogin,function (req, res, next) {
-  userHelpers.getMovies().then((Horror,Action,Comedy,Drama,Romance)=>{
-
-  })
-  res.render("user/home",{user:true});
+router.get("/", verifyLogin, function (req, res, next) {
+  userHelpers.getMovies().then((Movie) => {
+    // console.log(Horror,Action,Comedy,Drama,Romance);
+    var Horror = Movie.filter((value) => value.Category === "Horror");
+    var Action = Movie.filter((value) => value.Category === "Action");
+    var Comedy = Movie.filter((value) => value.Category === "Comedy");
+    var Drama = Movie.filter((value) => value.Category === "Drama");
+    var Romance = Movie.filter((value) => value.Category === "Romance");
+    console.log(Action);
+    res.render("user/home", {
+      user: true,
+      Horror,
+      Action,
+      Comedy,
+      Drama,
+      Romance,
+    });
+  });
 });
 
 router.get("/login", (req, res) => {
@@ -152,10 +166,51 @@ router.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
+router.get("/movie/:id", verifyLogin, (req, res) => {
+  userHelpers.getMovieDetails(req.params.id).then((data) => {
+    var Movie = data.Movie;
+    var Owner = data.Owner;
+    var Show = data.Show;
+    console.log(Movie);
+    for (var i = 0; i < Show.length; i++) {
+      var date = new Date(Show[i].Date).toDateString();
+      var showDate = date.split(" ");
+      Show[i].Day = showDate[0];
+      Show[i].DayDate = showDate[2];
+      Show[i].Year = showDate[3];
+      Show[i].Month = showDate[1];
+    }
 
+    console.log(Show);
+    var showLength = Show.length;
+    console.log(showLength);
+    res.render("user/movie", { user: true, Movie, Owner, Show, showLength });
+  });
+});
 
+router.post("/show-submit", (req, res) => {
+  console.log(req.body);
+  res.json({ status: true });
+});
 
-router.get('/movie',verifyLogin,(req,res)=>{
-  res.render('user/movie',{user:true})
-})
+router.get("/seat-select/:id", (req, res) => {
+  userHelpers
+    .getShowScreen(req.params.id)
+    .then((data) => {
+      var Vip = data.Vip;
+      var Excecutive = data.Excecutive;
+      var Normal = data.Normal;
+      var Premium = data.Premium;
+      var screen = data.screen;
+      res.render("user/screen", {user:false, screen, Vip, Excecutive, Normal, Premium });
+    });
+});
+
+/*
+  userHelpers
+    .getShowScreen(req.body.id)
+    .then((screen, Vip, Excecutive, Normal, Premium) => {
+      res.render("user/screen", { screen, Vip, Excecutive, Normal, Premium });
+    });
+*/
 module.exports = router;

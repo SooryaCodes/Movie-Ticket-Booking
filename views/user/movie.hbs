@@ -1,118 +1,367 @@
-
-
-
-    <link rel="stylesheet" href="/stylesheets/user/movie.css">
+<link rel="stylesheet" href="/stylesheets/user/movie.css">
 
 
 
 
 
-    <div class="movie-view">
-        <div class="left-section">
-            <div class="movie-poster">
+<div class="movie-view">
+    <div class="left-section">
+        <div class="movie-poster">
 
-                <div class="card">
-                    <img src="https://cdn.shopify.com/s/files/1/0969/9128/products/Joker_-_Put_On_A_Happy_Face_-_Joaquin_Phoenix_-_Hollywood_English_Movie_Poster_3_1f3f78b1-3366-4394-a8b2-4d8431592dac.jpg?v=1579504957"
-                        alt="">
-                    <button class="rating-btn mask waves-effect waves-light rgba-white-slight"><i class="fa fa-star"
-                            aria-hidden="true"></i></button>
-                </div>
-            </div>
-            <div class="content">
-                <h1>Joker(2018)</h1>
-                <div class="rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star unselected"></i>
-                    <i class="fas fa-star unselected"></i>
-                </div>
-                <div class="movie-details">
-                    <p>Action Drama</p>
-                    <p>2H 20M</p>
-                    <p>2D</p>
-                    <p>English</p>
-                </div>
-                <p>Lorem ipsum dolor, sit amet dolor elit. Accusantium corrupti molestias officiis <br>eum unde
-                    blanditiis a eaque inventore amet aspernatur </p>
-                <h6>Director : <span class="director-cast"> John King</span></h6>
-                <h6>Cast : <span class="director-cast"> Sony | Ibrahim | Sukai </span></h6>
-                <div class="movie-button">
-                    <button class="trailer-btn mask waves-effect waves-light rgba-white-slight">
-                        <div id="bm"></div>
-                    </button>
-                    <button class="mask waves-effect waves-light rgba-white-slight">Book Now</button>
-                </div>
+            <div class="card">
+                <img src="/images/owner/movie/{{Movie._id}}.jpg" alt="">
+                <button class="rating-btn mask waves-effect waves-light rgba-white-slight"><i class="fa fa-star"
+                        aria-hidden="true"></i></button>
             </div>
         </div>
-        <div class="right-section">
-            <img src="https://i.ytimg.com/vi/nTVdN6s3rXY/maxresdefault.jpg"
-                alt="">
+        <div class="content">
+            <h1>{{Movie.Title}}({{Movie.Date}})</h1>
+            <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star unselected"></i>
+                <i class="fas fa-star unselected"></i>
+            </div>
+            <div class="movie-details">
+                <p>{{Movie.Category}}</p>
+                <p>{{Movie.Runtime}}</p>
+                <p>English</p>
+                <p>2D</p>
+            </div>
+            <p>Lorem ipsum dolor, sit amet dolor elit. Accusantium corrupti molestias officiis <br>eum unde
+                blanditiis a eaque inventore amet aspernatur </p>
+            <h6>Director : <span class="director-cast">{{Movie.Director}}</span></h6>
+            <h6>Cast : <span class="director-cast">{{Movie.Cast}}</span></h6>
+            <h6>Theater : <span class="director-cast">{{Owner.Theater}}</span></h6>
+            <div class="movie-button">
+                <button class="trailer-btn mask waves-effect waves-light rgba-white-slight">
+                    <div id="bm"></div>
+                </button>
+                <button class="mask waves-effect waves-light rgba-white-slight " onclick="checkDisabled()" id="book">
+                    Book Now
+                </button>
+            </div>
         </div>
+    </div>
+    <div class="right-section">
+        <img src="https://miro.medium.com/max/3200/1*YdW-g6mqSnnS5ogid99EYg.jpeg" alt="">
+    </div>
+</div>
+
+<button style="display: none;" disabled id="btn-n"></button>
+
+<!-- ---date--- -->
+{{#if Show}}
+<div class="date-wrapper">
+    <!-- Swiper -->
+    <div class="swiper-container date-slider">
+        <div class="swiper-wrapper">
+
+            {{#each Show}}
+
+            <div class="swiper-slide">
+                <input type="radio" name="Date" onchange="getValue(value)" value="{{this._id}}" id="date">
+                <label for="date" class="date">
+                    <span>{{this.Month}}</span>
+                    <p>{{this.DayDate}}</p>
+                    <span>{{this.Day}}</span>
+                </label>
+            </div>
+
+            {{/each}}
+
+
+        </div>
+        <!-- Add Arrows -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
     </div>
 
 
+</div>
+{{/if}}
+<script>
 
-
-
-
-
-
-
-
-
-
-    <!-- ---modal---- -->
-    <div class="trailer-wrapper">
-        <div class="trailer">
-            <iframe src="https://www.youtube.com/embed/zAGVQLHvwOY" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
-        </div>
-    </div>
-    <script>
-        var modal = document.querySelector('.trailer-wrapper')
-        var btn = document.querySelector('.trailer-btn')
-        btn.addEventListener('click', () => {
-            modal.classList.toggle('active')
-        })
-        modal.addEventListener('click', () => {
-            modal.classList.remove('active')
-        })
-    </script>
-    <!-- ---profile pop up --- -->
-    <script>
-        const profilePopUp = () => {
-            var btn = document.querySelector('.profile')
-            var popUp = document.querySelector('.profile-pop-up')
-            var down = document.querySelector('.down')
-
-
-            popUp.classList.toggle('active')
-            down.classList.toggle('down-active')
-
-
+</script>
+<script>
+    var show = {};
+    const getValue = (value) => {
+        document.getElementById('btn-n').disabled = false
+        show.id = value
+        console.log(a)
+        console.log(value)
+    }
+    const checkDisabled = () => {
+        var btn = document.getElementById('btn-n')
+        console.log('hey')
+        if (btn.disabled === true) {
+            console.log('hi')
+            alert('Select  Any Show to Continue')
+        } else {
+            $.ajax({
+                url: '/show-submit',
+                method: 'post',
+                data: show,
+                success: () => {
+                    location.href = "/seat-select/"+show.id
+                }
+            })
         }
+    }
 
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.5.9/lottie.js"></script>
-    <script>
-        var animation = bodymovin.loadAnimation({
-            container: document.getElementById('bm'),
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            path: '/javascripts/admin/user/lottieflow-play-06-ffffff-easey.json'
-        })
-    </script>
 
-    <!-- JQuery -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Bootstrap tooltips -->
-    <script>
-        // Tooltips Initialization
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
-   
+
+</script>
+
+<!-- <script>
+        const radioClicked = () => {
+            var input = document.getElementById('date')
+            alert("Hi there ")
+        }
+    </script> -->
+
+<!-- Swiper -->
+<div class="swiper-container movie">
+    <div class="category">
+        <p>Top Trends</p>
+    </div>
+    <div class="swiper-wrapper">
+
+
+
+
+
+        <div class="swiper-slide">
+            <!-- Swiper -->
+
+            <a href="">
+                <div class="card">
+                    <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/adventure-movie-poster-template-design-7b13ea2ab6f64c1ec9e1bb473f345547_screen.jpg?ts=1576732289"
+                        alt="">
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <div class="swiper-slide">
+            <!-- Swiper -->
+
+            <a href="">
+                <div class="card">
+                    <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/adventure-movie-poster-template-design-7b13ea2ab6f64c1ec9e1bb473f345547_screen.jpg?ts=1576732289"
+                        alt="">
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="swiper-slide">
+            <!-- Swiper -->
+
+            <a href="">
+                <div class="card">
+                    <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/adventure-movie-poster-template-design-7b13ea2ab6f64c1ec9e1bb473f345547_screen.jpg?ts=1576732289"
+                        alt="">
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="swiper-slide">
+            <!-- Swiper -->
+
+            <a href="">
+                <div class="card">
+                    <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/adventure-movie-poster-template-design-7b13ea2ab6f64c1ec9e1bb473f345547_screen.jpg?ts=1576732289"
+                        alt="">
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="swiper-slide">
+            <!-- Swiper -->
+
+            <a href="">
+                <div class="card">
+                    <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/adventure-movie-poster-template-design-7b13ea2ab6f64c1ec9e1bb473f345547_screen.jpg?ts=1576732289"
+                        alt="">
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="swiper-slide">
+            <!-- Swiper -->
+
+            <a href="">
+                <div class="card">
+                    <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/adventure-movie-poster-template-design-7b13ea2ab6f64c1ec9e1bb473f345547_screen.jpg?ts=1576732289"
+                        alt="">
+                </div>
+
+            </a>
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+
+<script>
+
+
+    var swiper = new Swiper('.swiper-container.date-slider', {
+        slidesPerView: 8,
+        spaceBetween: 10,
+        //   slidesPerGroup: 3,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+            // 550:{
+            //     slidesPerView:1,
+            //     spaceBetween:10
+            // },
+            300: {
+                slidesPerView: 3,
+                spaceBetween: 0,
+
+            },
+            550: {
+                slidesPerView: 4,
+            },
+            // when window width is >= 320px
+            622: {
+                slidesPerView: 5,
+                spaceBetween: 0
+            },
+
+            // when window width is >= 480px
+            966: {
+                slidesPerView: 4,
+                spaceBetween: 0
+            },
+            // when window width is >= 640px
+            1382: {
+                slidesPerView: 7,
+                spaceBetween: 0,
+            }
+        }
+    });
+</script>
+<script>
+    var swiper = new Swiper('.swiper-container.movie', {
+
+        // pagination: {
+        //     el: '.swiper-pagination',
+        //     clickable: true,
+        // },
+        // navigation: {
+        //     nextEl: '.swiper-button-next',
+        //     prevEl: '.swiper-button-prev',
+        // },
+
+        // Responsive breakpoints
+        breakpoints: {
+            // 550:{
+            //     slidesPerView:1,
+            //     spaceBetween:10
+            // },
+            300: {
+                slidesPerView: 3.3,
+                spaceBetween: 0,
+
+            },
+            550: {
+                slidesPerView: 4.5,
+                spaceBetween: 5,
+            },
+            // when window width is >= 320px
+            622: {
+                slidesPerView: 3.5,
+                spaceBetween: 20
+            },
+
+            // when window width is >= 480px
+            966: {
+                slidesPerView: 4.5,
+                spaceBetween: 30
+            },
+            // when window width is >= 640px
+            1382: {
+                slidesPerView: 6.5,
+                spaceBetween: 0
+            }
+        }
+    });
+</script>
+
+
+<!-- ---modal---- -->
+<div class="trailer-wrapper">
+    <div class="trailer">
+        <iframe src="{{Movie.Trailer}}" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+    </div>
+</div>
+<script>
+    var modal = document.querySelector('.trailer-wrapper')
+    var btn = document.querySelector('.trailer-btn')
+    btn.addEventListener('click', () => {
+        modal.classList.toggle('active')
+    })
+    modal.addEventListener('click', () => {
+        modal.classList.remove('active')
+    })
+</script>
+<!-- ---profile pop up --- -->
+<script>
+    const profilePopUp = () => {
+
+        var btn = document.querySelector('.profile')
+        var popUp = document.querySelector('.profile-pop-up')
+        var down = document.querySelector('.down')
+
+
+        popUp.classList.toggle('active')
+        down.classList.toggle('down-active')
+
+
+    }
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.5.9/lottie.js"></script>
+<script>
+    var animation = bodymovin.loadAnimation({
+        container: document.getElementById('bm'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/javascripts/admin/user/lottieflow-play-06-ffffff-easey.json'
+    })
+</script>

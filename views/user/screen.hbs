@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+</head>
+
+<body
+    style="width: 100%; height: 100vh;display: flex;align-items: center;justify-content: center; flex-direction: column;">
+    <div id="alert">
+
+    </div>
+    <p>Normal</p>
+    <div class="NContainer-fluid">
+
+    </div>
+    <p>Vip</p>
+    <div class="VContainer-fluid" style="margin-top: 20px;">
+
+    </div>
+    <p>Excecutive</p>
+
+    <div class="EContainer-fluid" style="margin-top: 10px;">
+
+    </div>
+
+    <p>Premium</p>
+    <div class="PContainer-fluid" style="margin-top: 10px;">
+
+    </div>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<input type="text" value="{{Vip.Row}}" name="VipRow" id="VipRow" hidden>
+<input type="text" value="{{Vip.Seat}}" name="VipSeat" id="VipSeat" hidden>
+<input type="text" value="{{Normal.Row}}" name="NormalRow" id="NormalRow" hidden>
+<input type="text" value="{{Normal.Seat}}" name="NormalSeat" id="NormalSeat" hidden>
+<input type="text" value="{{Excecutive.Row}}" name="ExcecutiveRow" id="ExcecutiveRow" hidden>
+<input type="text" value="{{Excecutive.Seat}}" name="ExcecutiveSeat" id="ExcecutiveSeat" hidden>
+<input type="text" value="{{Premium.Row}}" name="PremiumRow" id="PremiumRow" hidden>
+<input type="text" value="{{Premium.Seat}}" name="PremiumSeat" id="PremiumSeat" hidden>
+
+
+
+
+
+
+<script>
+
+    var VipRow = document.getElementById('VipRow').value;
+    var VipSeat = document.getElementById('VipSeat').value;
+    var NormalRow = document.getElementById('NormalRow').value;
+    var NormalSeat = document.getElementById('NormalSeat').value;
+    var ExcecutiveRow = document.getElementById('ExcecutiveRow').value;
+    var ExcecutiveSeat = document.getElementById('ExcecutiveSeat').value;
+    var PremiumRow = document.getElementById('PremiumRow').value;
+    var PremiumSeat = document.getElementById('PremiumSeat').value;
+
+    var Vip = {
+        Row: VipRow,
+        Seat: VipSeat,
+    }
+    var Normal = {
+        Row: NormalRow,
+        Seat: NormalSeat,
+    }
+    var Excecutive = {
+        Row: ExcecutiveRow,
+        Seat: ExcecutiveSeat,
+    }
+    var Premium = {
+        Row: PremiumRow,
+        Seat: PremiumSeat,
+    }
+
+
+    console.log(Vip, Excecutive, Premium, Normal)
+
+    //---normal seat---
+
+
+    function myfun(hi) {
+        console.log(hi)
+
+        var input = document.querySelector(`.${hi}`)
+
+        var alertContainer = document.getElementById('alert')
+        alertContainer.style.display = "flex"
+        if (input.checked === true) {
+            alertContainer.innerHTML += `<div class="alert alert-secondary ml-3 ${hi}" role="alert">
+            ${hi}
+            </div>`
+        } else {
+
+            document.querySelector(`.${hi}`).remove()
+
+        }
+
+    }
+
+
+
+    var NRowName = [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
+    ]
+    let NContainer = document.querySelector(".NContainer-fluid");
+    var row = Normal.Row;
+    var column = Normal.Seat;
+    for (let i = 1; i <= row; i++) {
+        let row = document.createElement("div");
+        for (let j = 1; j <= column; j++) {
+            Normal.NRowName = NRowName[i - 1];
+
+            row.innerHTML += ` <input value="${Normal.NRowName}-${j}" onclick="myfun(value)" name="${Normal.NRowName}-${j}"   class="${Normal.NRowName}-${j}"  type="checkbox">`;
+        }
+        NContainer.appendChild(row);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //---vip-seat---
+
+
+
+
+
+    var VRowName = [
+        "Vip-A",
+        "Vip-B",
+        "Vip-C",
+        "Vip-D",
+        "Vip-E",
+        "Vip-F",
+        "Vip-G",
+        "Vip-H",
+        "Vip-I",
+        "Vip-J",
+        "Vip-K",
+        "Vip-L",
+        "Vip-M",
+        "Vip-N",
+        "Vip-O",
+        "Vip-P",
+        "Vip-Q",
+        "Vip-R",
+        "Vip-S",
+        "Vip-T",
+        "Vip-U",
+        "Vip-V",
+        "Vip-W",
+        "Vip-X",
+        "Vip-Y",
+        "Vip-Z",
+    ]
+
+    let VContainer = document.querySelector(".VContainer-fluid");
+    var row = Vip.Row;
+    var column = Vip.Seat;
+    for (let i = 1; i <= row; i++) {
+        let row = document.createElement("div");
+        for (let j = 1; j <= column; j++) {
+            Vip.VRowName = VRowName[i - 1];
+
+            row.innerHTML += ` <input value="${Vip.VRowName}-${j}" name="${Vip.VRowName}-${j}" onclick="myfun(value)" class="${Vip.VRowName}-${j}" type="checkbox">`;
+        }
+        VContainer.appendChild(row);
+    }
+
+
+
+
+
+
+
+
+
+    //---excecutive-seat---
+
+
+
+
+
+    var ERowName = [
+        "Excecutive-A",
+        "Excecutive-B",
+        "Excecutive-C",
+        "Excecutive-D",
+        "Excecutive-E",
+        "Excecutive-F",
+        "Excecutive-G",
+        "Excecutive-H",
+        "Excecutive-I",
+        "Excecutive-J",
+        "Excecutive-K",
+        "Excecutive-L",
+        "Excecutive-M",
+        "Excecutive-N",
+        "Excecutive-O",
+        "Excecutive-P",
+        "Excecutive-Q",
+        "Excecutive-R",
+        "Excecutive-S",
+        "Excecutive-T",
+        "Excecutive-U",
+        "Excecutive-V",
+        "Excecutive-W",
+        "Excecutive-X",
+        "Excecutive-Y",
+        "Excecutive-Z",
+    ]
+
+    let EContainer = document.querySelector(".EContainer-fluid");
+    var row = Excecutive.Row;
+    var column = Excecutive.Seat;
+    for (let i = 1; i <= row; i++) {
+        let row = document.createElement("div");
+        for (let j = 1; j <= column; j++) {
+            Excecutive.ERowName = ERowName[i - 1];
+
+            row.innerHTML += ` <input value="${Excecutive.ERowName}-${j}" name="${Excecutive.ERowName}-${j}" onclick="myfun(value)" class="${Excecutive.ERowName}-${j}" type="checkbox">`;
+        }
+        EContainer.appendChild(row);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //---vip-seat---
+
+
+
+
+
+    var PRowName = [
+        "Premium-A",
+        "Premium-B",
+        "Premium-C",
+        "Premium-D",
+        "Premium-E",
+        "Premium-F",
+        "Premium-G",
+        "Premium-H",
+        "Premium-I",
+        "Premium-J",
+        "Premium-K",
+        "Premium-L",
+        "Premium-M",
+        "Premium-N",
+        "Premium-O",
+        "Premium-P",
+        "Premium-Q",
+        "Premium-R",
+        "Premium-S",
+        "Premium-T",
+        "Premium-U",
+        "Premium-V",
+        "Premium-W",
+        "Premium-X",
+        "Premium-Y",
+        "Premium-Z",
+    ]
+
+    let PContainer = document.querySelector(".PContainer-fluid");
+    var row = Premium.Row;
+    var column = Premium.Seat;
+    for (let i = 1; i <= row; i++) {
+        let row = document.createElement("div")
+        for (let j = 1; j <= column; j++) {
+            Premium.PRowName = PRowName[i - 1];
+            row.innerHTML += ` <input value="${Premium.PRowName}-${j}" name="${Premium.PRowName}-${j}" onclick="myfun(value)"  class="${Premium.PRowName}-${j}" type="checkbox">`;
+        }
+        PContainer.appendChild(row);
+    }
+
+
+
+</script>

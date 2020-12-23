@@ -224,9 +224,7 @@ input:focus {
   }
 }
 @media screen and (max-width: 484px) {
-  .nav-bar {
-    height: 40px;
-  }
+
   .home-image-slider,
   .swiper-container.home,
   .swiper-container.home .swiper-slide,
@@ -235,9 +233,7 @@ input:focus {
   }
 }
 @media screen and (max-width: 350px) {
-  .nav-bar {
-    height: 40px;
-  }
+ 
   .home-image-slider,
   .swiper-container.home,
   .swiper-container.home .swiper-slide,
