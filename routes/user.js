@@ -202,7 +202,7 @@ router.get("/seat-select/:id", (req, res) => {
       var Normal = data.Normal;
       var Premium = data.Premium;
       var screen = data.screen;
-      res.render("user/screen", {user:false, screen, Vip, Excecutive, Normal, Premium });
+      res.render("user/screen", {user:true, screen, Vip, Excecutive, Normal, Premium });
     });
 });
 
