@@ -29,28 +29,42 @@ console.log(Vip, Excecutive, Premium, Normal);
 //---normal seat---
 
 function myfun(hi) {
-  var container = document.querySelector(".seat-show-wrapper");
-  var swiperWrapper=document.querySelector('.swiper-wrapper')
-  var input = document.querySelector(`.${hi}`);
-  if (input.checked === true) {
-    swiperWrapper.innerHTML += `
-            <div class="swiper-slide">
-            <div class="seat-show ${hi + hi}" >
-  ${hi}
-</div>
-</div>
-`;
-  } else {
-    var removeAlert = document.querySelector(`.${hi + hi}`);
-    removeAlert.remove();
-  }
+  var checkedSeat = document.querySelectorAll('input[name="seat"]:checked');
+  var unselected = document.querySelectorAll('input[name="seat"]:not(:checked)');
+  var AllSeat = document.querySelectorAll('input[name="seat"]');
 
-  console.log(container.childElementCount);
-  if (container.childElementCount > 1) {
-    container.classList.add("active");
-  } else {
-    container.classList.remove("active");
-    console.log("hi there is nothing");
+  if (checkedSeat.length > 10) {
+    unselected.forEach((value) => (value.disabled = true));
+    var name=document.getElementById('username').value
+    console.log(name);
+    document.querySelector(
+      ".alerts"
+    ).innerHTML += `<div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
+    <strong>Hi ${name}.</strong> Reached The Limit! You Can't Select Seat Any More..
+  </div>`;
+  } else if(checkedSeat.length <= 10){
+    unselected.forEach((value) => (value.disabled = false));
+
+    var wrapper = document.querySelector(".seat-show-wrapper");
+    var input = document.querySelector(`.${hi}`);
+    if (input.checked === true) {
+      wrapper.innerHTML += `
+    <div class="seat-show ${hi + hi}" >
+    ${hi}
+    </div>
+`;
+    } else {
+      var removeAlert = document.querySelector(`.${hi + hi}`);
+      removeAlert.remove();
+    }
+
+    console.log(wrapper.childElementCount);
+    if (wrapper.childElementCount > 1) {
+      wrapper.classList.add("active");
+    } else {
+      wrapper.classList.remove("active");
+      console.log("hi there is nothing");
+    }
   }
 }
 
@@ -90,9 +104,9 @@ for (let i = 1; i <= row; i++) {
   for (let j = 1; j <= column; j++) {
     Normal.NRowName = NRowName[i - 1];
 
-    row.innerHTML += ` 
+    row.innerHTML += `
             <div class="seat">
-<input value="${Normal.NRowName}-${j}" onclick="myfun(value)" name="${Normal.NRowName}-${j}"   class="${Normal.NRowName}-${j}"  type="checkbox" id="${Normal.NRowName}-${j}">
+<input value="${Normal.NRowName}-${j}" onclick="myfun(value)" name="seat"  class="${Normal.NRowName}-${j}"  type="checkbox" id="${Normal.NRowName}-${j}">
                 <label for="${Normal.NRowName}-${j}"></label>
             </div>
             `;
@@ -141,7 +155,7 @@ for (let i = 1; i <= row; i++) {
 
     row.innerHTML += ` 
             <div class="seat">
-             <input value="${Vip.VRowName}-${j}" name="${Vip.VRowName}-${j}" onclick="myfun(value)" class="${Vip.VRowName}-${j}" id="${Vip.VRowName}-${j}" type="checkbox">
+             <input value="${Vip.VRowName}-${j}" name="seat"  onclick="myfun(value)" class="${Vip.VRowName}-${j}" id="${Vip.VRowName}-${j}" type="checkbox">
                 <label for="${Vip.VRowName}-${j}"></label>
             </div>
             `;
@@ -190,7 +204,7 @@ for (let i = 1; i <= row; i++) {
 
     row.innerHTML += `
                         <div class="seat">
-             <input value="${Excecutive.ERowName}-${j}" name="${Excecutive.ERowName}-${j}" onclick="myfun(value)" class="${Excecutive.ERowName}-${j}" id="${Excecutive.ERowName}-${j}" type="checkbox">
+             <input value="${Excecutive.ERowName}-${j}" name="seat" onclick="myfun(value)" class="${Excecutive.ERowName}-${j}" id="${Excecutive.ERowName}-${j}" type="checkbox">
                 <label for="${Excecutive.ERowName}-${j}"></label>
             </div>`;
   }
@@ -237,54 +251,10 @@ for (let i = 1; i <= row; i++) {
     Premium.PRowName = PRowName[i - 1];
     row.innerHTML += ` 
              <div class="seat">
-            <input value="${Premium.PRowName}-${j}" name="${Premium.PRowName}-${j}" onclick="myfun(value)"  class="${Premium.PRowName}-${j}" type="checkbox" id="${Premium.PRowName}-${j}">
+            <input value="${Premium.PRowName}-${j}" name="seat" onclick="myfun(value)"  class="${Premium.PRowName}-${j}" type="checkbox" id="${Premium.PRowName}-${j}">
                 <label for="${Premium.PRowName}-${j}"></label>
             </div>
             `;
   }
   PContainer.appendChild(row);
 }
-
-
-var swiper = new Swiper(".swiper-container.seat-slider", {
-  slidesPerView: 8,
-  spaceBetween: 10,
-  //   slidesPerGroup: 3,
-  pagination: {
-    el: ".swiper-pagination",
-    clickable: true,
-  },
-  navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-  },
-  breakpoints: {
-    // 550:{
-    //     slidesPerView:1,
-    //     spaceBetween:10
-    // },
-    300: {
-      slidesPerView: 3,
-      spaceBetween: 0,
-    },
-    550: {
-      slidesPerView: 4,
-    },
-    // when window width is >= 320px
-    622: {
-      slidesPerView: 5,
-      spaceBetween: 0,
-    },
-
-    // when window width is >= 480px
-    966: {
-      slidesPerView: 4,
-      spaceBetween: 0,
-    },
-    // when window width is >= 640px
-    1382: {
-      slidesPerView: 7,
-      spaceBetween: 0,
-    },
-  },
-});

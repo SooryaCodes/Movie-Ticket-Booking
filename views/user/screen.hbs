@@ -1,5 +1,9 @@
 <link rel="stylesheet" href="/stylesheets/user/screen.css">
 <!--Screen-->
+
+<div class="alerts " style="margin-top: 80px;">
+
+</div>
 <div class="screen">
     <div></div>
 </div>
@@ -39,21 +43,16 @@
 </div>
 
 
-    <div class="seat-show-wrapper">
-<div class="swiper-container seat-slider">
-        <div class="swiper-wrapper">
+<div class=" seat-show-wrapper">
 
-        </div>
 
+    <div class="checkout">
+    <p>Total : ₹200</p>
+
+    <button class="mask waves-effect waves-light rgba-white-slight">Checkout</button>
+</div>
 </div>
 
-        <div class="checkout">
-            <p>Total : ₹200</p>
-
-            <button class="mask waves-effect waves-light rgba-white-slight">Checkout</button>
-        </div>
-
-    </div>
 
 
 
@@ -67,16 +66,19 @@
 
 
 
-    <input type="text" value="{{Vip.Row}}" name="VipRow" id="VipRow" hidden>
-    <input type="text" value="{{Vip.Seat}}" name="VipSeat" id="VipSeat" hidden>
-    <input type="text" value="{{Normal.Row}}" name="NormalRow" id="NormalRow" hidden>
-    <input type="text" value="{{Normal.Seat}}" name="NormalSeat" id="NormalSeat" hidden>
-    <input type="text" value="{{Excecutive.Row}}" name="ExcecutiveRow" id="ExcecutiveRow" hidden>
-    <input type="text" value="{{Excecutive.Seat}}" name="ExcecutiveSeat" id="ExcecutiveSeat" hidden>
-    <input type="text" value="{{Premium.Row}}" name="PremiumRow" id="PremiumRow" hidden>
-    <input type="text" value="{{Premium.Seat}}" name="PremiumSeat" id="PremiumSeat" hidden>
-
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 
-    <script src="/javascripts/admin/user/screen.js"></script>
+
+<input type="text" value="{{Vip.Row}}" name="VipRow" id="VipRow" hidden>
+<input type="text" value="{{Vip.Seat}}" name="VipSeat" id="VipSeat" hidden>
+<input type="text" value="{{Normal.Row}}" name="NormalRow" id="NormalRow" hidden>
+<input type="text" value="{{Normal.Seat}}" name="NormalSeat" id="NormalSeat" hidden>
+<input type="text" value="{{Excecutive.Row}}" name="ExcecutiveRow" id="ExcecutiveRow" hidden>
+<input type="text" value="{{Excecutive.Seat}}" name="ExcecutiveSeat" id="ExcecutiveSeat" hidden>
+<input type="text" value="{{Premium.Row}}" name="PremiumRow" id="PremiumRow" hidden>
+<input type="text" value="{{Premium.Seat}}" name="PremiumSeat" id="PremiumSeat" hidden>
+<input type="text" value="{{user}}" name="" id="username" hidden>
+
+
+
+<script src="/javascripts/admin/user/screen.js"></script>

@@ -193,7 +193,7 @@ router.post("/show-submit", (req, res) => {
   res.json({ status: true });
 });
 
-router.get("/seat-select/:id", (req, res) => {
+router.get("/seat-select/:id", verifyLogin,(req, res) => {
   userHelpers
     .getShowScreen(req.params.id)
     .then((data) => {
@@ -202,7 +202,7 @@ router.get("/seat-select/:id", (req, res) => {
       var Normal = data.Normal;
       var Premium = data.Premium;
       var screen = data.screen;
-      res.render("user/screen", {user:true, screen, Vip, Excecutive, Normal, Premium });
+      res.render("user/screen", {user:true, screen, Vip, Excecutive, Normal, Premium,user:req.user.Name });
     });
 });
 
