@@ -47,8 +47,13 @@
 
     </div>
 </div>
+<script src="/javascripts/admin/cropper/cropper.js"></script>
 
 <script>
+
+
+
+
     var image = document.querySelector('#image')
     const change = (event) => {
         var files = event.target.files;
@@ -57,7 +62,6 @@
                     image.src = URL.createObjectURL(files[0])
 
     }
-
 
 
 
@@ -80,6 +84,7 @@
         context.fill();
         return canvas;
     }
+    
     if (image) {
 
         image.addEventListener('load', function () {
@@ -181,4 +186,3 @@ setTimeout(function(){
 
 </script>
 
-<script src="/javascripts/admin/cropper/cropper.js"></script>

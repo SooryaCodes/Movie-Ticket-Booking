@@ -4,7 +4,13 @@ const bcrypt = require("bcrypt");
 const { response } = require("express");
 const { search } = require("../routes/admin");
 const objectId = require("mongodb").ObjectID;
-
+require("dotenv").config();
+var Razorpay=require('razorpay');
+const { readlink } = require("fs");
+var instance = new Razorpay({
+  key_id: process.env.RAZORPAY_ID,
+  key_secret: process.env.RAZORPAY_SECRET,
+});
 module.exports = {
   checkLogin: (mobile) => {
     return new Promise(async (resolve, reject) => {
@@ -73,9 +79,7 @@ module.exports = {
         .get()
         .collection(collection.SHOW_COLLECTION)
         .findOne({ _id: objectId(id) });
-      console.log(show);
       var screen=await db.get().collection(collection.SCREEN_COLLECTION).findOne({_id:objectId(show.screenId)})
-      console.log(screen);
       var Vip={
         Row:screen.vipRows,
         Seat:screen.vipSeats
@@ -92,8 +96,62 @@ module.exports = {
         Row:screen.excecutiveRows,
         Seat:screen.excecutiveSeats
       }
-resolve({screen,Vip,Excecutive,Normal,Premium})
+resolve({screen,Vip,Excecutive,Normal,Premium,show})
       
     });
   },
+
+  generateRazorpay:(data,userId)=>{
+
+    return new Promise (async(resolve,reject)=>{
+      console.log(data,userId);
+
+var details={}
+
+details.Amount=data.total
+details.Seat=data.seat
+details.userId=userId
+details.Show=data.show
+
+console.log(details,"details");
+
+var booking=await db.get().collection(collection.BOOKING_COLLECTION).insertOne(details)
+
+var bookingId=booking.ops[0]._id
+
+
+      var options = {
+        amount: details.Amount*100,  // amount in the smallest currency unit
+        currency: "INR",
+        receipt: ""+bookingId
+      };
+      console.log(options);
+      instance.orders.create(options, function(err, order) {
+        
+        if(err){
+        console.log(err);
+        }else{
+
+          console.log(order);
+          resolve(order)
+        }
+
+      });
+
+    })
+  },
+  verifyPayment:(details)=>{
+    return new Promise((resolve,reject)=>{
+      const crypto = require('crypto');
+      var hash = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET)
+
+      hash.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]'])
+      hash=hash.digest('hex')
+      if(hash===details['payment[razorpay_signature]']){
+        resolve()
+      }else{
+        reject()
+      }
+    })
+  }
 };

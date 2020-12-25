@@ -47,22 +47,42 @@
 
 
     <div class="checkout">
-    <p>Total : ₹200</p>
+        <p id="total"></p>
 
-    <button class="mask waves-effect waves-light rgba-white-slight">Checkout</button>
+        <button class="mask waves-effect waves-light rgba-white-slight" id="checkout">Checkout</button>
+    </div>
 </div>
+
+
+
+
+
+
+
+
+<div class="payment-popup">
+    <div class="details">
+        <img src="/images/owner/movie/{{data.show.Movie}}.jpg" alt="">
+        <div class="content ">
+            <p>Seats :</p>
+            <p id="seatNo">20</p>
+        </div>
+        <div class="content content1">
+            <p>Screen :</p>
+            <p id="screenName">Audi 1</p>
+        </div>
+        <div class="content ">
+            <span>Total :</span>
+            <span id="totalAmount"></span>
+        </div>
+        <div class="pay">
+            <input type="submit" name="Payment-method" onclick="payment(value)" id="rzp-button1" value="Razorpay">
+            <p>or</p>
+            <input type="submit" name="Payment-method" onclick="payment(value)" class="p" value="Paypal">
+        </div>
+    </div>
+
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -79,6 +99,20 @@
 <input type="text" value="{{Premium.Seat}}" name="PremiumSeat" id="PremiumSeat" hidden>
 <input type="text" value="{{user}}" name="" id="username" hidden>
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+<script>
+    var show={}
 
+    show.Vip = parseInt('{{data.show.Vip}}')
+    show.Excecutive = parseInt('{{data.show.Excecutive}}')
+    show.Premium = parseInt('{{data.show.Premium}}')
+    show.Normal = parseInt('{{data.show.Normal}}')
+    show._id = '{{data.show._id}}'
+    show.Movie = '{{data.show.Movie}}'
+
+    show.screenName = '{{screen.Name}}'
+    console.log(show)
+
+</script>
 <script src="/javascripts/admin/user/screen.js"></script>

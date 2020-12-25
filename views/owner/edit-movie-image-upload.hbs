@@ -47,6 +47,7 @@
 
     </div>
 </div>
+<script src="/javascripts/admin/cropper/cropper.js"></script>
 
 <script>
     var image = document.querySelector('#image')
@@ -64,8 +65,8 @@
 
 
 
-
     function getRoundedCanvas(sourceCanvas) {          
+console.log('heyyy')
 
         var canvas = document.createElement('canvas');
         var context = canvas.getContext('2d');
@@ -82,6 +83,7 @@
         return canvas;
     }
     if (image) {
+console.log('heyyy')
 
         image.addEventListener('load', function () {
             var image = document.getElementById('image');
@@ -117,6 +119,7 @@ swal({
   icon: "success",
   button:false
 });  
+
 setTimeout(function(){
  location.href="/owner/movies";
 },2000)
@@ -182,4 +185,3 @@ setTimeout(function(){
 
 </script>
 
-<script src="/javascripts/admin/cropper/cropper.js"></script>
