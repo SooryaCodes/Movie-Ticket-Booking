@@ -191,8 +191,8 @@ function payment(paymentMethod) {
         razorpayPayment(response);
         console.log(response,"response");
         // alert('success')
-      } else if(response.Paypal===true){
-
+      }else{
+        location.href=response
       }
     },
   });

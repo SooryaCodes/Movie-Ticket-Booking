@@ -5,8 +5,9 @@ const { response } = require("express");
 const { search } = require("../routes/admin");
 const objectId = require("mongodb").ObjectID;
 require("dotenv").config();
-var Razorpay=require('razorpay');
+var Razorpay = require("razorpay");
 const { readlink } = require("fs");
+const { resolve } = require("path");
 var instance = new Razorpay({
   key_id: process.env.RAZORPAY_ID,
   key_secret: process.env.RAZORPAY_SECRET,
@@ -79,104 +80,172 @@ module.exports = {
         .get()
         .collection(collection.SHOW_COLLECTION)
         .findOne({ _id: objectId(id) });
-      var screen=await db.get().collection(collection.SCREEN_COLLECTION).findOne({_id:objectId(show.screenId)})
-      var Vip={
-        Row:screen.vipRows,
-        Seat:screen.vipSeats
-      }
-      var Premium={
-        Row:screen.premiumRows,
-        Seat:screen.premiumSeats
-      }
-      var Normal={
-        Row:screen.normalRows,
-        Seat:screen.normalSeats
-      }
-      var Excecutive={
-        Row:screen.excecutiveRows,
-        Seat:screen.excecutiveSeats
-      }
-resolve({screen,Vip,Excecutive,Normal,Premium,show})
-      
+      var screen = await db
+        .get()
+        .collection(collection.SCREEN_COLLECTION)
+        .findOne({ _id: objectId(show.screenId) });
+      var Vip = {
+        Row: screen.vipRows,
+        Seat: screen.vipSeats,
+      };
+      var Premium = {
+        Row: screen.premiumRows,
+        Seat: screen.premiumSeats,
+      };
+      var Normal = {
+        Row: screen.normalRows,
+        Seat: screen.normalSeats,
+      };
+      var Excecutive = {
+        Row: screen.excecutiveRows,
+        Seat: screen.excecutiveSeats,
+      };
+      resolve({ screen, Vip, Excecutive, Normal, Premium, show });
     });
   },
 
-  generateRazorpay:(data,userId)=>{
+  generateRazorpay: (data, userId) => {
+    return new Promise(async (resolve, reject) => {
+      console.log(data, userId);
 
-    return new Promise (async(resolve,reject)=>{
-      console.log(data,userId);
+      var details = {};
 
-var details={}
+      details.Amount = data.total;
+      details.Seat = data.seat;
+      details.userId = userId;
+      details.Show = data.show;
+      console.log(data.show, "shoe");
+      console.log(details, "details");
+      var showCollection = await db
+        .get()
+        .collection(collection.SHOW_COLLECTION)
+        .updateOne(
+          { _id: objectId(data.show._id) },
+          {
+            $push: {
+              Seats: details.Seat,
+            },
+          }
+        );
+      var booking = await db
+        .get()
+        .collection(collection.BOOKING_COLLECTION)
+        .insertOne(details);
 
-details.Amount=data.total
-details.Seat=data.seat
-details.userId=userId
-details.Show=data.show
-console.log(data.show,"shoe");
-console.log(details,"details");
-var showCollection=await db.get().collection(collection.SHOW_COLLECTION).updateOne({_id:objectId(data.show._id)},{
- $push:{
-   Seats:details.Seat
- }
-})
-var booking=await db.get().collection(collection.BOOKING_COLLECTION).insertOne(details)
-
-var bookingId=booking.ops[0]._id
-
+      var bookingId = booking.ops[0]._id;
 
       var options = {
-        amount: details.Amount*100,  // amount in the smallest currency unit
+        amount: details.Amount * 100, // amount in the smallest currency unit
         currency: "INR",
-        receipt: ""+bookingId
+        receipt: "" + bookingId,
       };
       console.log(options);
-      instance.orders.create(options, function(err, order) {
-        
-        if(err){
-        console.log(err);
-        }else{
-
+      instance.orders.create(options, function (err, order) {
+        if (err) {
+          console.log(err);
+        } else {
           console.log(order);
-          resolve(order)
+          resolve(order);
         }
+      });
+    });
+  },
 
+  insertBooking: (data, userId) => {
+    return new Promise(async (resolve, reject) => {
+      console.log(data, userId);
+
+      var details = {};
+
+      details.Amount = data.total;
+      details.Seat = data.seat;
+      details.userId = userId;
+      details.Show = data.show;
+
+      console.log(details, "details");
+
+      var booking = await db
+        .get()
+        .collection(collection.BOOKING_COLLECTION)
+        .insertOne(details);
+
+      var bookingId = booking.ops[0]._id;
+      resolve(details);
+    });
+  },
+  verifyPayment: (details) => {
+    return new Promise((resolve, reject) => {
+      const crypto = require("crypto");
+      var hash = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET);
+
+      hash.update(
+        details["payment[razorpay_order_id]"] +
+          "|" +
+          details["payment[razorpay_payment_id]"]
+      );
+      hash = hash.digest("hex");
+      if (hash === details["payment[razorpay_signature]"]) {
+        resolve();
+      } else {
+        reject();
+      }
+    });
+  },
+  generatePaypal: (order, id) => {
+    return new Promise((resolve, reject) => {
+      console.log(order);
+      var average=order.Show.Vip+order.Show.Excecutive+order.Show.Premium+order.Show.Normal
+      // console.log(average);
+      var paypal = require("paypal-rest-sdk");
+      paypal.configure({
+        mode: "sandbox", //sandbox or live
+        client_id: process.env.PAYPAL_CLIENT_ID,
+        client_secret: process.env.PAYPAL_SECRET,
+      });
+      console.log(order.Amount);
+      var create_payment_json = {
+        intent: "sale",
+        payer: {
+          payment_method: "paypal",
+        },
+        redirect_urls: {
+          return_url: "http://localhost:3000",
+          cancel_url: "http://localhost:3000/failure",
+        },
+        transactions: [
+          {
+            item_list: {
+              items: [
+                {
+                  name: "Movie Ticket",
+                  sku: "Tickets",
+                  price: average/4,
+                  currency: "INR",
+                  quantity: order.Seat.length,
+                },
+              ],
+            },
+            amount: {
+              currency: "INR",
+              total: order.Amount,
+            },
+            description: "This is the payment description.",
+          },
+        ],
+      };
+
+      paypal.payment.create(create_payment_json, function (error, payment) {
+        if (error) {
+          console.log(error);
+          throw error;
+        } else {
+          console.log("Create Payment Response");
+          // console.log(payment);
+          resolve(payment);
+        }
       });
 
-    })
+      
+    });
   },
-
-  insertBooking:(data,userId)=>{
-
-    return new Promise (async(resolve,reject)=>{
-      console.log(data,userId);
-
-var details={}
-
-details.Amount=data.total
-details.Seat=data.seat
-details.userId=userId
-details.Show=data.show
-
-console.log(details,"details");
-
-var booking=await db.get().collection(collection.BOOKING_COLLECTION).insertOne(details)
-
-var bookingId=booking.ops[0]._id
-resolve(bookingId)
-    })
-  },
-  verifyPayment:(details)=>{
-    return new Promise((resolve,reject)=>{
-      const crypto = require('crypto');
-      var hash = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET)
-
-      hash.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]'])
-      hash=hash.digest('hex')
-      if(hash===details['payment[razorpay_signature]']){
-        resolve()
-      }else{
-        reject()
-      }
-    })
-  }
 };

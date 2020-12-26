@@ -5,14 +5,8 @@ require("dotenv").config();
 var ErrMessage = {};
 const userHelpers = require("../helpers/user-helpers");
 var passport = require("passport");
-const { ObjectId } = require("mongodb");
-const { route } = require("./admin");
-var paypal=require('paypal-rest-sdk')
-paypal.configure({
-  'mode': 'sandbox', //sandbox or live
-  'client_id': process.env.PAYPAL_CLIENT_ID,
-  'client_secret': process.env.PAYPAL_SECRET
-});
+
+
 
 /* GET users listing. */
 var client = require("twilio")(
@@ -241,9 +235,12 @@ data.Razorpay=true
   })
 }else if(req.body.paymentMethod==="Paypal"){
   
-  userHelpers.insertBooking(req.body,req.user._id).then((id)=>{
-
-
+  userHelpers.insertBooking(req.body,req.user._id).then((data)=>{
+    userHelpers.generatePaypal(data).then((response)=>{
+      console.log(response.transactions[0].amount,"response");
+      // console.log(,"response");
+      res.json(response.links[1].href);
+    })
   })
 
 }
@@ -260,7 +257,13 @@ router.post('/verify-payment',(req,res)=>{
   })
   console.log('hey')
 })
+router.get('/success',(req,res)=>{
+  res.send('Success')
+})
 
+router.get('/failure',(req,res)=>{
+  res.send('failure')
+})
 
 
 module.exports = router;
