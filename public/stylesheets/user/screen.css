@@ -138,6 +138,11 @@
     background: rgb(145, 149, 190);
     border: none;
   }
+.Reserved-Seat label{
+  background: rgb(145, 149, 190);
+  border: none;
+
+}
   
   @media screen and (max-width: 1156px) {
     .NContainer,.VContainer,.EContainer,.PContainer {
@@ -397,13 +402,15 @@ flex-direction: column;
   border-bottom:1px solid rgb(197, 197, 197) ;
 }
 .pay input{
-  outline: none;
-  width: 190px;
-  height: 45px;
   border: none;
-  background: #5ca5e9;
-  color: white;
-  border-radius:30px;
+  width: 180px;
+  height: 45px;
+  color: rgb(211, 211, 211);
+  background: rgb(128, 130, 189);
+  box-shadow: 0px 0px 10px rgb(114, 116, 190);;
+  font-size: 15px;
+  border-radius: 30px;
+  outline: none ;
 }
 .pay{
   margin-top: 70px;

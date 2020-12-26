@@ -13,6 +13,7 @@ paypal.configure({
   'client_id': process.env.PAYPAL_CLIENT_ID,
   'client_secret': process.env.PAYPAL_SECRET
 });
+
 /* GET users listing. */
 var client = require("twilio")(
   process.env.TWILIO_ACCOUNT_ID,
@@ -208,7 +209,8 @@ router.get("/seat-select/:id", verifyLogin, (req, res) => {
     var Normal = data.Normal;
     var Premium = data.Premium;
     var screen = data.screen;
-
+var bookedSeats=data.show.Seats
+console.log(bookedSeats);
     console.log(screen,"scrreeen cchekibb");
     res.render("user/screen", {
       user: true,
@@ -218,6 +220,7 @@ router.get("/seat-select/:id", verifyLogin, (req, res) => {
       Normal,
       Premium,
       data,
+      bookedSeats,
       user: req.user.Name,
     });
     
@@ -233,90 +236,23 @@ router.post('/ticket-booking',(req,res)=>{
 if(req.body.paymentMethod==="Razorpay"){
 
   userHelpers.generateRazorpay(req.body,req.user._id).then((data)=>{
-
+data.Razorpay=true
     res.json(data)
   })
-
 }else if(req.body.paymentMethod==="Paypal"){
   
+  userHelpers.insertBooking(req.body,req.user._id).then((id)=>{
 
 
+  })
 
-  console.log(req.body);
-}else{
+}
+else{
   res.json({status:false})
 }
 
 })
-router.get('/pay',(req,res)=>{
-  res.render('user/sample1')
-})
-router.post('/pay', (req, res) => {
-  const create_payment_json = {
-    "intent": "sale",
-    "payer": {
-        "payment_method": "paypal"
-    },
-    "redirect_urls": {
-        "return_url": "http://localhost:3000/success",
-        "cancel_url": "http://localhost:3000/cancel"
-    },
-    "transactions": [{
-        "item_list": {
-            "items": [{
-                "name": "Red Sox Hat",
-                "sku": "001",
-                "price": "25.00",
-                "currency": "USD",
-                "quantity": 1
-            }]
-        },
-        "amount": {
-            "currency": "USD",
-            "total": "25.00"
-        },
-        "description": "Hat for the best team ever"
-    }]
-};
 
-paypal.payment.create(create_payment_json, function (error, payment) {
-  if (error) {
-      throw error;
-  } else {
-      for(let i = 0;i < payment.links.length;i++){
-        if(payment.links[i].rel === 'approval_url'){
-          res.redirect(payment.links[i].href);
-        }
-      }
-  }
-});
-
-});
-
-router.get('/success', (req, res) => {
-  const payerId = req.query.PayerID;
-  const paymentId = req.query.paymentId;
-
-  const execute_payment_json = {
-    "payer_id": payerId,
-    "transactions": [{
-        "amount": {
-            "currency": "USD",
-            "total": "25.00"
-        }
-    }]
-  };
-
-  paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
-    if (error) {
-        console.log(error.response);
-        throw error;
-    } else {
-        console.log(JSON.stringify(payment));
-        res.send('Success');
-    }
-});
-});
 router.post('/verify-payment',(req,res)=>{
   console.log(req.body);
   userHelpers.verifyPayment(req.body).then((response)=>{
@@ -324,11 +260,7 @@ router.post('/verify-payment',(req,res)=>{
   })
   console.log('hey')
 })
-/*
-  userHelpers
-    .getShowScreen(req.body.id)
-    .then((screen, Vip, Excecutive, Normal, Premium) => {
-      res.render("user/screen", { screen, Vip, Excecutive, Normal, Premium });
-    });
-*/
+
+
+
 module.exports = router;

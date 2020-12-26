@@ -56,10 +56,6 @@
 
 
 
-
-
-
-
 <div class="payment-popup">
     <div class="details">
         <img src="/images/owner/movie/{{data.show.Movie}}.jpg" alt="">
@@ -76,9 +72,12 @@
             <span id="totalAmount"></span>
         </div>
         <div class="pay">
-            <input type="submit" name="Payment-method" onclick="payment(value)" id="rzp-button1" value="Razorpay">
-            <p>or</p>
-            <input type="submit" name="Payment-method" onclick="payment(value)" class="p" value="Paypal">
+            <input type="submit" class="mask waves-effect waves-light rgba-white-slight" name="Payment-method" onclick="payment(value)" id="rzp-button1" value="Razorpay">
+            
+            {{!-- <p>or</p> --}}
+<div id="paypal-btn" onclick="payment('Paypal')">
+    
+</div>
         </div>
     </div>
 
@@ -98,21 +97,56 @@
 <input type="text" value="{{Premium.Row}}" name="PremiumRow" id="PremiumRow" hidden>
 <input type="text" value="{{Premium.Seat}}" name="PremiumSeat" id="PremiumSeat" hidden>
 <input type="text" value="{{user}}" name="" id="username" hidden>
+<input type="text" value="{{bookedSeats}}" name="" id="BookedSeats" hidden>
+
+{{!-- 
+<script src="https://www.paypal.com/sdk/js?client-id=AagjDkOzi5Ddv2_uDovUf2NF1Ph3bnpFf-3JQ9UhbAd8PHSAr9swPWU7GUy2Qq2jzE3UnuJAsf84X9nT&disable-funding=credit,card"></script>
+<script>paypal.Buttons({
+    style : {
+        color: 'blue',
+        shape: 'pill'
+    },
+    createOrder: function (data, actions) {
+        return actions.order.create({
+            purchase_units : [{
+                amount: {
+                    value: '0.1'
+                }
+            }]
+        });
+    },
+    onApprove: function (data, actions) {
+        return actions.order.capture().then(function (details) {
+            console.log(details)
+            window.location.replace("http://localhost:3000")
+        })
+    },
+    onCancel: function (data) {
+        window.location.replace("http://localhost:3000")
+    }
+    }).render('#paypal-btn');</script> --}}
+
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+
+
+
+
+
+
+
+
+
 <script>
     var show={}
-
     show.Vip = parseInt('{{data.show.Vip}}')
     show.Excecutive = parseInt('{{data.show.Excecutive}}')
     show.Premium = parseInt('{{data.show.Premium}}')
     show.Normal = parseInt('{{data.show.Normal}}')
     show._id = '{{data.show._id}}'
     show.Movie = '{{data.show.Movie}}'
-
     show.screenName = '{{screen.Name}}'
-    console.log(show)
 
 </script>
 <script src="/javascripts/admin/user/screen.js"></script>

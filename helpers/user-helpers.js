@@ -112,9 +112,13 @@ details.Amount=data.total
 details.Seat=data.seat
 details.userId=userId
 details.Show=data.show
-
+console.log(data.show,"shoe");
 console.log(details,"details");
-
+var showCollection=await db.get().collection(collection.SHOW_COLLECTION).updateOne({_id:objectId(data.show._id)},{
+ $push:{
+   Seats:details.Seat
+ }
+})
 var booking=await db.get().collection(collection.BOOKING_COLLECTION).insertOne(details)
 
 var bookingId=booking.ops[0]._id
@@ -138,6 +142,27 @@ var bookingId=booking.ops[0]._id
 
       });
 
+    })
+  },
+
+  insertBooking:(data,userId)=>{
+
+    return new Promise (async(resolve,reject)=>{
+      console.log(data,userId);
+
+var details={}
+
+details.Amount=data.total
+details.Seat=data.seat
+details.userId=userId
+details.Show=data.show
+
+console.log(details,"details");
+
+var booking=await db.get().collection(collection.BOOKING_COLLECTION).insertOne(details)
+
+var bookingId=booking.ops[0]._id
+resolve(bookingId)
     })
   },
   verifyPayment:(details)=>{

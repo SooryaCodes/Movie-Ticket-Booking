@@ -6,9 +6,20 @@ var ExcecutiveRow = document.getElementById("ExcecutiveRow").value;
 var ExcecutiveSeat = document.getElementById("ExcecutiveSeat").value;
 var PremiumRow = document.getElementById("PremiumRow").value;
 var PremiumSeat = document.getElementById("PremiumSeat").value;
+var bookedSeats = document.getElementById("BookedSeats").value;
+console.log(bookedSeats);
+var Reserved=bookedSeats.split(",")
 
-console.log(show)
-
+  window.addEventListener('load',function(){
+    if(Reserved){
+      for(var i=0;i<Reserved.length;i++){
+        document.getElementById(Reserved[i]).parentNode.classList.toggle('Reserved-Seat')
+        document.getElementById(Reserved[i]).classList.toggle('Reserved')
+                document.getElementById(Reserved[i]).disabled=true
+      }
+    }
+  })
+console.log(Reserved);
 var Vip = {
   Row: VipRow,
   Seat: VipSeat,
@@ -40,7 +51,7 @@ function myfun(hi) {
   var AllSeat = document.querySelectorAll('input[name="seat"]');
 
   if (checkedSeat.length > 10) {
-    input.checked=false
+    input.checked = false;
     unselected.forEach((value) => (value.disabled = true));
     var name = document.getElementById("username").value;
     console.log(name);
@@ -50,7 +61,17 @@ function myfun(hi) {
     <strong>Hi ${name}.</strong> Reached The Limit! You Can't Select Seat Any More..
   </div>`;
   } else if (checkedSeat.length < 10) {
+    var reservedSeats=document.querySelectorAll('.Reserved')
+
+    for(var i=0;i<reservedSeats.length;i++){
+      reservedSeats[i].disabled=true
+      reservedSeats[i].checked=false
+      console.log(reservedSeats[i]);
+    }
+
+
     unselected.forEach((value) => (value.disabled = false));
+
 
     var wrapper = document.querySelector(".seat-show-wrapper");
     if (input.checked === true) {
@@ -72,8 +93,6 @@ function myfun(hi) {
       console.log("hi there is nothing");
     }
   }
-
-
 
   var seat = [];
   var Vip = [];
@@ -111,69 +130,53 @@ function myfun(hi) {
 
   console.log(Vip, Premium, Excecutive, Normal);
 
-  var VipPrice=Vip.length*show.Vip
-  var NormalPrice=Normal.length*show.Normal
-  var ExcecutivePrice=Excecutive.length*show.Excecutive
-  var PremiumPrice=Premium.length*show.Premium
+  var VipPrice = Vip.length * show.Vip;
+  var NormalPrice = Normal.length * show.Normal;
+  var ExcecutivePrice = Excecutive.length * show.Excecutive;
+  var PremiumPrice = Premium.length * show.Premium;
 
+  var TotalPrice = VipPrice + ExcecutivePrice + NormalPrice + PremiumPrice;
 
+  console.log(TotalPrice);
 
-  var TotalPrice=VipPrice+ExcecutivePrice+NormalPrice+PremiumPrice
+  document.getElementById("total").innerText = `Total : ₹ ${TotalPrice}`;
 
-console.log(TotalPrice);
-
-document.getElementById('total').innerText=`Total : ₹ ${TotalPrice}`
-
-
-
-var btn=document.getElementById('checkout')
-btn.addEventListener('click',function(){
-  var seatNumber=checkedSeat.length
-  var paymentPopup=document.querySelector('.payment-popup')
-var totalAmount=document.getElementById('totalAmount').innerHTML=`₹<span id="totalPriceForPayment">${TotalPrice}</span> `
-var screenName=document.getElementById('screenName').innerText=`${show.screenName}`
-var seatNo=document.getElementById('seatNo').innerText=`${seatNumber}`
-  paymentPopup.classList.toggle('active')
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  var btn = document.getElementById("checkout");
+  btn.addEventListener("click", function () {
+    var seatNumber = checkedSeat.length;
+    var paymentPopup = document.querySelector(".payment-popup");
+    var totalAmount = (document.getElementById(
+      "totalAmount"
+    ).innerHTML = `₹<span id="totalPriceForPayment">${TotalPrice}</span> `);
+    var screenName = (document.getElementById(
+      "screenName"
+    ).innerText = `${show.screenName}`);
+    var seatNo = (document.getElementById(
+      "seatNo"
+    ).innerText = `${seatNumber}`);
+    paymentPopup.classList.toggle("active");
+  });
 }
-function payment(paymentMethod){
+function payment(paymentMethod) {
   var checkedSeat = document.querySelectorAll('input[name="seat"]:checked');
-  var seat=[]
+  var seat = [];
   for (var i = 0; i < checkedSeat.length; i++) {
     seat[i] = checkedSeat[i].value;
   }
 
-  var total=parseInt(document.getElementById('totalPriceForPayment').innerText)
+  var total = parseInt(
+    document.getElementById("totalPriceForPayment").innerText
+  );
   // console.log(total);
   // console.log(paymentMethod);
   console.log(show);
   // console.log(seat);
 
-
-
   $.ajax({
-    url:'/ticket-booking',
-    method:'post',
-    headers:{
-      'Content-Type': 'application/json',
+    url: "/ticket-booking",
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
     },
     data: JSON.stringify({
       paymentMethod,
@@ -181,86 +184,101 @@ function payment(paymentMethod){
       seat,
       show,
     }),
-    success:(response)=>{
-      if(response.status===false){
-
-        alert('failed')
-      }else{
-        razorpayPayment(response)
+    success: (response) => {
+      if (response.status === false) {
+        alert("failed");
+      } else if(response.Razorpay===true){
+        razorpayPayment(response);
+        console.log(response,"response");
         // alert('success')
+      } else if(response.Paypal===true){
+
       }
-    }
-  })
+    },
+  });
 }
-const razorpayPayment=(data)=>{
+
+// const paypalPayment = (paymentMethod, total, seat, show) => {
+//   console.log("paypaal");
+//   $.ajax({
+//     url: "/paynow",
+//     method: "post",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     data: JSON.stringify({
+//       paymentMethod,
+//       total,
+//       seat,
+//       show,
+//     }),
+//     success: () => {
+//       alert("success");
+//     },
+//   });
+// };
+
+
+const razorpayPayment = (data) => {
+  console.log(data,"data in razorpay");
   var options = {
-    "key": "rzp_test_kX6azReFALaRXo", // Enter the Key ID generated from the Dashboard
-    "amount": data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    "currency": "INR",
-    "name": "Movie Cafe",
-    "description": "Ticket Booking",
-    "image": "",
-    "order_id": data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    "handler": function (response){
-        // alert(response.razorpay_payment_id);
-        // alert(response.razorpay_order_id);
-        // alert(response.razorpay_signature)
-        verifyPayment(response,data)
+    key: "rzp_test_kX6azReFALaRXo", // Enter the Key ID generated from the Dashboard
+    amount: data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    currency: "INR",
+    name: "Movie Cafe",
+    description: "Ticket Booking",
+    image: "",
+    order_id: data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    handler: function (response) {
+      // alert(response.razorpay_payment_id);
+      // alert(response.razorpay_order_id);
+      // alert(response.razorpay_signature)
+      verifyPayment(response, data);
+    },
+    prefill: {
+      name: "Soorya Krishna",
+      email: "sooryakriz111@gmail.com",
+      contact: "8943713703",
+    },
+    notes: {
+      address: "Razorpay Corporate Office",
+    },
+    theme: {
+      color: "#4B6591",
+    },
+  };
+  var rzp1 = new Razorpay(options);
+  rzp1.on("payment.failed", function (response) {
+    alert(response.error.code);
+    alert(response.error.description);
+    alert(response.error.source);
+    alert(response.error.step);
+    alert(response.error.reason);
+    alert(response.error.metadata.order_id);
+    alert(response.error.metadata.payment_id);
+  });
+  setTimeout(function () {
+    razorpayUp();
+  }, 1000);
 
-    },
-    "prefill": {
-        "name": "Soorya Krishna",
-        "email": "sooryakriz111@gmail.com",
-        "contact": "8943713703"
-    },
-    "notes": {
-        "address": "Razorpay Corporate Office"
-    },
-    "theme": {
-        "color": "#4B6591"
-    }
+  function razorpayUp() {
+    rzp1.open();
+  }
 };
-var rzp1 = new Razorpay(options);
-rzp1.on('payment.failed', function (response){
-        alert(response.error.code);
-        alert(response.error.description);
-        alert(response.error.source);
-        alert(response.error.step);
-        alert(response.error.reason);
-        alert(response.error.metadata.order_id);
-        alert(response.error.metadata.payment_id);
-
-});
-setTimeout(function (){
-razorpayUp()
-},1000);
-
-function razorpayUp(){
-  rzp1.open();
-}
-}
-function verifyPayment(payment,order){
+function verifyPayment(payment, order) {
   $.ajax({
-    url:'/verify-payment',
-    method:'post',
-    data:{
+    url: "/verify-payment",
+    method: "post",
+    data: {
       payment,
-      order
+      order,
     },
-    success:()=>{
-      alert('success')
-      location.href="/"
-    }
-  })
+    success: () => {
+      alert("success");
+      location.href = "/";
+    },
+  });
 }
-
-
-
-
-
-
-
-
 
 // const checkoutFun = (checkedSeat) => {
 //   var seat = [];
@@ -303,8 +321,6 @@ function verifyPayment(payment,order){
 //   var NormalPrice=Normal.length*show.Normal
 //   var ExcecutivePrice=Excecutive.length*show.Excecutive
 //   var PremiumPrice=Premium.length*show.Premium
-
-
 
 //   var TotalPrice=VipPrice+ExcecutivePrice+NormalPrice+PremiumPrice
 // };
@@ -355,14 +371,13 @@ for (let i = 1; i <= row; i++) {
   NContainer.appendChild(row);
 }
 
-
 let VContainer = document.querySelector(".VContainer");
 var row = Vip.Row;
 var column = Vip.Seat;
 for (let i = 1; i <= row; i++) {
   let row = document.createElement("main");
   for (let j = 1; j <= column; j++) {
-    Vip.VRowName = 'Vip-'+NRowName[i - 1];
+    Vip.VRowName = "Vip-" + NRowName[i - 1];
 
     row.innerHTML += ` 
             <div class="seat">
@@ -374,14 +389,13 @@ for (let i = 1; i <= row; i++) {
   VContainer.appendChild(row);
 }
 
-
 let EContainer = document.querySelector(".EContainer");
 var row = Excecutive.Row;
 var column = Excecutive.Seat;
 for (let i = 1; i <= row; i++) {
   let row = document.createElement("main");
   for (let j = 1; j <= column; j++) {
-    Excecutive.ERowName = 'Excecutive-'+NRowName[i - 1];
+    Excecutive.ERowName = "Excecutive-" + NRowName[i - 1];
 
     row.innerHTML += `
                         <div class="seat">
@@ -392,14 +406,13 @@ for (let i = 1; i <= row; i++) {
   EContainer.appendChild(row);
 }
 
-
 let PContainer = document.querySelector(".PContainer");
 var row = Premium.Row;
 var column = Premium.Seat;
 for (let i = 1; i <= row; i++) {
   let row = document.createElement("main");
   for (let j = 1; j <= column; j++) {
-    Premium.PRowName = 'Premium-'+NRowName[i - 1];
+    Premium.PRowName = "Premium-" + NRowName[i - 1];
     row.innerHTML += ` 
              <div class="seat">
             <input value="${Premium.PRowName}-${j}" name="seat" onclick="myfun(value)"  class="${Premium.PRowName}-${j}" type="checkbox" id="${Premium.PRowName}-${j}">
@@ -407,7 +420,6 @@ for (let i = 1; i <= row; i++) {
             </div>
             `;
   }
-  
-  PContainer.appendChild(row);
 
+  PContainer.appendChild(row);
 }
