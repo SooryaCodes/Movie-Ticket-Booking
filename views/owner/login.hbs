@@ -38,7 +38,7 @@
           {{messages.error}}!
         </div>
       {{/if}}
-<a id="forgot" href="/owner/forgot-password">Forgot Password ?</a>
+<a id="forgot" class="text-primary" data-toggle="modal" data-target="#modalContactForm">Forgot Password ?</a>
       <div class="input-submit" style="margin-top: 20px;">
 
 <a href="/owner/google"  class="loginLink"><i class="fa fa-google" aria-hidden="true">oogle</i>  </a>
@@ -46,6 +46,51 @@
       </div>
     </form>
   </div>
+</div>
+<!-- Button trigger modal -->
+ 
+
+<div class="modal fade" id="modalContactForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+ <form action="/owner/forgot-password" method="POST">
+  <!--Modal: Contact form-->
+  <div class="modal-dialog cascading-modal" role="document">
+
+    <!--Content-->
+    <div class="modal-content">
+
+      <!--Header-->
+      <div class="modal-header mdb-color white-text">
+        <h4 class="title">
+          Forgot Password</h4>
+        <button type="button" class="close waves-effect waves-light" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <!--Body-->
+      <div class="modal-body">
+
+        <!-- Material input name -->
+        <div class="md-form form-sm">
+          <i class="fa fa-envelope prefix"></i>
+          <input type="email" id="materialFormNameModalEx1" name="email" class="form-control form-control-sm">
+          <label for="materialFormNameModalEx1">Email</label>
+        </div>
+
+       
+        <div class="text-center mt-4 mb-2">
+          <button class="btn btn-mdb-color">Send
+            <i class="fa fa-send ml-2"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+  </form>
+  <!--/Modal: Contact form-->
 </div>
 <script>
 	var loginWindow;

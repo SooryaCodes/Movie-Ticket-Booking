@@ -415,4 +415,42 @@ module.exports = {
         });
     });
   },
+  // update password
+
+  updatePassword: (details) => {
+    return new Promise(async (resolve, reject) => {
+      let owner = await db
+        .get()
+        .collection(collection.OWNER_COLLECTION)
+        .findOne({ Email: details.email });
+
+      if (owner) {
+        bcrypt
+          .compare(details.oldps, owner.Password)
+          .then(async (status) => {
+            if (status) {
+              console.log("successfull");
+              let newPassword = await bcrypt.hash(details.newps, 10);
+              db.get()
+                .collection(collection.OWNER_COLLECTION)
+                .updateOne(
+                  { Email: details.email },
+                  {
+                    $set: {
+                      Password: newPassword,
+                    },
+                  }
+                );
+              resolve({ status: true });
+            } else {
+              console.log("failed");
+              resolve({ status: false });
+            }
+          });
+      } else {
+        resolve({ status: false });
+      }
+    });
+  },
+  
 };

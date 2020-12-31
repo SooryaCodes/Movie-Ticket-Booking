@@ -266,4 +266,27 @@ router.get('/failure',(req,res)=>{
 })
 
 
+const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+const msg = {
+  to: 'lakshmipr120@gmail.com', // Change to your recipient
+  from: 'lakshmipr120@gmail.com', // Change to your verified sender
+  subject: 'Sending with SendGrid is Fun',
+  text: 'and easy to do anywhere, even with Node.js',
+  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+}
+
+router.get('/mail',(req,res)=>{
+  res.send("mail sended Successfully")
+
+sgMail
+  .send(msg)
+  .then(() => {
+    console.log('Email sent')
+  })
+  .catch((error) => {
+    console.error(error.response.body)
+  })
+})
+
 module.exports = router;

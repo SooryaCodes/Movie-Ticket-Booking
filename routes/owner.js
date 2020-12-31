@@ -13,7 +13,8 @@ var collection = require("../config/collection");
 const { getMovies } = require("../helpers/owner-helper");
 const { response } = require("express");
 const { route } = require("./admin");
-
+const jwt = require("jsonwebtoken");
+const JSONTransport = require("nodemailer/lib/json-transport");
 //nodemailer
 
 let mailer = nodemailer.createTransport({
@@ -124,7 +125,6 @@ router.get("/add-screen", verifyLogin, (req, res) => {
 
 router.post("/add-screen", (req, res) => {
   console.log(req.body);
-
 
   ownerHelper
     .addScreen(req.body, req.session.passport.user._id)
@@ -295,6 +295,7 @@ router.get("/popup", (req, res, next) => {
 
 router.get("/update-password", verifyLogin, (req, res) => {
   res.render("owner/update-password", {
+    passErr:req.session.passErr,
     owner: true,
   });
 });
@@ -382,11 +383,41 @@ router.post("/delete-show/:id", (req, res) => {
 });
 
 router.post("/date-time/:id", (req, res) => {
-
   ownerHelper.getDateTime(req.body, req.params.id).then((response) => {
     console.log(response);
-    res.json(response)
+    res.json(response);
+  });
+});
+router.post("/forgot-password", (req, res) => {
+  var profile = {
+    email: req.body.email,
+  };
+  let token = jwt.sign(profile, process.env.OWNER_SECRET, { expiresIn: 600 });
+
+  res.redirect("/owner/forgot-password");
+});
+
+router.get("/forgot-password", (req, res) => {});
+router.get("/forgot-password/:token", (req, res) => {
+  let token = req.params.token;
+
+  jwt.verify(token, process.env.OWNER_SECRET, (err, decoded) => {
+    if (err) {
+      res.send("authentication failed");
+    } else {
+      res.send("success");
+    }
   });
 });
 
+router.post("/update-password", (req, res) => {
+  ownerHelper.updatePassword(req.body).then((response) => {
+    if (response.status) {
+      res.redirect("/owner");
+    } else {
+      req.session.passErr=true
+      res.redirect("/owner/update-password");
+    }
+  });
+});
 module.exports = router;
