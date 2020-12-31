@@ -24,6 +24,9 @@ const verifyLogin=(req,res,next)=>{
 
 
 router.get('/popup', (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    req.session.messages = {error:'Invalid Account'}
+  }
   res.render('owner/auth-popup-callback', {layout: false});
 });
 
@@ -89,9 +92,10 @@ router.get("/login", (req, res) => {
     );
     res.redirect("/admin");
   } else {
-    res.render("admin/login");
+    res.render("admin/login",{messages:req.session.messages});
   }
 });
+
 
 
 

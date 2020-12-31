@@ -6,8 +6,6 @@ var ErrMessage = {};
 const userHelpers = require("../helpers/user-helpers");
 var passport = require("passport");
 
-
-
 /* GET users listing. */
 var client = require("twilio")(
   process.env.TWILIO_ACCOUNT_ID,
@@ -203,9 +201,9 @@ router.get("/seat-select/:id", verifyLogin, (req, res) => {
     var Normal = data.Normal;
     var Premium = data.Premium;
     var screen = data.screen;
-var bookedSeats=data.show.Seats
-console.log(bookedSeats);
-    console.log(screen,"scrreeen cchekibb");
+    var bookedSeats = data.show.Seats;
+    console.log(bookedSeats);
+    console.log(screen, "scrreeen cchekibb");
     res.render("user/screen", {
       user: true,
       screen,
@@ -217,76 +215,68 @@ console.log(bookedSeats);
       bookedSeats,
       user: req.user.Name,
     });
-    
   });
 });
 
-
-router.post('/ticket-booking',(req,res)=>{
+router.post("/ticket-booking", (req, res) => {
   console.log(req.body);
 
   // res.json({status:true})
 
-if(req.body.paymentMethod==="Razorpay"){
+  if (req.body.paymentMethod === "Razorpay") {
+    userHelpers.generateRazorpay(req.body, req.user._id).then((data) => {
+      data.Razorpay = true;
+      res.json(data);
+    });
+  } else if (req.body.paymentMethod === "Paypal") {
+    userHelpers.insertBooking(req.body, req.user._id).then((data) => {
+      userHelpers.generatePaypal(data).then((response) => {
+        console.log(response.transactions[0].amount, "response");
+        // console.log(,"response");
+        res.json(response.links[1].href);
+      });
+    });
+  } else {
+    res.json({ status: false });
+  }
+});
 
-  userHelpers.generateRazorpay(req.body,req.user._id).then((data)=>{
-data.Razorpay=true
-    res.json(data)
-  })
-}else if(req.body.paymentMethod==="Paypal"){
-  
-  userHelpers.insertBooking(req.body,req.user._id).then((data)=>{
-    userHelpers.generatePaypal(data).then((response)=>{
-      console.log(response.transactions[0].amount,"response");
-      // console.log(,"response");
-      res.json(response.links[1].href);
-    })
-  })
-
-}
-else{
-  res.json({status:false})
-}
-
-})
-
-router.post('/verify-payment',(req,res)=>{
+router.post("/verify-payment", (req, res) => {
   console.log(req.body);
-  userHelpers.verifyPayment(req.body).then((response)=>{
-    res.json({status:true})
-  })
-  console.log('hey')
-})
-router.get('/success',(req,res)=>{
-  res.send('Success')
-})
+  userHelpers.verifyPayment(req.body).then((response) => {
+    res.json({ status: true });
+  });
+  console.log("hey");
+});
+router.get("/success", (req, res) => {
+  res.send("Success");
+});
 
-router.get('/failure',(req,res)=>{
-  res.send('failure')
-})
+router.get("/failure", (req, res) => {
+  res.send("failure");
+});
 
-
-const sgMail = require('@sendgrid/mail')
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const msg = {
-  to: 'lakshmipr120@gmail.com', // Change to your recipient
-  from: 'lakshmipr120@gmail.com', // Change to your verified sender
-  subject: 'Sending with SendGrid is Fun',
-  text: 'and easy to do anywhere, even with Node.js',
-  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-}
+  to: "lakshmipr120@gmail.com", // Change to your recipient
+  from: "lakshmipr120@gmail.com", // Change to your verified sender
+  subject: "Sending with SendGrid is Fun",
+  text: "and easy to do anywhere, even with Node.js",
+  html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+};
 
-router.get('/mail',(req,res)=>{
-  res.send("mail sended Successfully")
+router.get("/mail", (req, res) => {
+  res.send("mail sended Successfully");
 
-sgMail
-  .send(msg)
-  .then(() => {
-    console.log('Email sent')
-  })
-  .catch((error) => {
-    console.error(error.response.body)
-  })
-})
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log("Email sent");
+    })
+    .catch((error) => {
+      console.error(error.response.body);
+    });
+});
 
 module.exports = router;

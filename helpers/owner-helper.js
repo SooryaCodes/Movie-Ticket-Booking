@@ -157,12 +157,11 @@ module.exports = {
     });
   },
 
-  getMovies: (id) => {
-    console.log(id);
+  getMovies: () => {
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.MOVIE_COLLECTION)
-        .find({ OwnerId: objectId(id) })
+        .find()
         .toArray()
         .then((response) => {
           console.log(response, "screen");

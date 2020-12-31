@@ -158,7 +158,7 @@ router.get("/bookings", verifyLogin, (req, res) => {
 
 router.get("/movies", verifyLogin, (req, res) => {
   console.log(req.user);
-  ownerHelper.getMovies(req.user._id).then((details) => {
+  ownerHelper.getMovies().then((details) => {
     console.log(details);
     if (details.length < 1) {
       res.render("owner/movie-dummy", { owner: true,ownerDetails:req.user });
@@ -335,7 +335,7 @@ router.get("/screen/show/:id", (req, res) => {
 });
 
 router.get("/add-show/:id", (req, res) => {
-  ownerHelper.getMovies(req.user._id).then((movies) => {
+  ownerHelper.getMovies().then((movies) => {
     var id = req.params.id;
     res.render("owner/add-show", { owner: true, movies, id,ownerDetails:req.user });
   });
@@ -352,7 +352,7 @@ router.post("/add-show/:id", (req, res) => {
 router.get("/edit-show/:id", (req, res) => {
   var id = req.params.id;
 
-  ownerHelper.getMovies(req.user._id).then((movies) => {
+  ownerHelper.getMovies().then((movies) => {
     ownerHelper.getShow(id).then((show) => {
       res.render("owner/edit-show", { owner: true, id, show, movies ,ownerDetails:req.user});
     });

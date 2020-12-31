@@ -32,8 +32,6 @@ module.exports.initializePassport = (passport) => {
         db.get()
           .collection(collection.ADMIN_COLLECTION)
           .findOne({ adminEmail: profile.email }, function (err, user) {
-            console.log(user, "dgsidfgsiablifblkv");
-            console.log(profile);
             if (err) {
               return null, false, { message: "Invalid Account" };
             } else {
@@ -85,21 +83,26 @@ module.exports.initializePassport = (passport) => {
       },
       function (request, accessToken, refreshToken, profile, done) {
         console.log(profile);
-        db.get().collection(collection.USER_COLLECTION).findOne({Email:profile.email}).then((user)=>{
-          if(user){
-            return done(null,user)
-          }else{
-            var userData={}
-            userData.Name=profile.displayName
-            userData.Email=profile.email
-            userData.role="user"
+        db.get()
+          .collection(collection.USER_COLLECTION)
+          .findOne({ Email: profile.email })
+          .then((user) => {
+            if (user) {
+              return done(null, user);
+            } else {
+              var userData = {};
+              userData.Name = profile.displayName;
+              userData.Email = profile.email;
+              userData.role = "user";
 
-            db.get().collection(collection.USER_COLLECTION).insertOne(userData).then((response)=>{
-              return done(null,response.ops[0])
-            })
-          }
-        })
-     
+              db.get()
+                .collection(collection.USER_COLLECTION)
+                .insertOne(userData)
+                .then((response) => {
+                  return done(null, response.ops[0]);
+                });
+            }
+          });
 
         return done(null, user);
       }
@@ -193,9 +196,7 @@ module.exports.initializePassport = (passport) => {
   );
 
   passport.serializeUser(function (user, done) {
-    
-      done(null, user);
-    
+    done(null, user);
   });
 
   passport.deserializeUser(function (user, done) {
@@ -208,6 +209,7 @@ module.exports.initializePassport = (passport) => {
           },
           function (err, user) {
             if (err) {
+              console.log("err");
               throw err;
             } else {
               done(null, user);
@@ -229,7 +231,7 @@ module.exports.initializePassport = (passport) => {
             }
           }
         );
-    }  else if (user.role === "user") {
+    } else if (user.role === "user") {
       db.get()
         .collection(collection.USER_COLLECTION)
         .findOne(
