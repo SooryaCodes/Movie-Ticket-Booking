@@ -54,9 +54,8 @@ const verifyLoginGoogle = (req, res, next) => {
 /* GET users listing. */
 router.get("/", verifyLogin, function (req, res, next) {
   adminHelper.getOwnerDetails().then((details) => {
-    console.log("hikjbcs");
     // console.log(req.session.passport.user);
-    res.render("owner/home", { owner: true });
+    res.render("owner/home", { owner: true ,ownerDetails:req.user});
   });
 });
 
@@ -105,22 +104,22 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/user-details", verifyLogin, (req, res) => {
-  res.render("owner/user", { owner: true });
+  res.render("owner/user", { owner: true,ownerDetails:req.user });
 });
 
 router.get("/screen", verifyLogin, (req, res) => {
   ownerHelper.getScreens(req.user._id).then((data) => {
     if (data.length < 1) {
-      res.render("owner/screen-dummy", { owner: true });
+      res.render("owner/screen-dummy", { owner: true ,ownerDetails:req.user});
     } else {
       console.log(data.length);
-      res.render("owner/screen", { owner: true, Screen: data });
+      res.render("owner/screen", { owner: true, Screen: data ,ownerDetails:req.user});
     }
   });
 });
 
 router.get("/add-screen", verifyLogin, (req, res) => {
-  res.render("owner/add-screen", { owner: true });
+  res.render("owner/add-screen", { owner: true ,ownerDetails:req.user});
 });
 
 router.post("/add-screen", (req, res) => {
@@ -136,7 +135,7 @@ router.get("/edit-screen/:id", verifyLogin, (req, res) => {
   console.log(req.params.id);
   var id = req.params.id;
   ownerHelper.getScreen(id).then((response) => {
-    res.render("owner/edit-screen", { owner: true, id, screen: response });
+    res.render("owner/edit-screen", { owner: true, id, screen: response ,ownerDetails:req.user});
   });
 });
 
@@ -154,7 +153,7 @@ router.post("/delete-screen/:id", (req, res) => {
   });
 });
 router.get("/bookings", verifyLogin, (req, res) => {
-  res.render("owner/bookings", { owner: true });
+  res.render("owner/bookings", { owner: true ,ownerDetails:req.user});
 });
 
 router.get("/movies", verifyLogin, (req, res) => {
@@ -162,15 +161,15 @@ router.get("/movies", verifyLogin, (req, res) => {
   ownerHelper.getMovies(req.user._id).then((details) => {
     console.log(details);
     if (details.length < 1) {
-      res.render("owner/movie-dummy", { owner: true });
+      res.render("owner/movie-dummy", { owner: true,ownerDetails:req.user });
     } else {
-      res.render("owner/movie", { owner: true, movie: details });
+      res.render("owner/movie", { owner: true, movie: details ,ownerDetails:req.user});
     }
   });
 });
 
 router.get("/add-movie", (req, res) => {
-  res.render("owner/add-movie");
+  res.render("owner/add-movie",{owner:true,ownerDetails:req.user});
 });
 router.post("/add-movie", (req, res) => {
   ownerHelper.addMovie(req.body, req.user._id).then((response) => {
@@ -192,7 +191,8 @@ router.get("/edit-movie/:id", verifyLogin, (req, res) => {
     res.render("owner/edit-movie", {
       id: req.params.id,
       owner: true,
-      movie: response,
+      movie: response
+      ,ownerDetails:req.user
     });
   });
 });
@@ -200,7 +200,7 @@ router.get("/edit-movie/:id", verifyLogin, (req, res) => {
 router.post("/edit-movie/:id", (req, res) => {
   var id = req.params.id;
   ownerHelper.editMovie(req.body, id).then((response) => {});
-  res.render("owner/edit-movie-image-upload", { id, owner: true });
+  res.render("owner/edit-movie-image-upload", { id, owner: true,ownerDetails:req.user });
 });
 
 router.post("/edit-movie-image-upload/:id", (req, res) => {
@@ -225,14 +225,14 @@ router.get("/upcoming-movies", verifyLogin, (req, res) => {
     console.log(details);
     console.log(details);
     if (details.length < 1) {
-      res.render("owner/upcoming-movie-dummy", { owner: true });
+      res.render("owner/upcoming-movie-dummy", { owner: true ,ownerDetails:req.user});
     } else {
-      res.render("owner/upcoming-movie", { owner: true, movie: details });
+      res.render("owner/upcoming-movie", { owner: true, movie: details ,ownerDetails:req.user});
     }
   });
 });
 router.get("/add-upcoming-movie", (req, res) => {
-  res.render("owner/upcoming-add-movie");
+  res.render("owner/upcoming-add-movie",{owner:true,ownerDetails:req.user});
 });
 
 router.post("/add-upcoming-movie", (req, res) => {
@@ -260,7 +260,8 @@ router.get("/edit-upcoming-movie/:id", verifyLogin, (req, res) => {
     res.render("owner/upcoming-edit-movie", {
       id: req.params.id,
       owner: true,
-      movie: response,
+      movie: response
+      ,ownerDetails:req.user
     });
   });
 });
@@ -296,28 +297,17 @@ router.get("/popup", (req, res, next) => {
 router.get("/update-password", verifyLogin, (req, res) => {
   res.render("owner/update-password", {
     passErr:req.session.passErr,
-    owner: true,
+    owner: true
+    ,ownerDetails:req.user
+    
   });
 });
 
-// //post update password
+// //get edit profile
 
-// router.post("/update-password", (req, res) => {
-//   ownerHelper.updatePassword(req.body).then((response) => {
-//     if (response.status) {
-//       adminHelper.getOwnerDetails().then((data) => {
-//         req.session.owner.adminPassword = data.adminPassword;
-//         res.redirect("/admin");
-//       });
-//     } else {
-//       req.session.passErr = true;
-//       res.redirect("/admin/update-password");
-//     }
-//   });
-// });
 
 router.get("/edit-profile", verifyLogin, (req, res) => {
-  res.render("owner/edit-profile", { owner: true });
+  res.render("owner/edit-profile", { owner: true ,ownerDetails:req.user});
 });
 
 //show schedule
@@ -336,7 +326,8 @@ router.get("/screen/show/:id", (req, res) => {
           owner: true,
           id: req.params.id,
           screen,
-          show,
+          show
+          ,ownerDetails:req.user
         });
       }
     });
@@ -346,7 +337,7 @@ router.get("/screen/show/:id", (req, res) => {
 router.get("/add-show/:id", (req, res) => {
   ownerHelper.getMovies(req.user._id).then((movies) => {
     var id = req.params.id;
-    res.render("owner/add-show", { owner: true, movies, id });
+    res.render("owner/add-show", { owner: true, movies, id,ownerDetails:req.user });
   });
 });
 
@@ -363,7 +354,7 @@ router.get("/edit-show/:id", (req, res) => {
 
   ownerHelper.getMovies(req.user._id).then((movies) => {
     ownerHelper.getShow(id).then((show) => {
-      res.render("owner/edit-show", { owner: true, id, show, movies });
+      res.render("owner/edit-show", { owner: true, id, show, movies ,ownerDetails:req.user});
     });
   });
 });
@@ -410,6 +401,8 @@ router.get("/forgot-password/:token", (req, res) => {
   });
 });
 
+//post update password
+
 router.post("/update-password", (req, res) => {
   ownerHelper.updatePassword(req.body).then((response) => {
     if (response.status) {
@@ -417,6 +410,23 @@ router.post("/update-password", (req, res) => {
     } else {
       req.session.passErr=true
       res.redirect("/owner/update-password");
+    }
+  });
+});
+
+
+//post edit profile
+
+router.post("/edit-profile/:id",verifyLogin, (req, res) => {
+  let id = req.params.id;
+  ownerHelper.editProfile(id, req.body).then((data) => {
+    res.redirect("/owner");
+    if (req.files.image) {
+      let Image = req.files.image;
+      // console.log(Image);
+      console.log(data, "data");
+      Image.mv("./public/images/owner/profile/owner" + id + ".jpg");
+      console.log("exist");
     }
   });
 });

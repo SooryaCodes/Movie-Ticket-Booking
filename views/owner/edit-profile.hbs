@@ -8,16 +8,11 @@
             <h3>Edit Profile</h3>
         </div>
         <!-- ---login input field--- -->
-        <form action="/admin/edit-profile/{{adminDetails._id}}" method="POST" enctype="multipart/form-data">
+        <form action="/owner/edit-profile/{{ownerDetails._id}}" method="POST" enctype="multipart/form-data">
             <div class="input-file">
                 <div class="profile-image">
                     <i class="fa fa-camera" aria-hidden="true"></i>
-                    {{#if adminDetails._id}}
-                    <img src="/images/admin/profile/{{adminDetails._id}}.jpg" id="imgView" alt="">
-                    {{/if}}
-                    {{#if ?adminDetails._id}}
-                    <img src="/images/admin/profile.svg" id="imgView" alt="" />
-                    {{/if}}
+                    <img src="/images/owner/profile/owner{{ownerDetails._id}}.jpg" id="imgView" alt="">
                 </div>
                 <input type="file" name="image" id="file" onchange="changeProductImage(event)">
 

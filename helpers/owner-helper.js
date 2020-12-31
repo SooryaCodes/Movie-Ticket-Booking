@@ -186,6 +186,8 @@ module.exports = {
               Category: data.Category,
               Trailer: data.Trailer,
               Runtime: data.Runtime,
+              Description:data.Description,
+              Image:data.Image
             },
           }
         );
@@ -255,7 +257,9 @@ module.exports = {
               Date: data.Date,
               Category: data.Category,
               Trailer: data.Trailer,
+              Description:data.Description,
               Runtime: data.Runtime,
+              Image:data.Image
             },
           }
         );
@@ -450,6 +454,26 @@ module.exports = {
       } else {
         resolve({ status: false });
       }
+    });
+  },
+
+   //edit profile
+
+   editProfile: (id, details) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.OWNER_COLLECTION)
+        .updateOne(
+          { _id: objectId(id) },
+          {
+            $set: {
+              Name: details.name,
+            },
+          }
+        )
+        .then((response) => {
+          resolve(response);
+        });
     });
   },
   

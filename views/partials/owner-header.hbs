@@ -12,7 +12,7 @@
       <a>Movie Cafe</a>
     </div>
     <div class="nav-items">
-      <span onclick="profileToggle()">Hi Owner</span>
+      <span onclick="profileToggle()">Hi {{ownerDetails.Name}}</span>
       <i class="fas fa-chevron-down" onclick="profileToggle()" aria-hidden="true"></i>
 
     </div>
@@ -23,7 +23,7 @@
   <div class="nav-profile-pop-up">
     <div class="nothing"></div>
     <div class="profile-details">
-      <img src="/images/admin/profile.svg" alt="" />
+      <img src="/images/owner/profile/owner{{ownerDetails._id}}.jpg" alt="" />
       <p>Owner</p>
 
 
@@ -55,9 +55,9 @@
 
   <div class="side-bar" id="side-bar">
     <div class="side-bar-top">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFWBnyvJtrWYVL5q2Nwl1UkCOxOPxFGoORjg&usqp=CAU"
+      <img src="/images/owner/profile/owner{{ownerDetails._id}}.jpg"
         alt="">
-      <p>Hello, <span>Admin</span></p>
+      <p>Hello, <span>{{ownerDetails.Name}}</span></p>
     </div>
     <div class="side-bar-bottom">
       <a href="/owner" class="side-bar-items"><i class="fas fa-th-large"></i>Dashboard</a>
