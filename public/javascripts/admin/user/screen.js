@@ -8,17 +8,22 @@ var PremiumRow = document.getElementById("PremiumRow").value;
 var PremiumSeat = document.getElementById("PremiumSeat").value;
 var bookedSeats = document.getElementById("BookedSeats").value;
 console.log(bookedSeats);
-var Reserved=bookedSeats.split(",")
+var Reserved = bookedSeats.split(",");
 
-  window.addEventListener('load',function(){
-    if(Reserved){
-      for(var i=0;i<Reserved.length;i++){
-        document.getElementById(Reserved[i]).parentNode.classList.toggle('Reserved-Seat')
-        document.getElementById(Reserved[i]).classList.toggle('Reserved')
-                document.getElementById(Reserved[i]).disabled=true
-      }
+window.addEventListener("load", function () {
+  if (Reserved) {
+    for (var i = 0; i < Reserved.length; i++) {
+      document
+        .getElementById(Reserved[i])
+        .parentNode.classList.add("Reserved-Seat");
+      document.getElementById(Reserved[i]).classList.add("Reserved");
+      var reservedS = document.querySelectorAll(".Reserved");
+      reservedS.forEach((value) => {
+        value.disabled = true;
+      });
     }
-  })
+  }
+});
 console.log(Reserved);
 var Vip = {
   Row: VipRow,
@@ -42,6 +47,11 @@ console.log(Vip, Excecutive, Premium, Normal);
 //---normal seat---
 
 function myfun(hi) {
+  var reservedS = document.querySelectorAll(".Reserved");
+  reservedS.forEach((value) => {
+    value.disabled = true;
+    value.checked = false;
+  });
   var input = document.querySelector(`#${hi}`);
 
   var checkedSeat = document.querySelectorAll('input[name="seat"]:checked');
@@ -61,17 +71,7 @@ function myfun(hi) {
     <strong>Hi ${name}.</strong> Reached The Limit! You Can't Select Seat Any More..
   </div>`;
   } else if (checkedSeat.length < 10) {
-    var reservedSeats=document.querySelectorAll('.Reserved')
-
-    for(var i=0;i<reservedSeats.length;i++){
-      reservedSeats[i].disabled=true
-      reservedSeats[i].checked=false
-      console.log(reservedSeats[i]);
-    }
-
-
     unselected.forEach((value) => (value.disabled = false));
-
 
     var wrapper = document.querySelector(".seat-show-wrapper");
     if (input.checked === true) {
@@ -187,12 +187,12 @@ function payment(paymentMethod) {
     success: (response) => {
       if (response.status === false) {
         alert("failed");
-      } else if(response.Razorpay===true){
+      } else if (response.Razorpay === true) {
         razorpayPayment(response);
-        console.log(response,"response");
+        console.log(response, "response");
         // alert('success')
-      }else{
-        location.href=response
+      } else {
+        location.href = response;
       }
     },
   });
@@ -218,9 +218,8 @@ function payment(paymentMethod) {
 //   });
 // };
 
-
 const razorpayPayment = (data) => {
-  console.log(data,"data in razorpay");
+  console.log(data, "data in razorpay");
   var options = {
     key: "rzp_test_kX6azReFALaRXo", // Enter the Key ID generated from the Dashboard
     amount: data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -274,8 +273,11 @@ function verifyPayment(payment, order) {
       order,
     },
     success: () => {
-      alert("success");
-      location.href = "/";
+      bookSuccess();
+      setTimeout(function(){
+        location.href = "/";
+        
+      },2000)
     },
   });
 }
@@ -324,6 +326,11 @@ function verifyPayment(payment, order) {
 
 //   var TotalPrice=VipPrice+ExcecutivePrice+NormalPrice+PremiumPrice
 // };
+
+const bookSuccess = () => {
+  var success = document.querySelector(".success");
+  success.classList.toggle("active");
+};
 
 var NRowName = [
   "A",

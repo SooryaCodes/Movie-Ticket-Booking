@@ -104,6 +104,8 @@ module.exports = {
       details.Seat = data.seat;
       details.userId = userId;
       details.Show = data.show;
+      details.Payment=data.paymentMethod
+
       console.log(data.show, "shoe");
       console.log(details, "details");
       var showCollection = await db
@@ -151,6 +153,7 @@ module.exports = {
       details.Seat = data.seat;
       details.userId = userId;
       details.Show = data.show;
+      details.Payment=data.paymentMethod
 
       console.log(details, "details");
 
@@ -160,7 +163,7 @@ module.exports = {
         .insertOne(details);
 
       var bookingId = booking.ops[0]._id;
-      resolve(details);
+      resolve(details,bookingId);
     });
   },
   verifyPayment: (details) => {
@@ -189,6 +192,7 @@ module.exports = {
         order.Show.Excecutive +
         order.Show.Premium +
         order.Show.Normal;
+        console.log(average/4*order.Seat.length);
       // console.log(average);
       var paypal = require("paypal-rest-sdk");
       paypal.configure({
@@ -198,6 +202,7 @@ module.exports = {
       });
       console.log(order.Amount);
       var create_payment_json = {
+        transactionId:id,
         intent: "sale",
         payer: {
           payment_method: "paypal",
@@ -213,19 +218,21 @@ module.exports = {
                 {
                   name: "Movie Ticket",
                   sku: "Tickets",
-                  price: average / 4,
+                  price: order.Amount,
                   currency: "INR",
-                  quantity: order.Seat.length,
+                  quantity:1,
                 },
               ],
             },
             amount: {
               currency: "INR",
-              total: order.Amount,
+              total: order.Amount
             },
+            
             description: "This is the payment description.",
           },
         ],
+
       };
 
       paypal.payment.create(create_payment_json, function (error, payment) {
@@ -241,19 +248,56 @@ module.exports = {
     });
   },
 
-  getTheaterDetails:(id)=>{
-    return new Promise(async(resolve,reject)=>{
-      var shows=await db.get().collection(collection.SHOW_COLLECTION).find({Movie:id}).toArray()
+  getTheaterDetails: (id) => {
+    return new Promise(async (resolve, reject) => {
+      var shows = await db
+        .get()
+        .collection(collection.SHOW_COLLECTION)
+        .find({ Movie: id })
+        .toArray();
       console.log(shows);
       var ownerDetails = [];
       for (var i = 0; i < shows.length; i++) {
         ownerDetails[i] = await db
           .get()
           .collection(collection.OWNER_COLLECTION)
-          .findOne({ _id: objectId(shows[i].ownerId) })
-        }
-console.log(ownerDetails);
-      resolve(ownerDetails)
+          .findOne({ _id: objectId(shows[i].ownerId) });
+      }
+      console.log(ownerDetails);
+      resolve(ownerDetails);
+    });
+  },
+
+  getScreenDetails: (movieId, ownerId) => {
+    return new Promise(async (resolve, reject) => {
+      var shows = await db
+        .get()
+        .collection(collection.SHOW_COLLECTION)
+        .find({ ownerId: objectId(ownerId) }, { Movie: movieId })
+        .toArray();
+      var screenDetails = [];
+      for (var i = 0; i < shows.length; i++) {
+        var screenData = await db
+          .get()
+          .collection(collection.SCREEN_COLLECTION)
+          .findOne({ _id: objectId(shows[i].screenId) });
+        screenDetails[i] = screenData;
+      }
+
+      console.log(screenDetails);
+      resolve(screenDetails)
+    });
+  },
+
+
+  getShowDetails:(movieId,screenId)=>{
+    return new Promise(async(resolve,reject)=>{
+      var showsWithScreenId=await db.get().collection(collection.SHOW_COLLECTION).find({screenId:screenId}).toArray()
+      console.log(showsWithScreenId,"shows width screen id");
+        var shows=await db.get().collection(collection.SHOW_COLLECTION).find({Movie:movieId}).toArray()
+
+        console.log(shows,"shows");
+        resolve(shows)
     })
   }
 };

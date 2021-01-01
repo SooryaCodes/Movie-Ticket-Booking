@@ -101,33 +101,9 @@
 <input type="text" value="{{user}}" name="" id="username" hidden>
 <input type="text" value="{{bookedSeats}}" name="" id="BookedSeats" hidden>
 
-{{!-- 
-<script src="https://www.paypal.com/sdk/js?client-id=AagjDkOzi5Ddv2_uDovUf2NF1Ph3bnpFf-3JQ9UhbAd8PHSAr9swPWU7GUy2Qq2jzE3UnuJAsf84X9nT&disable-funding=credit,card"></script>
-<script>paypal.Buttons({
-    style : {
-        color: 'blue',
-        shape: 'pill'
-    },
-    createOrder: function (data, actions) {
-        return actions.order.create({
-            purchase_units : [{
-                amount: {
-                    value: '0.1'
-                }
-            }]
-        });
-    },
-    onApprove: function (data, actions) {
-        return actions.order.capture().then(function (details) {
-            console.log(details)
-            window.location.replace("http://localhost:3000")
-        })
-    },
-    onCancel: function (data) {
-        window.location.replace("http://localhost:3000")
-    }
-    }).render('#paypal-btn');</script> --}}
-
+<div class="success">
+    Payment SuccessFull
+</div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 

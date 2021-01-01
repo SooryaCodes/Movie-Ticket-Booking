@@ -4,7 +4,7 @@
 
 
 
-<div class="movie-view" >
+<div class="movie-view">
     <div class="left-section">
         <div class="movie-poster">
 
@@ -73,7 +73,7 @@
             <div class="date-wrapper">
                 <!-- Swiper -->
                 <div class="swiper-container date-slider">
-                    <div class="swiper-wrapper slider">
+                    <div class="swiper-wrapper Theaters">
 
 
 
@@ -91,11 +91,75 @@
             <div class="select-btns">
 
                 <button class="mask waves-effect waves-light rgba-white-slight ">Location</button>
-                <button class="mask waves-effect waves-light rgba-white-slight ">Next</button>
+                <button class="mask waves-effect waves-light rgba-white-slight "
+                    onclick="getScreen('{{Movie._id}}')">Next</button>
             </div>
 
         </div>
 
+
+
+
+
+
+
+        <div class="theaters screen">
+            <div class="heading">
+                <p>Screens</p>
+            </div>
+
+            <!-- ---Theater--- -->
+            <div class="date-wrapper">
+                <!-- Swiper -->
+                <div class="swiper-container date-slider">
+                    <div class="swiper-wrapper Screens">
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="select-btns">
+
+                <button class="mask waves-effect waves-light rgba-white-slight "
+                    onclick="getShows('{{Movie._id}}')">Next</button>
+            </div>
+
+        </div>
+
+        <div class="theaters show">
+            <div class="heading">
+                <p>Shows</p>
+            </div>
+
+            <!-- ---Theater--- -->
+            <div class="date-wrapper">
+                <!-- Swiper -->
+                <div class="swiper-container date-slider">
+                    <div class="swiper-wrapper Show">
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="select-btns">
+
+                <button class="mask waves-effect waves-light rgba-white-slight "
+                    onclick="goNext('{{Movie._id}}')">Next</button>
+            </div>
+
+        </div>
 
         <div class="loader">
             <div class="sk-cube-grid">
@@ -118,7 +182,60 @@
 </div>
 
 
+
+
+
+
+
+
+
+
+
+
+
 <script>
+    function slider() {
+        var swiper = new Swiper('.swiper-container.date-slider', {
+            slidesPerView: 8,
+            spaceBetween: 10,
+
+
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                // 550:{
+                //     slidesPerView:1,
+                //     spaceBetween:10
+                // },
+                300: {
+                    slidesPerView: 2,
+                    spaceBetween: 0,
+
+                },
+                550: {
+                    slidesPerView: 2,
+                },
+                // when window width is >= 320px
+                622: {
+                    slidesPerView: 2,
+                    spaceBetween: 0
+                },
+
+                // when window width is >= 480px
+                966: {
+                    slidesPerView: 3,
+                    spaceBetween: 0
+                },
+                // when window width is >= 640px
+                1382: {
+                    slidesPerView: 4,
+                    spaceBetween: 0,
+                }
+            }
+        });
+    }
     const selection = (movieId) => {
         console.log(movieId)
         var wrapper = document.querySelector('.selecting-wrapper')
@@ -126,20 +243,26 @@
         wrapper.classList.toggle('active')
         var theater = document.querySelector('.theaters')
         loader.classList.toggle('active')
-        var sliderWrapper = document.querySelector('.swiper-wrapper')
+        var sliderWrapperTheater = document.querySelector('.swiper-wrapper.Theaters')
         $.ajax({
             url: '/getTheater/' + movieId,
             method: 'post',
             success: (Theater) => {
                 Theater.forEach(Details => {
                     console.log(Details)
-
-                    var swiperSlider = document.createElement('div')
-                    swiperSlider.classList.add('swiper-slide')
-                    swiperSlider.innerHTML="Slider 1"
-                    sliderWrapper.appendChild(swiperSlider)
-
+                    sliderWrapperTheater.innerHTML += `
+                    <div class="swiper-slide" >
+<input type="radio" name="Theater" onchange="" value="${Details._id}" id="date">
+    <label id="label" for="date" class="date">
+        <p style="font-size: 15px;text-align: center;">${Details.Theater} </p>
+    </label>
+</div>
+`
                 })
+
+
+
+                slider()
 
             }
         })
@@ -149,20 +272,133 @@
 
             theater.classList.toggle('active')
             loader.classList.remove('active')
-        }, 3000)
+        }, 3500)
 
 
     }
 
+    var screen = document.querySelector('.screen')
+    var show = document.querySelector('.show')
 
+    var loader = document.querySelector('.loader')
     var theater = document.querySelector('.theaters')
     var wrapper = document.querySelector('.selecting-wrapper')
     var close = document.querySelector('.close')
     close.addEventListener('click', () => {
+        var theaterSliders = document.querySelectorAll('.swiper-slide')
+        theaterSliders.forEach(value => {
+            value.remove()
+        })
         wrapper.classList.remove('active')
         theater.classList.remove('active')
+        screen.classList.remove('active')
+        show.classList.remove('active')
 
     })
+
+
+
+
+
+    const getScreen = (movieId) => {
+        var checkedTheater = document.querySelector('input[name="Theater"]:checked');
+        console.log(checkedTheater)
+        loader.classList.toggle('active')
+        theater.classList.remove('active')
+        var sliderWrapperScreen = document.querySelector('.swiper-wrapper.Screens')
+
+
+        $.ajax({
+            url: `/getScreenDetails/${movieId}/${checkedTheater.value}`,
+            method: 'post',
+            success: (screenDetails) => {
+                console.log(screenDetails)
+                screenDetails.forEach(Details => {
+                    console.log(Details)
+                    sliderWrapperScreen.innerHTML += `
+                    <div class="swiper-slide" >
+<input type="radio" name="Screen" onchange="" value="${Details._id}" id="date">
+    <label id="label" for="date" class="date">
+        <p style="font-size: 15px;text-align: center;">${Details.Name} </p>
+    </label>
+</div>
+`
+                })
+
+
+
+                slider()
+            }
+        })
+
+
+
+        setTimeout(() => {
+            screen.classList.toggle('active')
+            loader.classList.remove('active')
+        }, 3500)
+
+    }
+
+
+
+
+
+
+
+
+
+    const getShows = (movieId) => {
+        var checkedScreen = document.querySelector('input[name="Screen"]:checked');
+        loader.classList.toggle('active')
+        screen.classList.remove('active')
+        var sliderWrapperShow = document.querySelector('.swiper-wrapper.Show')
+
+
+        $.ajax({
+            url: `/getShowDetails/${movieId}/${checkedScreen.value}`,
+            method: 'post',
+            success: (showDetails) => {
+                console.log(showDetails)
+                showDetails.forEach(Details => {
+                    console.log(Details)
+                    sliderWrapperShow.innerHTML += `
+                    <div class="swiper-slide" >
+<input type="radio" name="Show" onchange="" value="${Details._id}" id="date">
+    <label id="label" for="date" class="date">
+<span>${Details.Month}</span>
+<p>${Details.DayDate}</p>
+ <span>${Details.Time}</span>   
+     </label>
+</div>
+`
+                })
+
+
+
+                slider()
+            }
+        })
+
+
+
+        setTimeout(() => {
+            show.classList.toggle('active')
+            loader.classList.remove('active')
+        }, 3500)
+
+    }
+
+
+
+    const goNext = () => {
+        var checkedShow = document.querySelector('input[name="Show"]:checked');
+        location.href = "/seat-select/" + checkedShow.value
+    }
+
+
+
+
 
 
 
@@ -175,105 +411,6 @@
 
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
@@ -282,50 +419,95 @@
 
 
 
-<script>
 
 
-    var swiper = new Swiper('.swiper-container.date-slider', {
-        slidesPerView: 8,
-        spaceBetween: 10,
 
 
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        breakpoints: {
-            // 550:{
-            //     slidesPerView:1,
-            //     spaceBetween:10
-            // },
-            300: {
-                slidesPerView: 2,
-                spaceBetween: 0,
 
-            },
-            550: {
-                slidesPerView: 2,
-            },
-            // when window width is >= 320px
-            622: {
-                slidesPerView: 2,
-                spaceBetween: 0
-            },
 
-            // when window width is >= 480px
-            966: {
-                slidesPerView: 3,
-                spaceBetween: 0
-            },
-            // when window width is >= 640px
-            1382: {
-                slidesPerView: 3,
-                spaceBetween: 0,
-            }
-        }
-    });
-</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

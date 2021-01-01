@@ -168,19 +168,43 @@ router.get("/logout", (req, res) => {
 
 router.get("/movie/:id", verifyLogin, (req, res) => {
   userHelpers.getMovieDetails(req.params.id).then((Movie) => {
-   
-
     res.render("user/movie", { user: true, Movie });
   });
 });
 
-router.post('/getTheater/:id',(req,res)=>{
-  console.log(req.params.id)
-  userHelpers.getTheaterDetails(req.params.id).then((response)=>{
+router.post("/getTheater/:id", (req, res) => {
+  console.log(req.params.id);
+  userHelpers.getTheaterDetails(req.params.id).then((response) => {
     console.log(response);
-    res.json(response)
+    res.json(response);
+  });
+});
+
+router.post("/getScreenDetails/:movieId/:ownerId", (req, res) => {
+  console.log(req.params.movieId, req.params.ownerId,"ownerID");
+  userHelpers.getScreenDetails(req.params.movieId, req.params.ownerId).then((response)=>{
+
+    res.json(response);
   })
-})
+});
+router.post("/getShowDetails/:movieId/:screenId", (req, res) => {
+  console.log(req.params.movieId, req.params.ownerId);
+  userHelpers.getShowDetails(req.params.movieId, req.params.screenId).then((response)=>{
+
+    for(var i=0;i<response.length;i++){
+      var date = new Date(response[i].Date).toDateString();
+      var showDate = date.split(" ");
+      response[i].Day = showDate[0];
+      response[i].DayDate = showDate[2];
+      response[i].Year = showDate[3];
+      response[i].Month = showDate[1];
+      var time=response[i].Time.split(':')
+      response[i].Time=time[0]+"-"+time[1]
+    }
+    console.log(response,"respo");
+    res.json(response);
+  })
+});
 router.post("/show-submit", (req, res) => {
   console.log(req.body);
   res.json({ status: true });
@@ -224,6 +248,7 @@ router.post("/ticket-booking", (req, res) => {
   } else if (req.body.paymentMethod === "Paypal") {
     userHelpers.insertBooking(req.body, req.user._id).then((data) => {
       userHelpers.generatePaypal(data).then((response) => {
+        console.log(response,"trespo");
         console.log(response.transactions[0].amount, "response");
         // console.log(,"response");
         res.json(response.links[1].href);
@@ -241,8 +266,8 @@ router.post("/verify-payment", (req, res) => {
   });
   console.log("hey");
 });
-router.get("/success", (req, res) => {
-  res.send("Success");
+router.get("/Bookin-Success", (req, res) => {
+
 });
 
 router.get("/failure", (req, res) => {
@@ -250,6 +275,7 @@ router.get("/failure", (req, res) => {
 });
 
 const sgMail = require("@sendgrid/mail");
+const { response } = require("express");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const msg = {
   to: "lakshmipr120@gmail.com", // Change to your recipient
@@ -258,18 +284,5 @@ const msg = {
   text: "and easy to do anywhere, even with Node.js",
   html: "<strong>and easy to do anywhere, even with Node.js</strong>",
 };
-
-router.get("/mail", (req, res) => {
-  res.send("mail sended Successfully");
-
-  sgMail
-    .send(msg)
-    .then(() => {
-      console.log("Email sent");
-    })
-    .catch((error) => {
-      console.error(error.response.body);
-    });
-});
 
 module.exports = router;
