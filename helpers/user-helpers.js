@@ -55,21 +55,11 @@ module.exports = {
         .collection(collection.MOVIE_COLLECTION)
         .findOne({ _id: objectId(id) })
         .then((Movie) => {
-          db.get()
-            .collection(collection.OWNER_COLLECTION)
-            .findOne({ _id: objectId(Movie.OwnerId) })
-            .then((Owner) => {
-              var d = new Date(Movie.Date);
-              var n = new Date(d).getFullYear();
-              Movie.Date = n;
-              db.get()
-                .collection(collection.SHOW_COLLECTION)
-                .find({ Movie: id })
-                .toArray()
-                .then((Show) => {
-                  resolve({ Movie, Owner, Show });
-                });
-            });
+          var d = new Date(Movie.Date);
+          var n = new Date(d).getFullYear();
+          Movie.Date = n;
+          console.log(Movie);
+          resolve(Movie);
         });
     });
   },
@@ -194,7 +184,11 @@ module.exports = {
   generatePaypal: (order, id) => {
     return new Promise((resolve, reject) => {
       console.log(order);
-      var average=order.Show.Vip+order.Show.Excecutive+order.Show.Premium+order.Show.Normal
+      var average =
+        order.Show.Vip +
+        order.Show.Excecutive +
+        order.Show.Premium +
+        order.Show.Normal;
       // console.log(average);
       var paypal = require("paypal-rest-sdk");
       paypal.configure({
@@ -219,7 +213,7 @@ module.exports = {
                 {
                   name: "Movie Ticket",
                   sku: "Tickets",
-                  price: average/4,
+                  price: average / 4,
                   currency: "INR",
                   quantity: order.Seat.length,
                 },
@@ -244,8 +238,22 @@ module.exports = {
           resolve(payment);
         }
       });
-
-      
     });
   },
+
+  getTheaterDetails:(id)=>{
+    return new Promise(async(resolve,reject)=>{
+      var shows=await db.get().collection(collection.SHOW_COLLECTION).find({Movie:id}).toArray()
+      console.log(shows);
+      var ownerDetails = [];
+      for (var i = 0; i < shows.length; i++) {
+        ownerDetails[i] = await db
+          .get()
+          .collection(collection.OWNER_COLLECTION)
+          .findOne({ _id: objectId(shows[i].ownerId) })
+        }
+console.log(ownerDetails);
+      resolve(ownerDetails)
+    })
+  }
 };

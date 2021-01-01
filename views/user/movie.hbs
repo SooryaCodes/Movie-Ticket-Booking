@@ -37,7 +37,8 @@
                 <button class="trailer-btn mask waves-effect waves-light rgba-white-slight">
                     <div id="bm"></div>
                 </button>
-                <button class="mask waves-effect waves-light rgba-white-slight " onclick="checkDisabled()" id="book">
+                <button class="mask waves-effect waves-light rgba-white-slight " onclick="selection('{{Movie._id}}')"
+                    id="book">
                     Book Now
                 </button>
             </div>
@@ -50,25 +51,52 @@
 
 <button style="display: none;" disabled id="btn-n"></button>
 
-<!-- ---date--- -->
-{{#if Show}}
+
+
+
+
+
+
+
+
+
+
+
+<div class="selecting-wrapper">
+    <div class="selection">
+<div class="theaters">
+    <div class="heading">
+<p>Theaters</p>
+    </div>
+
+<!-- ---Theater--- -->
 <div class="date-wrapper">
     <!-- Swiper -->
     <div class="swiper-container date-slider">
         <div class="swiper-wrapper">
 
-            {{#each Show}}
 
             <div class="swiper-slide">
-                <input type="radio" name="Date" onchange="getValue(value)" value="{{this._id}}" id="date">
-                <label for="date" class="date">
-                    <span>{{this.Month}}</span>
-                    <p>{{this.DayDate}}</p>
-                    <span>{{this.Day}}</span>
+                <input type="radio" name="Theater" onchange="" value="" id="date">
+                <label id="label" for="date" class="date">
+                    <p style="font-size: 15px;text-align: center;">Soorya Cinemas   </p>
                 </label>
             </div>
 
-            {{/each}}
+            <div class="swiper-slide">
+                <input type="radio" name="Theater" onchange="" value="" id="date">
+                <label id="label" for="date" class="date">
+                    <p style="font-size: 15px;text-align: center;">Soorya Cinemas   </p>
+                </label>
+            </div>
+
+            <div class="swiper-slide">
+                <input type="radio" name="Theater" onchange="" value="" id="date">
+                <label id="label" for="date" class="date">
+                    <p style="font-size: 15px;text-align: center;">Soorya Cinemas   </p>
+                </label>
+            </div>
+
 
 
         </div>
@@ -79,48 +107,169 @@
 
 
 </div>
-{{/if}}
+
+
+
+<div class="select-btns">
+
+<button class="mask waves-effect waves-light rgba-white-slight ">Location</button>
+<button class="mask waves-effect waves-light rgba-white-slight ">Next</button>
+</div>
+
+</div>
+
+
+        <div class="loader">
+            <div class="sk-cube-grid">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+        </div>
+        <div class="close">
+            <img src="/images/user/x.svg" alt="" srcset="">
+        </div>
+    </div>
+
+</div>
+
+
 <script>
+    const selection = (movieId) => {
+        console.log(movieId)
+        var wrapper = document.querySelector('.selecting-wrapper')
+        var loader = document.querySelector('.loader')
+        wrapper.classList.toggle('active')
+var theater=document.querySelector('.theaters')
+        loader.classList.toggle('active')
 
-</script>
-<script>
-    var show = {};
-    const getValue = (value) => {
-        document.getElementById('btn-n').disabled = false
-        show.id = value
-        console.log(a)
-        console.log(value)
-    }
-    const checkDisabled = () => {
-        var btn = document.getElementById('btn-n')
-        console.log('hey')
-        if (btn.disabled === true) {
-            console.log('hi')
-            alert('Select  Any Show to Continue')
-        } else {
-            $.ajax({
-                url: '/show-submit',
-                method: 'post',
-                data: show,
-                success: () => {
-                    location.href = "/seat-select/"+show.id
-                }
-            })
-        }
+        $.ajax({
+            url: '/getTheater/' + movieId,
+            method: 'post',
+            success: (Theater) => {
+                console.log(Theater)
+            }
+        })
+        setTimeout(() => {
+            theater.classList.toggle('active')
+            loader.classList.remove('active')
+        }, 2000)
+
+
     }
 
 
-
+    var wrapper = document.querySelector('.selecting-wrapper')
+    var close = document.querySelector('.close')
+    close.addEventListener('click', () => {
+        wrapper.classList.remove('active')
+    })
 </script>
 
-<!-- <script>
-        const radioClicked = () => {
-            var input = document.getElementById('date')
-            alert("Hi there ")
-        }
-    </script> -->
 
-<!-- Swiper -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -128,6 +277,54 @@
 
 
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script>
@@ -151,32 +348,70 @@
             //     spaceBetween:10
             // },
             300: {
-                slidesPerView: 3,
+                slidesPerView: 2,
                 spaceBetween: 0,
 
             },
             550: {
-                slidesPerView: 4,
+                slidesPerView: 2,
             },
             // when window width is >= 320px
             622: {
-                slidesPerView: 5,
+                slidesPerView: 2,
                 spaceBetween: 0
             },
 
             // when window width is >= 480px
             966: {
-                slidesPerView: 4,
+                slidesPerView: 3,
                 spaceBetween: 0
             },
             // when window width is >= 640px
             1382: {
-                slidesPerView: 7,
+                slidesPerView: 3,
                 spaceBetween: 0,
             }
         }
     });
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <!-- ---modal---- -->
@@ -197,6 +432,48 @@
         modal.classList.remove('active')
     })
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- ---profile pop up --- -->
 <script>
     const profilePopUp = () => {
@@ -213,6 +490,50 @@
     }
 
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.5.9/lottie.js"></script>
 <script>
     var animation = bodymovin.loadAnimation({

@@ -167,27 +167,20 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/movie/:id", verifyLogin, (req, res) => {
-  userHelpers.getMovieDetails(req.params.id).then((data) => {
-    var Movie = data.Movie;
-    var Owner = data.Owner;
-    var Show = data.Show;
-    console.log(Movie);
-    for (var i = 0; i < Show.length; i++) {
-      var date = new Date(Show[i].Date).toDateString();
-      var showDate = date.split(" ");
-      Show[i].Day = showDate[0];
-      Show[i].DayDate = showDate[2];
-      Show[i].Year = showDate[3];
-      Show[i].Month = showDate[1];
-    }
+  userHelpers.getMovieDetails(req.params.id).then((Movie) => {
+   
 
-    console.log(Show);
-    var showLength = Show.length;
-    console.log(showLength);
-    res.render("user/movie", { user: true, Movie, Owner, Show, showLength });
+    res.render("user/movie", { user: true, Movie });
   });
 });
 
+router.post('/getTheater/:id',(req,res)=>{
+  console.log(req.params.id)
+  userHelpers.getTheaterDetails(req.params.id).then((response)=>{
+    console.log(response);
+    res.json(response)
+  })
+})
 router.post("/show-submit", (req, res) => {
   console.log(req.body);
   res.json({ status: true });
