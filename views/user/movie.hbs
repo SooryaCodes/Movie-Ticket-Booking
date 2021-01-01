@@ -4,7 +4,7 @@
 
 
 
-<div class="movie-view">
+<div class="movie-view" >
     <div class="left-section">
         <div class="movie-poster">
 
@@ -64,59 +64,37 @@
 
 <div class="selecting-wrapper">
     <div class="selection">
-<div class="theaters">
-    <div class="heading">
-<p>Theaters</p>
-    </div>
-
-<!-- ---Theater--- -->
-<div class="date-wrapper">
-    <!-- Swiper -->
-    <div class="swiper-container date-slider">
-        <div class="swiper-wrapper">
-
-
-            <div class="swiper-slide">
-                <input type="radio" name="Theater" onchange="" value="" id="date">
-                <label id="label" for="date" class="date">
-                    <p style="font-size: 15px;text-align: center;">Soorya Cinemas   </p>
-                </label>
+        <div class="theaters">
+            <div class="heading">
+                <p>Theaters</p>
             </div>
 
-            <div class="swiper-slide">
-                <input type="radio" name="Theater" onchange="" value="" id="date">
-                <label id="label" for="date" class="date">
-                    <p style="font-size: 15px;text-align: center;">Soorya Cinemas   </p>
-                </label>
-            </div>
+            <!-- ---Theater--- -->
+            <div class="date-wrapper">
+                <!-- Swiper -->
+                <div class="swiper-container date-slider">
+                    <div class="swiper-wrapper slider">
 
-            <div class="swiper-slide">
-                <input type="radio" name="Theater" onchange="" value="" id="date">
-                <label id="label" for="date" class="date">
-                    <p style="font-size: 15px;text-align: center;">Soorya Cinemas   </p>
-                </label>
+
+
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+
+
             </div>
 
 
+
+            <div class="select-btns">
+
+                <button class="mask waves-effect waves-light rgba-white-slight ">Location</button>
+                <button class="mask waves-effect waves-light rgba-white-slight ">Next</button>
+            </div>
 
         </div>
-        <!-- Add Arrows -->
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </div>
-
-
-</div>
-
-
-
-<div class="select-btns">
-
-<button class="mask waves-effect waves-light rgba-white-slight ">Location</button>
-<button class="mask waves-effect waves-light rgba-white-slight ">Next</button>
-</div>
-
-</div>
 
 
         <div class="loader">
@@ -146,30 +124,56 @@
         var wrapper = document.querySelector('.selecting-wrapper')
         var loader = document.querySelector('.loader')
         wrapper.classList.toggle('active')
-var theater=document.querySelector('.theaters')
+        var theater = document.querySelector('.theaters')
         loader.classList.toggle('active')
-
+        var sliderWrapper = document.querySelector('.swiper-wrapper')
         $.ajax({
             url: '/getTheater/' + movieId,
             method: 'post',
             success: (Theater) => {
-                console.log(Theater)
+                Theater.forEach(Details => {
+                    console.log(Details)
+
+                    var swiperSlider = document.createElement('div')
+                    swiperSlider.classList.add('swiper-slide')
+                    swiperSlider.innerHTML="Slider 1"
+                    sliderWrapper.appendChild(swiperSlider)
+
+                })
+
             }
         })
         setTimeout(() => {
+
+
+
             theater.classList.toggle('active')
             loader.classList.remove('active')
-        }, 2000)
+        }, 3000)
 
 
     }
 
 
+    var theater = document.querySelector('.theaters')
     var wrapper = document.querySelector('.selecting-wrapper')
     var close = document.querySelector('.close')
     close.addEventListener('click', () => {
         wrapper.classList.remove('active')
+        theater.classList.remove('active')
+
     })
+
+
+
+
+
+
+
+
+
+
+
 </script>
 
 
@@ -272,56 +276,7 @@ var theater=document.querySelector('.theaters')
 
 
 
-
-
-
-
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
 
 
 
@@ -333,11 +288,8 @@ var theater=document.querySelector('.theaters')
     var swiper = new Swiper('.swiper-container.date-slider', {
         slidesPerView: 8,
         spaceBetween: 10,
-        //   slidesPerGroup: 3,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
+
+
         navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
