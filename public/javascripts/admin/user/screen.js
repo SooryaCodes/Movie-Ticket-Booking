@@ -11,11 +11,9 @@ console.log(bookedSeats);
 var Reserved = bookedSeats.split(",");
 
 window.addEventListener("load", function () {
-  if (Reserved) {
+  if (Reserved==="") {
     for (var i = 0; i < Reserved.length; i++) {
-      document
-        .getElementById(Reserved[i])
-        .parentNode.classList.add("Reserved-Seat");
+      document.getElementById(Reserved[i]).parentNode.classList.add("Reserved-Seat");
       document.getElementById(Reserved[i]).classList.add("Reserved");
       var reservedS = document.querySelectorAll(".Reserved");
       reservedS.forEach((value) => {
@@ -24,7 +22,7 @@ window.addEventListener("load", function () {
     }
   }
 });
-console.log(Reserved);
+console.log(Reserved,"rese");
 var Vip = {
   Row: VipRow,
   Seat: VipSeat,
@@ -67,10 +65,10 @@ function myfun(hi) {
     console.log(name);
     document.querySelector(
       ".alerts"
-    ).innerHTML += `<div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
+    ).innerHTML += `<div class="alert style="position:fixed;" alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
     <strong>Hi ${name}.</strong> Reached The Limit! You Can't Select Seat Any More..
   </div>`;
-  } else if (checkedSeat.length < 10) {
+  } else if (checkedSeat.length <= 10) {
     unselected.forEach((value) => (value.disabled = false));
 
     var wrapper = document.querySelector(".seat-show-wrapper");
@@ -193,6 +191,7 @@ function payment(paymentMethod) {
         // alert('success')
       } else {
         location.href = response;
+        alert('paypal')
       }
     },
   });

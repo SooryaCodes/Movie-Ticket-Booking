@@ -168,7 +168,10 @@ router.get("/logout", (req, res) => {
 
 router.get("/movie/:id", verifyLogin, (req, res) => {
   userHelpers.getMovieDetails(req.params.id).then((Movie) => {
-    res.render("user/movie", { user: true, Movie });
+    userHelpers.getAllMovies().then((TopMovies)=>{
+      res.render("user/movie", { user: true, Movie ,TopMovies});
+
+    })
   });
 });
 

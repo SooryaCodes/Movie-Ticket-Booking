@@ -4,6 +4,20 @@
 <link rel="stylesheet" href="/stylesheets/owner/movie-image-upload.css">
 
 
+<div class="loader active">
+  <div class="sk-cube-grid">
+    <div class="sk-cube sk-cube1"></div>
+    <div class="sk-cube sk-cube2"></div>
+    <div class="sk-cube sk-cube3"></div>
+    <div class="sk-cube sk-cube4"></div>
+    <div class="sk-cube sk-cube5"></div>
+    <div class="sk-cube sk-cube6"></div>
+    <div class="sk-cube sk-cube7"></div>
+    <div class="sk-cube sk-cube8"></div>
+    <div class="sk-cube sk-cube9"></div>
+  </div>
+</div>
+
 
 <div class="add-owner">
     <div class="title-add-owner">
@@ -185,3 +199,9 @@ setTimeout(function(){
 
 </script>
 
+<script>
+  var loader = document.querySelector('.loader')
+  setTimeout(function () {
+
+    loader.classList.remove('active')
+  }, 2000)  </script>

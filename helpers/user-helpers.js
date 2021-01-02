@@ -299,5 +299,14 @@ module.exports = {
         console.log(shows,"shows");
         resolve(shows)
     })
+  },
+
+
+  getAllMovies:()=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collection.MOVIE_COLLECTION).find().toArray().then((data)=>{
+        resolve(data)
+      })
+    })
   }
 };

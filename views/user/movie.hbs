@@ -32,7 +32,6 @@
             <p>{{Movie.Description}}. </p>
             <h6>Director : <span class="director-cast">{{Movie.Director}}</span></h6>
             <h6>Cast : <span class="director-cast">{{Movie.Cast}}</span></h6>
-            <h6>Theater : <span class="director-cast">{{Owner.Theater}}</span></h6>
             <div class="movie-button">
                 <button class="trailer-btn mask waves-effect waves-light rgba-white-slight">
                     <div id="bm"></div>
@@ -90,9 +89,9 @@
 
             <div class="select-btns">
 
-                <button class="mask waves-effect waves-light rgba-white-slight ">Location</button>
-                <button class="mask waves-effect waves-light rgba-white-slight "
-                    onclick="getScreen('{{Movie._id}}')">Next</button>
+                <button class="mask waves-effect waves-light rgba-white-slight " id="tl-btn">Location</button>
+                <button class="mask waves-effect waves-light rgba-white-slight " onclick="getScreen('{{Movie._id}}')"
+                    id="tbtn">Next</button>
             </div>
 
         </div>
@@ -113,6 +112,7 @@
                 <!-- Swiper -->
                 <div class="swiper-container date-slider">
                     <div class="swiper-wrapper Screens">
+
                     </div>
                     <!-- Add Arrows -->
                     <div class="swiper-button-next"></div>
@@ -128,6 +128,10 @@
 
                 <button class="mask waves-effect waves-light rgba-white-slight "
                     onclick="getShows('{{Movie._id}}')">Next</button>
+            </div>
+
+            <div class="pop-content">
+
             </div>
 
         </div>
@@ -177,6 +181,8 @@
         <div class="close">
             <img src="/images/user/x.svg" alt="" srcset="">
         </div>
+
+
     </div>
 
 </div>
@@ -187,6 +193,32 @@
 
 
 
+<!-- Swiper -->
+<div class="swiper-container movie">
+    <div class="category">
+        <p>Top Trends</p>
+    </div>
+    <div class="swiper-wrapper">
+        {{#each TopMovies}}
+
+        <div class="swiper-slide">
+            <!-- Swiper -->
+
+            <a href="/movie/{{this._id}}">
+                <div class="card">
+                    <img src="/images/owner/movie/{{this._id}}.jpg" alt="">
+                </div>
+
+            </a>
+
+        </div>
+
+        {{/each}}
+
+
+    </div>
+</div>
+
 
 
 
@@ -194,6 +226,14 @@
 
 
 <script>
+    var content = document.querySelector('.pop-content')
+    var wrapper = document.querySelector('.selecting-wrapper')
+    function removeSlider() {
+        var theaterSliders = document.querySelectorAll('.swiper-slide.booking')
+        theaterSliders.forEach(value => {
+            value.remove()
+        })
+    }
     function slider() {
         var swiper = new Swiper('.swiper-container.date-slider', {
             slidesPerView: 8,
@@ -236,6 +276,10 @@
             }
         });
     }
+
+    var tbtn = document.getElementById('tbtn')
+    var tlbtn = document.getElementById('tl-btn')
+
     const selection = (movieId) => {
         console.log(movieId)
         var wrapper = document.querySelector('.selecting-wrapper')
@@ -248,17 +292,23 @@
             url: '/getTheater/' + movieId,
             method: 'post',
             success: (Theater) => {
-                Theater.forEach(Details => {
-                    console.log(Details)
-                    sliderWrapperTheater.innerHTML += `
-                    <div class="swiper-slide" >
+                if (Theater.length < 1) {
+                    alert('Sorry , No Theaters Available!  :(')
+                    wrapper.classList.remove('active')
+                } else {
+                    Theater.forEach(Details => {
+                        console.log(Details)
+                        sliderWrapperTheater.innerHTML += `
+                    <div class="swiper-slide booking" >
 <input type="radio" name="Theater" onchange="" value="${Details._id}" id="date">
     <label id="label" for="date" class="date">
         <p style="font-size: 15px;text-align: center;">${Details.Theater} </p>
     </label>
 </div>
 `
-                })
+                    })
+                }
+
 
 
 
@@ -285,10 +335,7 @@
     var wrapper = document.querySelector('.selecting-wrapper')
     var close = document.querySelector('.close')
     close.addEventListener('click', () => {
-        var theaterSliders = document.querySelectorAll('.swiper-slide')
-        theaterSliders.forEach(value => {
-            value.remove()
-        })
+        removeSlider()
         wrapper.classList.remove('active')
         theater.classList.remove('active')
         screen.classList.remove('active')
@@ -302,41 +349,55 @@
 
     const getScreen = (movieId) => {
         var checkedTheater = document.querySelector('input[name="Theater"]:checked');
-        console.log(checkedTheater)
+        var wrapper = document.querySelector('.selecting-wrapper')
+
         loader.classList.toggle('active')
         theater.classList.remove('active')
         var sliderWrapperScreen = document.querySelector('.swiper-wrapper.Screens')
 
 
-        $.ajax({
-            url: `/getScreenDetails/${movieId}/${checkedTheater.value}`,
-            method: 'post',
-            success: (screenDetails) => {
-                console.log(screenDetails)
-                screenDetails.forEach(Details => {
-                    console.log(Details)
-                    sliderWrapperScreen.innerHTML += `
-                    <div class="swiper-slide" >
+
+        if (checkedTheater === null) {
+            alert('You Didn"t Select Any Theater ! Try Again ')
+            removeSlider()
+            wrapper.classList.remove('active')
+        } else {
+            $.ajax({
+                url: `/getScreenDetails/${movieId}/${checkedTheater.value}`,
+                method: 'post',
+                success: (screenDetails) => {
+                    console.log(screenDetails)
+                    screenDetails.forEach(Details => {
+                        console.log(Details)
+                        sliderWrapperScreen.innerHTML += `
+                    <div class="swiper-slide booking" >
 <input type="radio" name="Screen" onchange="" value="${Details._id}" id="date">
     <label id="label" for="date" class="date">
         <p style="font-size: 15px;text-align: center;">${Details.Name} </p>
     </label>
 </div>
 `
-                })
+                    })
 
 
 
-                slider()
-            }
-        })
+                    slider()
+                }
+            })
 
 
 
-        setTimeout(() => {
-            screen.classList.toggle('active')
-            loader.classList.remove('active')
-        }, 3500)
+            setTimeout(() => {
+                screen.classList.toggle('active')
+                loader.classList.remove('active')
+            }, 3500)
+
+        }
+
+
+
+
+
 
     }
 
@@ -353,17 +414,20 @@
         loader.classList.toggle('active')
         screen.classList.remove('active')
         var sliderWrapperShow = document.querySelector('.swiper-wrapper.Show')
-
-
-        $.ajax({
-            url: `/getShowDetails/${movieId}/${checkedScreen.value}`,
-            method: 'post',
-            success: (showDetails) => {
-                console.log(showDetails)
-                showDetails.forEach(Details => {
-                    console.log(Details)
-                    sliderWrapperShow.innerHTML += `
-                    <div class="swiper-slide" >
+        if (checkedScreen === null) {
+            alert('You Didn"t Select Any Screen ! Try Again ')
+            removeSlider()
+            wrapper.classList.remove('active')
+        } else {
+            $.ajax({
+                url: `/getShowDetails/${movieId}/${checkedScreen.value}`,
+                method: 'post',
+                success: (showDetails) => {
+                    console.log(showDetails)
+                    showDetails.forEach(Details => {
+                        console.log(Details)
+                        sliderWrapperShow.innerHTML += `
+                    <div class="swiper-slide booking" >
 <input type="radio" name="Show" onchange="" value="${Details._id}" id="date">
     <label id="label" for="date" class="date">
 <span>${Details.Month}</span>
@@ -372,20 +436,23 @@
      </label>
 </div>
 `
-                })
+                    })
 
 
 
-                slider()
-            }
-        })
+                    slider()
+                }
+            })
 
 
 
-        setTimeout(() => {
-            show.classList.toggle('active')
-            loader.classList.remove('active')
-        }, 3500)
+            setTimeout(() => {
+                show.classList.toggle('active')
+                loader.classList.remove('active')
+            }, 3500)
+        }
+
+
 
     }
 
@@ -393,7 +460,14 @@
 
     const goNext = () => {
         var checkedShow = document.querySelector('input[name="Show"]:checked');
-        location.href = "/seat-select/" + checkedShow.value
+        if (checkedShow === null) {
+            alert('You Didn"t Select Any Show ! Try Again ')
+            removeSlider()
+            wrapper.classList.remove('active')
+        } else {
+
+            location.href = "/seat-select/" + checkedShow.value
+        }
     }
 
 
@@ -421,7 +495,48 @@
 
 
 
-
+<script>
+    var swiper = new Swiper('.swiper-container.movie', {
+        // pagination: {
+        //     el: '.swiper-pagination',
+        //     clickable: true,
+        // },
+        // navigation: {
+        //     nextEl: '.swiper-button-next',
+        //     prevEl: '.swiper-button-prev',
+        // },
+        // Responsive breakpoints
+        breakpoints: {
+            // 550:{
+            //     slidesPerView:1,
+            //     spaceBetween:10
+            // },
+            300: {
+                slidesPerView: 3.3,
+                spaceBetween: 0,
+            },
+            550: {
+                slidesPerView: 4.5,
+                spaceBetween: 5,
+            },
+            // when window width is >= 320px
+            622: {
+                slidesPerView: 3.5,
+                spaceBetween: 20
+            },
+            // when window width is >= 480px
+            966: {
+                slidesPerView: 4.5,
+                spaceBetween: 30
+            },
+            // when window width is >= 640px
+            1382: {
+                slidesPerView: 6.5,
+                spaceBetween: 0
+            }
+        }
+    });
+</script>
 
 
 
@@ -605,25 +720,6 @@
 
 
 
-
-
-
-<!-- ---profile pop up --- -->
-<script>
-    const profilePopUp = () => {
-
-        var btn = document.querySelector('.profile')
-        var popUp = document.querySelector('.profile-pop-up')
-        var down = document.querySelector('.down')
-
-
-        popUp.classList.toggle('active')
-        down.classList.toggle('down-active')
-
-
-    }
-
-</script>
 
 
 
