@@ -21,6 +21,7 @@ const verifyLogin = (req, res, next) => {
   }
 };
 router.get("/", verifyLogin, function (req, res, next) {
+  console.log(req.user);
   userHelpers.getMovies().then((Movie) => {
     // console.log(Horror,Action,Comedy,Drama,Romance);
     var Horror = Movie.filter((value) => value.Category === "Horror");
@@ -105,7 +106,9 @@ router.post("/verify-otp", (req, res) => {
           console.log(response);
           if (response.userExist) {
             req.session.loggedIn = true;
-            req.session.passport.user = response.user;
+            const passport = { user: response.user };
+
+            req.session.passport = passport;
             res.redirect("/");
           } else {
             res.render("user/signup", { mobile: req.body.mobile });
@@ -118,8 +121,9 @@ router.post("/verify-otp", (req, res) => {
 router.post("/signup/:id", (req, res) => {
   userHelpers.signup(req.params.id, req.body).then((response) => {
     req.session.loggedIn = true;
-    req.session.passport.user = response;
+    const passport = { user: response };
 
+    req.session.passport = passport;
     res.redirect("/");
   });
 });
@@ -168,10 +172,9 @@ router.get("/logout", (req, res) => {
 
 router.get("/movie/:id", verifyLogin, (req, res) => {
   userHelpers.getMovieDetails(req.params.id).then((Movie) => {
-    userHelpers.getAllMovies().then((TopMovies)=>{
-      res.render("user/movie", { user: true, Movie ,TopMovies});
-
-    })
+    userHelpers.getAllMovies().then((TopMovies) => {
+      res.render("user/movie", { user: true, Movie, TopMovies });
+    });
   });
 });
 
@@ -184,29 +187,31 @@ router.post("/getTheater/:id", (req, res) => {
 });
 
 router.post("/getScreenDetails/:movieId/:ownerId", (req, res) => {
-  console.log(req.params.movieId, req.params.ownerId,"ownerID");
-  userHelpers.getScreenDetails(req.params.movieId, req.params.ownerId).then((response)=>{
-
-    res.json(response);
-  })
+  console.log(req.params.movieId, req.params.ownerId, "ownerID");
+  userHelpers
+    .getScreenDetails(req.params.movieId, req.params.ownerId)
+    .then((response) => {
+      res.json(response);
+    });
 });
 router.post("/getShowDetails/:movieId/:screenId", (req, res) => {
   console.log(req.params.movieId, req.params.ownerId);
-  userHelpers.getShowDetails(req.params.movieId, req.params.screenId).then((response)=>{
-
-    for(var i=0;i<response.length;i++){
-      var date = new Date(response[i].Date).toDateString();
-      var showDate = date.split(" ");
-      response[i].Day = showDate[0];
-      response[i].DayDate = showDate[2];
-      response[i].Year = showDate[3];
-      response[i].Month = showDate[1];
-      var time=response[i].Time.split(':')
-      response[i].Time=time[0]+"-"+time[1]
-    }
-    console.log(response,"respo");
-    res.json(response);
-  })
+  userHelpers
+    .getShowDetails(req.params.movieId, req.params.screenId)
+    .then((response) => {
+      for (var i = 0; i < response.length; i++) {
+        var date = new Date(response[i].Date).toDateString();
+        var showDate = date.split(" ");
+        response[i].Day = showDate[0];
+        response[i].DayDate = showDate[2];
+        response[i].Year = showDate[3];
+        response[i].Month = showDate[1];
+        var time = response[i].Time.split(":");
+        response[i].Time = time[0] + "-" + time[1];
+      }
+      console.log(response, "respo");
+      res.json(response);
+    });
 });
 router.post("/show-submit", (req, res) => {
   console.log(req.body);
@@ -251,7 +256,7 @@ router.post("/ticket-booking", (req, res) => {
   } else if (req.body.paymentMethod === "Paypal") {
     userHelpers.insertBooking(req.body, req.user._id).then((data) => {
       userHelpers.generatePaypal(data).then((response) => {
-        console.log(response,"trespo");
+        console.log(response, "trespo");
         console.log(response.transactions[0].amount, "response");
         // console.log(,"response");
         res.json(response.links[1].href);
@@ -269,9 +274,7 @@ router.post("/verify-payment", (req, res) => {
   });
   console.log("hey");
 });
-router.get("/Bookin-Success", (req, res) => {
-
-});
+router.get("/Bookin-Success", (req, res) => {});
 
 router.get("/failure", (req, res) => {
   res.send("failure");

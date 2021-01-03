@@ -4,80 +4,7 @@ const bcrypt = require("bcrypt");
 const { static, response } = require("express");
 const objectId = require("mongodb").ObjectID;
 module.exports = {
-  // // ---login---
-  // ownerLogin: (details) => {
-  //   return new Promise(async (resolve, reject) => {
-  //     let loginStatus = false;
-  //     let response = {};
-  //     let owner = await db
-  //       .get()
-  //       .collection(collection.OWNER_COLLECTION)
-  //       .findOne({ Name: details.username });
-  //     if (owner) {
-  //       bcrypt.compare(details.password,owner.Password).then((status) => {
-  //         if (status) {
-  //           console.log("owner Login SuccessFull");
-  //           response.owner = owner;
-  //           response.status = true;
-  //           resolve(response);
-  //         } else {
-  //           console.log("owner Login Failed");
-  //           resolve({ status: false });
-  //         }
-  //       });
-  //     } else {
-  //       console.log("owner Login Failed Failed");
-  //       resolve({ status: false });
-  //     }
-  //   });
-  // },
 
-  // update password
-
-  //   updatePassword: (details) => {
-  //     return new Promise(async (resolve, reject) => {
-  //       let owner = await db
-  //         .get()
-  //         .collection(collection.OWNER_COLLECTION)
-  //         .findOne({ username: details.email });
-
-  //       if (owner) {
-  //         bcrypt
-  //           .compare(details.oldps, owner.adminPassword)
-  //           .then(async (status) => {
-  //             if (status) {
-  //               console.log("successfull");
-  //               let newPassword = await bcrypt.hash(details.newps, 10);
-  //               db.get()
-  //                 .collection(collection.OWNER_COLLECTION)
-  //                 .updateOne(
-  //                   { username: details.username },
-  //                   {
-  //                     $set: {
-  //                       Password: details.password,
-  //                     },
-  //                   }
-  //                 );
-  //               resolve({ status: true });
-  //             } else {
-  //               console.log("failed");
-  //               resolve({ status: false });
-  //             }
-  //           });
-  //       } else {
-  //         resolve({ status: false });
-  //       }
-  //     });
-  //   },
-
-  // verifyPassword:(password,user)=>{
-  //   return new Promise ((resolve,reject)=>{
-  //     bcrypt.compare(password,user.Password).then((status)=>{
-  //       console.log(status);
-  //       resolve(status)
-  //     })
-  //   })
-  // }
 
   getScreens: (id) => {
     return new Promise((resolve, reject) => {
@@ -93,10 +20,12 @@ module.exports = {
   },
   addScreen: (data, id) => {
     return new Promise((resolve, reject) => {
-        data.OwnerId = id,
-
-
-      db.get()
+      console.log(data);
+      var Seat = (data.normalRows * data.normalSeats) + (data.vipRows * data.vipSeats) + (data.premiumRows * data.premiumSeats) + (data.excecutiveRows * data.excecutiveSeats)
+      data.OwnerId = id
+      data.Seat = Seat
+      db
+        .get()
         .collection(collection.SCREEN_COLLECTION)
         .insertOne(data)
         .then((response) => {
@@ -107,12 +36,23 @@ module.exports = {
   editScreen: (id, data) => {
     return new Promise((resolve, reject) => {
       console.log(data);
+      var Seat = (data.normalRows * data.normalSeats) + (data.vipRows * data.vipSeats) + (data.premiumRows * data.premiumSeats) + (data.excecutiveRows * data.excecutiveSeats)
+      data.OwnerId = id
+      data.Seat = Seat
       db.get()
         .collection(collection.SCREEN_COLLECTION)
         .updateOne(
           { _id: objectId(id) },
           {
             $set: {
+              normalRows: data.normalRows,
+              normalSeats: data.normalSeats,
+              vipRows: data.vipRows,
+              vipSeats: data.vipSeats,
+              premiumRows: data.premiumRows,
+              premiumSeats: data.premiumSeats,
+              excecutiveRows: data.excecutiveRows,
+              excecutiveSeats: data.excecutiveSeats,
               Name: data.Name,
               Seat: data.Seat,
             },
@@ -185,8 +125,8 @@ module.exports = {
               Category: data.Category,
               Trailer: data.Trailer,
               Runtime: data.Runtime,
-              Description:data.Description,
-              Image:data.Image
+              Description: data.Description,
+              Image: data.Image,
             },
           }
         );
@@ -256,9 +196,9 @@ module.exports = {
               Date: data.Date,
               Category: data.Category,
               Trailer: data.Trailer,
-              Description:data.Description,
+              Description: data.Description,
               Runtime: data.Runtime,
-              Image:data.Image
+              Image: data.Image,
             },
           }
         );
@@ -428,37 +368,35 @@ module.exports = {
         .findOne({ Email: details.email });
 
       if (owner) {
-        bcrypt
-          .compare(details.oldps, owner.Password)
-          .then(async (status) => {
-            if (status) {
-              console.log("successfull");
-              let newPassword = await bcrypt.hash(details.newps, 10);
-              db.get()
-                .collection(collection.OWNER_COLLECTION)
-                .updateOne(
-                  { Email: details.email },
-                  {
-                    $set: {
-                      Password: newPassword,
-                    },
-                  }
-                );
-              resolve({ status: true });
-            } else {
-              console.log("failed");
-              resolve({ status: false });
-            }
-          });
+        bcrypt.compare(details.oldps, owner.Password).then(async (status) => {
+          if (status) {
+            console.log("successfull");
+            let newPassword = await bcrypt.hash(details.newps, 10);
+            db.get()
+              .collection(collection.OWNER_COLLECTION)
+              .updateOne(
+                { Email: details.email },
+                {
+                  $set: {
+                    Password: newPassword,
+                  },
+                }
+              );
+            resolve({ status: true });
+          } else {
+            console.log("failed");
+            resolve({ status: false });
+          }
+        });
       } else {
         resolve({ status: false });
       }
     });
   },
 
-   //edit profile
+  //edit profile
 
-   editProfile: (id, details) => {
+  editProfile: (id, details) => {
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.OWNER_COLLECTION)
@@ -475,5 +413,52 @@ module.exports = {
         });
     });
   },
-  
+
+  //check owner
+
+  checkOwner: (email) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.OWNER_COLLECTION)
+        .findOne({ Email: email })
+        .then((status) => {
+          console.log(status);
+          if (status) {
+            resolve({ status: true });
+          } else {
+            resolve({ status: false });
+          }
+        });
+    });
+  },
+  getBoxData: (id) => {
+    return new Promise(async (resolve, reject) => {
+      var showsFromShowCollection = await db
+        .get()
+        .collection(collection.SHOW_COLLECTION)
+        .find({ ownerId: objectId(id) })
+        .toArray();
+
+      var bookings = await db
+        .get()
+        .collection(collection.BOOKING_COLLECTION)
+        .find()
+        .toArray();
+      console.log(showsFromShowCollection);
+
+      var thisOwnerBookings = [];
+
+      for (var i = 0; i < bookings.length; i++) {
+        for (var j = 0; j < showsFromShowCollection.length; j++) {
+          if (bookings[i].Show._id === showsFromShowCollection[j]._id) {
+            thisOwnerBooking.push(bookings[i]);
+            console.log(bookings[i], "boking");
+          } else {
+            thisOwnerBookings.push(0)
+          }
+        }
+      }
+      console.log(thisOwnerBookings);
+    });
+  },
 };

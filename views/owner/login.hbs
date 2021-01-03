@@ -38,6 +38,11 @@
           {{messages.error}}!
         </div>
       {{/if}}
+      {{#if noOwner}}
+        <div class="alert alert-danger" role="alert">
+          No Account With This Email.
+        </div>
+      {{/if}}
 <a id="forgot" class="text-primary" data-toggle="modal" data-target="#modalContactForm">Forgot Password ?</a>
       <div class="input-submit" style="margin-top: 20px;">
 

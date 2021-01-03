@@ -136,10 +136,24 @@
         <a href="/owner/edit-show/{{this._id}}">
           <img src="/images/admin/edit-2.svg" alt="" />
         </a>
-        <a onclick="deleteShow('{{this._id}}')">
+        <a onclick="getDeleteWrapper('Show')">
           <img src="/images/admin/trash (1).svg" alt="" />
         </a>
       </td>
+
+      {{!--delete popup--}}
+      <div class="delete-wrapper">
+        <div class="delete">
+          <span id="delete">Delete This.Png ?</span>
+          <p>This will permanently delete the image from your image library. You will not be able to undo this action.
+          </p>
+          <div class="inputs-btn">
+            <button class="mask waves-effect waves-light rgba-white-slight" onclick="closeDelet()">Cancel</button>
+            <button class="mask waves-effect waves-light rgba-white-slight"
+              onclick="deleteShow('{{this._id}}')">Delete</button>
+          </div>
+        </div>
+      </div>
     </tr>
     {{/each}}
   </table>
@@ -148,9 +162,18 @@
 
 
 <script>
+    const closeDelet = () => {
+    var wrapper = document.querySelector('.delete-wrapper')
+    wrapper.classList.remove('active')
+  }
+   function getDeleteWrapper(Name) {
+    var Delspan = document.getElementById('delete')
+    Delspan.innerText = `Delete ${Name} ?`
+
+    var wrapper = document.querySelector('.delete-wrapper')
+    wrapper.classList.toggle('active')
+  }
   function deleteShow(Id) {
-    var confirmDelete = confirm('Are You Sure Want To Delete')
-    if (confirmDelete) {
       $.ajax({
         url: '/owner/delete-show/' + Id,
         data: Id,
@@ -159,9 +182,9 @@
 
           console.log(response.status)
           if (response.status) {
-            setTimeout(function () {
+                      wrapper.classList.remove('active')
+
               location.reload()
-            }, 2000)
 
             console.log('delete')
 
@@ -169,7 +192,7 @@
         }
       })
     }
-  }
+  
 </script>
 <!-- ----tables--- -->
 

@@ -75,7 +75,7 @@
     <p>
       Screens
     </p>
-    <a href="/owner/add-screen" id="add-btn" onclick="addToggle()" class="btn btn-elegant">
+    <a href="/owner/add-screen" id="add-btn" onclick="addToggle()" class="btn btn-light-blue">
       Add Screen
     </a>
   </div>
@@ -116,16 +116,28 @@
         <a href="/owner/edit-screen/{{this._id}}">
           <img src="/images/admin/edit-2.svg" alt="" />
         </a>
-        <a onclick="deleteScreen('{{this._id}}')">
+        <a onclick="getDeleteWrapper('{{this.Name}}')">
           <img src="/images/admin/trash (1).svg" alt="" />
         </a>
       </td>
+
+      {{!--delete popup--}}
+      <div class="delete-wrapper">
+        <div class="delete">
+          <span id="delete">Delete This.Png ?</span>
+          <p>This will permanently delete the image from your image library. You will not be able to undo this action.
+          </p>
+          <div class="inputs-btn">
+            <button class="mask waves-effect waves-light rgba-white-slight" onclick="closeDelet()">Cancel</button>
+            <button class="mask waves-effect waves-light rgba-white-slight"
+              onclick="deleteScreen('{{this._id}}')">Delete</button>
+          </div>
+        </div>
+      </div>
     </tr>
     {{/each}}
   </table>
 </div>
-
-
 
 
 
@@ -148,40 +160,40 @@
 
 <!-- ----tables--- -->
 <script>
-  $(document).ready(function () {
-    $('#dtBasicExample').DataTable();
-    $('.dataTables_length').addClass('bs-select');
-  });
+  const closeDelet = () => {
+    var wrapper = document.querySelector('.delete-wrapper')
+    wrapper.classList.remove('active')
+  }
 </script>
 <script>
+  function getDeleteWrapper(Name) {
+    var Delspan = document.getElementById('delete')
+    Delspan.innerText = `Delete ${Name} ?`
+
+    var wrapper = document.querySelector('.delete-wrapper')
+    wrapper.classList.toggle('active')
+  }
   function deleteScreen(Id) {
-    var confirmDelete = confirm('Are You Sure Want To Delete')
-    if (confirmDelete) {
-      $.ajax({
-        url: '/owner/delete-screen/' + Id,
-        data: Id,
-        method: 'post',
-        success: (response) => {
-
-          console.log(response.status)
-          if (response.status) {
-            swal({
-              title: "Deleted",
-              text: "Successfully",
-              icon: "success",
-              button: false
-            }); setTimeout(function () {
-              location.reload()
-            }, 2000)
 
 
-          }
+    var wrapper = document.querySelector('.delete-wrapper')
+    $.ajax({
+      url: '/owner/delete-screen/' + Id,
+      data: Id,
+      method: 'post',
+      success: (response) => {
+
+        console.log(response.status)
+        if (response.status) {
+          wrapper.classList.remove('active')
+          location.reload()
         }
-      })
-    }
+      }
+    })
 
   }
-</script>  <script>
+</script>
+<script>
   var loader = document.querySelector('.loader')
   setTimeout(function () {
 

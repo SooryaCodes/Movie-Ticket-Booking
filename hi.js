@@ -1,10 +1,6 @@
 const sgMail = require('@sendgrid/mail');
-const nodemon = require('nodemon');
-
 const sgMailApiKey = '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'
-
 sgMail.setApiKey(sgMailApiKey)
-
 const sendTemplate = (to,from, templateId, dynamic_template_data) => {
   const msg = {
     to,
@@ -29,7 +25,4 @@ const sendTemplate = (to,from, templateId, dynamic_template_data) => {
 var dynamic_template_data={
   Name:'Soorya'
 }
-sendTemplate('sooryakriz111@gmail.com','sooryakriz111@gmail.com','d-be0314b8f200467788d3dc4fd0ab4f7d',dynamic_template_data)
-
-
-
+sendTemplate('galaxieon.dev@gmail.com','sooryakriz111@gmail.com','d-be0314b8f200467788d3dc4fd0ab4f7d',dynamic_template_data)
