@@ -1,15 +1,3 @@
-* {
-  margin: 0;
-  bottom: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  width: 100%;
-  height: 100vh;
-}
-
 .login-wrapper {
   width: 100%;
   height: 100vh;
@@ -88,27 +76,29 @@ body {
   border: none;
   border-bottom: 4px solid rgba(31, 147, 255, 0.151);
 }
-.input-signup{
+.input-signup {
   width: 100%;
   display: flex;
-  align-items: center;justify-content: center;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
 }
-.input-signup input{
+.input-signup input {
   margin-top: 20px;
-  height: 40px;  padding-left: 10px;
-color:  rgba(0, 132, 255, 0.801);
+  height: 40px;
+  padding-left: 10px;
+  color: rgba(0, 132, 255, 0.801);
   background: rgba(236, 236, 236, 0.301);
   border-radius: 5px;
   border: none;
 
   width: 300px;
 }
-.input-signup input:focus{
+.input-signup input:focus {
   outline: none;
 }
 .input-groups input:focus {
-    border-bottom: 4px solid rgba(0, 132, 255, 0.582) !important;
+  border-bottom: 4px solid rgba(0, 132, 255, 0.582) !important;
 
   outline: none;
 }
@@ -129,19 +119,18 @@ button:focus {
   justify-content: center;
 }
 
-.btn-s-h button{
+.btn-s-h button {
   color: white;
   height: 38px;
 
-  border: none; 
-
+  border: none;
 }
 .input-submit button {
   color: white;
   width: 200px;
   height: 38px;
   border-radius: 5px;
-  border: none; 
+  border: none;
   background: rgb(34, 137, 255);
 }
 .social {
@@ -174,53 +163,81 @@ button:focus {
   }
 }
 
-
 @media screen and (max-width: 417px) {
-
   .input-groups input {
-display: flex;
-;
-padding: 0;
-align-items: center;justify-content: center;
+    display: flex;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
     width: 21px;
   }
-
 }
 
-
-
-.signupInput{
+.signupInput {
   caret-color: #909090 !important;
   color: #909090 !important;
   background: rgb(255, 255, 255) !important;
   box-shadow: 0px 0px 15px rgba(204, 204, 204, 0.61);
 }
 
-
-.signupInput::placeholder{
+.signupInput::placeholder {
   color: #909090;
 }
 
-.location-wrapper{
+.location-wrapper {
   width: 100%;
+  visibility: hidden;
+  opacity: 0;
   height: 100vh;
+  transition:opacity .5s ease-in-out;
   position: fixed;
   top: 0;
   flex-direction: column;
   display: flex;
   align-items: center;
+  background: rgba(0, 0, 0, 0.288);
   justify-content: center;
 }
-
-#map{
-  width: 90%;
-  position: absolute;
-  height: 90%;
+.location-wrapper.active{
+  visibility: visible;
+  opacity: 1;
 }
-/* 
-#map button{
-  z-index: 10;
-  position: absolute;
-  bottom: 20px;
-  right: 10px;
-} */
+.map-wrapper {
+  width: 600px;
+  height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  background: #fff;
+}
+#map {
+  margin-top: 30px;
+  width: 90%;
+  height: 80%;
+  border: none;
+  outline: none;
+}
+
+.map-btn {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.map-btn button {
+  width: 120px;
+  color: white;
+  border: 2px solid #5390df;
+  height: 45px;
+  outline: none;
+  margin-right: 20px;
+  color: #5390df;
+}
+
+.map-btn button:nth-child(2) {
+  color: white;
+  background: #5390df;
+}

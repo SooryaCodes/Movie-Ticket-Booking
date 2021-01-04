@@ -29,7 +29,7 @@ module.exports = {
   signup: (mobile, data) => {
     return new Promise((reolve, reject) => {
       data.Mobile = mobile;
-      data.role = "user";
+      data.role = "user"; 
       db.get()
         .collection(collection.USER_COLLECTION)
         .insertOne(data)

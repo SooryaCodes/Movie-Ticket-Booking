@@ -14,8 +14,6 @@ var fileUpload = require("express-fileupload");
 var app = express();
 var MongoDBStore = require("connect-mongodb-session")(session);
 var flash=require('express-flash')
-// var helmet=require('helmet')
-// view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 app.engine(

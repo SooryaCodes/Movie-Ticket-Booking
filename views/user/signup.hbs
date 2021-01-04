@@ -1,4 +1,9 @@
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css" rel="stylesheet" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+
+
+
 <link rel="stylesheet"
     href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
     type="text/css" />
@@ -18,16 +23,26 @@
             </div>
             <div class="input">
                 <div class="input-signup">
-                    <input type="text" name="Name" placeholder="Name" id="Name" class="signupInput">
-                    <input type="text" name="Email" placeholder="Email" id="Email" class="signupInput">
+                    <!-- Material input -->
+                    <div class="md-form">
+                        <input type="text" id="Name" class="form-control ">
+                        <label for="Name">Name</label>
+                    </div>
+
+                    <!-- Material input -->
+                    <div class="md-form">
+                        <input type="email" id="Email" class="form-control " autocomplete="email">
+                        <label for="Email">Email</label>
+                    </div>
                     <input type="text" name="Latitude" placeholder="Email" id="Latitude" class="signupInput" hidden>
                     <input type="text" name="Longitude" placeholder="Email" id="Longitude" class="signupInput" hidden>
+                    <input type="text" name="mobile" placeholder="mobile" id="Mobile" value="{{mobile}}" class="signupInput" hidden>
                 </div>
 
                 <div class="input-submit btn-s-h">
                     <button class="mask waves-effect btn btn-light-blue waves-light rgba-white-slight"
-                        style="width: 300px; font-size: 15px; display: flex; align-items: center;justify-content: center;"
-                        id="" class="">Continue</button>
+                        style="width: 300px; font-size: 15px; display: flex;border-radius: 0px; height: 45px; align-items: center;justify-content: center;"
+                        id="" class="" onclick="displayLocation()">Continue</button>
                 </div>
             </div>
 
@@ -41,36 +56,62 @@
 
 
 <div class="location-wrapper">
-    <div id="map">
-        {{!-- <button class="btn btn-mdb-color">Signup</button> --}}
+    <div class="map-wrapper">
 
+        <div id="map">
+
+        </div>
+
+        <div class="map-btn">
+            <button class="mask waves-effect waves-light rgba-white-slight" onclick="cancelLocation()">Cancel</button>
+            <button class="mask waves-effect waves-light rgba-white-slight" onclick="signup()">Signup</button>
+        </div>
     </div>
+
 </div>
 
 
 
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
-<!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
-<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
 <script>
+
+    var locationWrapper = document.querySelector('.location-wrapper')
+    const displayLocation = () => {
+        locationWrapper.classList.toggle('active')
+    }
+
+
+    const cancelLocation = () => {
+        locationWrapper.classList.remove('active')
+    }
+
+
     mapboxgl.accessToken = 'pk.eyJ1Ijoic29vcnlhLWtyaXoiLCJhIjoiY2tqYTcydDN1NWc1bTJ5bjRuYXF3eHdpayJ9.mo48bziP80gkbrXL-1kETw';
-
-
-
-
-
-    var longitude
-    var latitude
     var map = new mapboxgl.Map({
         container: 'map', // container id
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [76.50668553736728, 10.253423005087484], // starting position
+        center: [-74.5, 40], // starting position
         zoom: 9 // starting zoom
     });
 
+    map.on('click', function (e) {
 
+
+        var svgMarker = document.querySelector('svg')
+        console.log(svgMarker)
+        if (svgMarker) {
+            svgMarker.remove()
+            var marker = new mapboxgl.Marker()
+                .setLngLat([e.lngLat.lng, e.lngLat.lat])
+                .addTo(map);
+        } else {
+            var marker = new mapboxgl.Marker()
+                .setLngLat([e.lngLat.lng, e.lngLat.lat])
+                .addTo(map)
+        }
+
+        var latitude = document.getElementById('Latitude').value = e.lngLat.lat
+        var longitude = document.getElementById('Longitude').value = e.lngLat.lng
+    });
 
     map.addControl(
         new MapboxGeocoder({
@@ -83,34 +124,6 @@
 
     );
 
-    map.on('click', function (e) {
-
-
-
-        // e.lngLat is the longitude, latitude geographical position of the event
-        JSON.stringify(e.lngLat.wrap());
-
-
-
-        latitude = e.lngLat.lat
-        longitude = e.lngLat.lng
-
-        console.log(latitude, longitude);
-
-        var svg = document.querySelector('svg')
-        if (svg) {
-            svg.remove()
-            var marker = new mapboxgl.Marker()
-                .setLngLat([longitude, latitude])
-                .addTo(map);
-        } else {
-            var marker = new mapboxgl.Marker()
-                .setLngLat([longitude, latitude])
-                .addTo(map)
-        }
-
-
-    });
 
 
 
@@ -122,10 +135,31 @@
     //get inputs value on submit 
 
 
-    var email = document.getElementById('Email')
-    var name = document.getElementById('Name')
-    var latitude = document.getElementById('Latitude')
-    var longitude = document.getElementById('Longitude')
+    const signup = () => {
 
-    console.log(email, name, longitude, latitude);
+
+        var email = document.getElementById('Email').value
+        var name = document.getElementById('Name').value
+        var latitude = document.getElementById('Latitude').value
+        var longitude = document.getElementById('Longitude').value
+        var mobile = document.getElementById('Mobile').value
+
+
+        var Details = {
+            Name: name,
+            Email: email,
+            Latitude: latitude,
+            Longitude: longitude
+        }
+
+
+$.ajax({
+    url:'/signup/'+mobile,
+    method:'post',
+    data:Details,
+    success:()=>{
+        location.href='/'
+    }
+})
+    }
 </script>

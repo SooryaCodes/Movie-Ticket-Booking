@@ -8,6 +8,11 @@ var app = require('../app');
 var debug = require('debug')('movie-ticket-booking:server');
 var http = require('http');
 
+
+//include sockeyt.io
+
+var io=require('socket.io')(http)
+
 /**
  * Get port from environment and store in Express.
  */
@@ -88,3 +93,11 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+
+//socket.io connect 
+
+io.on('connection',(socket)=>{
+  console.log('new connection established');
+})

@@ -40,9 +40,7 @@ router.get("/", verifyLogin, function (req, res, next) {
   });
 });
 
-router.get('/user', (req, res) => {
-  res.render('user/signup')
-})
+
 
 router.get("/login", (req, res) => {
   if (req.isAuthenticated() && req.user.role === "user") {
@@ -179,8 +177,10 @@ router.get("/movie/:id", verifyLogin, (req, res) => {
     userHelpers.getAllMovies().then((TopMovies) => {
       userHelpers.getRatings(req.params.id).then((Ratings) => {
         console.log(Ratings);
-
+        var RatingAverage =[]
         for (var i = 0; i < Ratings.length; i++) {
+          RatingAverage[i] = Ratings[i].Rating
+
           if (Ratings[i].Rating === 1) {
             Ratings[i].one = true
           } else if (Ratings[i].Rating === 2) {
@@ -194,7 +194,13 @@ router.get("/movie/:id", verifyLogin, (req, res) => {
           }
         }
 
-        res.render("user/movie", { user: true, Movie, TopMovies, Ratings ,userDetails:req.user});
+        var AverageRatingCalculation= (RatingAverage.reduce((a, b) => a + b, 0))/(RatingAverage.length)
+        console.log(AverageRatingCalculation);
+
+
+   
+
+        res.render("user/movie", { user: true, Movie, TopMovies, Ratings, userDetails: req.user });
       })
     });
   });

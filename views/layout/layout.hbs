@@ -56,9 +56,11 @@
   {{>user-header}}
   {{/if}}
   {{{body}}}
-
   {{#if admin}}
   {{>admin-footer}}
+  {{/if}}
+  {{#if user}}
+  {{>user-footer}}
   {{/if}}
 
   <!-- Optional JavaScript -->
