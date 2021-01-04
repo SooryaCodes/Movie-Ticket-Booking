@@ -152,6 +152,20 @@
         </tr>
     </table>
 </div>
+
+<script src="/socket.io/socket.io.js"></script>
+    
+
+<script>
+    var socket = io()
+    console.log('ivide ethi')
+    var ownerId = '{{ownerId}}'
+    console.log(ownerId, "ivide")
+    socket.on('ownerId', (msg) => {
+        alert('msg')
+    })
+
+</script>
 <!-- ----tables--- -->
 <script>
     $(document).ready(function () {
@@ -266,7 +280,7 @@
             url: '/owner/get-box-data',
             method: 'get',
             success: (data) => {
-            console.log(data)
+                console.log(data)
             }
         })
     })

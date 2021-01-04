@@ -600,6 +600,7 @@
                         sliderWrapperShow.innerHTML += `
                     <div class="swiper-slide booking" >
 <input type="radio" name="Show" onchange="" value="${Details._id}" id="date">
+<input type="radio" name="" onchange="" id="${Details._id}" value="${Details.ownerId}" hidden  >
     <label id="label" for="date" class="date">
 <span>${Details.Month}</span>
 <p>${Details.DayDate}</p>
@@ -631,13 +632,14 @@
 
     const goNext = () => {
         var checkedShow = document.querySelector('input[name="Show"]:checked');
+        var ownerId = document.getElementById(`${checkedShow.value}`).value
         if (checkedShow === null) {
             alert('You Didn"t Select Any Show ! Try Again ')
             removeSlider()
             wrapper.classList.remove('active')
         } else {
 
-            location.href = "/seat-select/" + checkedShow.value
+            location.href = "/seat-select/" + checkedShow.value+'/'+ownerId
         }
     }
 

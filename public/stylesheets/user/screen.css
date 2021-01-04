@@ -8,6 +8,7 @@
   body {
     background: #303449;
     display: flex;
+    position: relative;
     align-items: center;
     flex-direction: column;
     width: 100%;
@@ -237,12 +238,11 @@
 
 
  .seat-show-wrapper{
-      position: relative;
       transition: transform .5s ease-in-out;
       position: fixed;
-      bottom: 0;
       align-items: center;justify-content;
       display: flex;
+      z-index: 2000;
       transform: translateY(100%);
       width:100% !important;
       height: 110px;background:  rgb(68, 69, 100);

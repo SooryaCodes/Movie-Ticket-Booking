@@ -7,11 +7,13 @@ var ExcecutiveSeat = document.getElementById("ExcecutiveSeat").value;
 var PremiumRow = document.getElementById("PremiumRow").value;
 var PremiumSeat = document.getElementById("PremiumSeat").value;
 var bookedSeats = document.getElementById("BookedSeats").value;
+
+var socket = io()
+
 console.log(bookedSeats);
 var Reserved = bookedSeats.split(",");
 
 window.addEventListener("load", function () {
-  if (Reserved==="") {
     for (var i = 0; i < Reserved.length; i++) {
       document.getElementById(Reserved[i]).parentNode.classList.add("Reserved-Seat");
       document.getElementById(Reserved[i]).classList.add("Reserved");
@@ -20,9 +22,8 @@ window.addEventListener("load", function () {
         value.disabled = true;
       });
     }
-  }
 });
-console.log(Reserved,"rese");
+console.log(Reserved, "rese");
 var Vip = {
   Row: VipRow,
   Seat: VipSeat,
@@ -165,10 +166,7 @@ function payment(paymentMethod) {
   var total = parseInt(
     document.getElementById("totalPriceForPayment").innerText
   );
-  // console.log(total);
-  // console.log(paymentMethod);
   console.log(show);
-  // console.log(seat);
 
   $.ajax({
     url: "/ticket-booking",
@@ -197,25 +195,6 @@ function payment(paymentMethod) {
   });
 }
 
-// const paypalPayment = (paymentMethod, total, seat, show) => {
-//   console.log("paypaal");
-//   $.ajax({
-//     url: "/paynow",
-//     method: "post",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     data: JSON.stringify({
-//       paymentMethod,
-//       total,
-//       seat,
-//       show,
-//     }),
-//     success: () => {
-//       alert("success");
-//     },
-//   });
-// };
 
 const razorpayPayment = (data) => {
   console.log(data, "data in razorpay");
@@ -228,9 +207,7 @@ const razorpayPayment = (data) => {
     image: "",
     order_id: data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     handler: function (response) {
-      // alert(response.razorpay_payment_id);
-      // alert(response.razorpay_order_id);
-      // alert(response.razorpay_signature)
+
       verifyPayment(response, data);
     },
     prefill: {
@@ -272,59 +249,21 @@ function verifyPayment(payment, order) {
       order,
     },
     success: () => {
-      bookSuccess();
-      setTimeout(function(){
-        location.href = "/";
-        
-      },2000)
+      // bookSuccess();
+      var bookingDetails = {
+        message: 'New Booking Confirmed',
+        ownerId: ownerId
+      }
+      socket.emit('booking', bookingDetails)
+      location.href = "/";
+
+
+
     },
   });
 }
 
-// const checkoutFun = (checkedSeat) => {
-//   var seat = [];
-//   var Vip = [];
-//   var Premium = [];
-//   var Excecutive = [];
-//   var Normal = [];
 
-//   var normalSeatget = document.querySelectorAll(
-//     'input[class="normal"]:checked'
-//   );
-//   for (var i = 0; i < normalSeatget.length; i++) {
-//     Normal[i] = normalSeatget[i].value;
-//   }
-//   for (var i = 0; i < checkedSeat.length; i++) {
-//     seat[i] = checkedSeat[i].value;
-//   }
-//   // for (var i = 0; i < normalSeat.length; i++) {
-//   //   seat[i] = normalSeat[i].value;
-//   // }
-
-//   //vip
-//   for (var i = 0; i < seat.length; i++) {
-//     if (seat[i].includes("Vip")) Vip.push(seat[i]);
-//   }
-
-//   //Premium
-//   for (var i = 0; i < seat.length; i++) {
-//     if (seat[i].includes("Premium")) Premium.push(seat[i]);
-//   }
-
-//   //vip
-//   for (var i = 0; i < seat.length; i++) {
-//     if (seat[i].includes("Excecutive")) Excecutive.push(seat[i]);
-//   }
-
-//   console.log(Vip, Premium, Excecutive, Normal);
-
-//   var VipPrice=Vip.length*show.Vip
-//   var NormalPrice=Normal.length*show.Normal
-//   var ExcecutivePrice=Excecutive.length*show.Excecutive
-//   var PremiumPrice=Premium.length*show.Premium
-
-//   var TotalPrice=VipPrice+ExcecutivePrice+NormalPrice+PremiumPrice
-// };
 
 const bookSuccess = () => {
   var success = document.querySelector(".success");
@@ -394,7 +333,6 @@ for (let i = 1; i <= row; i++) {
   }
   VContainer.appendChild(row);
 }
-
 let EContainer = document.querySelector(".EContainer");
 var row = Excecutive.Row;
 var column = Excecutive.Seat;
@@ -429,3 +367,12 @@ for (let i = 1; i <= row; i++) {
 
   PContainer.appendChild(row);
 }
+
+
+
+
+
+
+
+
+

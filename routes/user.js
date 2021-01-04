@@ -177,7 +177,7 @@ router.get("/movie/:id", verifyLogin, (req, res) => {
     userHelpers.getAllMovies().then((TopMovies) => {
       userHelpers.getRatings(req.params.id).then((Ratings) => {
         console.log(Ratings);
-        var RatingAverage =[]
+        var RatingAverage = []
         for (var i = 0; i < Ratings.length; i++) {
           RatingAverage[i] = Ratings[i].Rating
 
@@ -194,11 +194,11 @@ router.get("/movie/:id", verifyLogin, (req, res) => {
           }
         }
 
-        var AverageRatingCalculation= (RatingAverage.reduce((a, b) => a + b, 0))/(RatingAverage.length)
+        var AverageRatingCalculation = (RatingAverage.reduce((a, b) => a + b, 0)) / (RatingAverage.length)
         console.log(AverageRatingCalculation);
 
 
-   
+
 
         res.render("user/movie", { user: true, Movie, TopMovies, Ratings, userDetails: req.user });
       })
@@ -246,7 +246,7 @@ router.post("/show-submit", (req, res) => {
   res.json({ status: true });
 });
 
-router.get("/seat-select/:id", verifyLogin, (req, res) => {
+router.get("/seat-select/:id/:ownerId", verifyLogin, (req, res) => {
   userHelpers.getShowScreen(req.params.id).then((data) => {
     console.log(data, "data");
     var Vip = data.Vip;
@@ -267,6 +267,7 @@ router.get("/seat-select/:id", verifyLogin, (req, res) => {
       data,
       bookedSeats,
       user: req.user.Name,
+      ownerId:req.params.ownerId
     });
   });
 });
