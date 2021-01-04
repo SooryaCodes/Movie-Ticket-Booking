@@ -1,103 +1,131 @@
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css" rel="stylesheet" />
+<link rel="stylesheet"
+    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+    type="text/css" />
+
 <link rel="stylesheet" href="/stylesheets/user/login.css">
 
-
 <div class="login-wrapper">
-    
+
     <div class="left-section">
         <img src="/images/user/login-image.svg" alt="">
     </div>
     <div class="right-section">
 
-        <form action="/signup/{{mobile}}" autocomplete="off" method="POST">
+        <div class="form">
             <div class="title">
                 <p>Welcome</p>
             </div>
             <div class="input">
                 <div class="input-signup">
-                <input type="text" name="Name" placeholder="Name" id="">
-                <input type="text" name="Email" placeholder="Email" id="">
+                    <input type="text" name="Name" placeholder="Name" id="Name" class="signupInput">
+                    <input type="text" name="Email" placeholder="Email" id="Email" class="signupInput">
+                    <input type="text" name="Latitude" placeholder="Email" id="Latitude" class="signupInput" hidden>
+                    <input type="text" name="Longitude" placeholder="Email" id="Longitude" class="signupInput" hidden>
                 </div>
-               
-                <div class="input-submit">
-                    <button class="mask waves-effect waves-light rgba-white-slight" id="login">Signup</button>
+
+                <div class="input-submit btn-s-h">
+                    <button class="mask waves-effect btn btn-light-blue waves-light rgba-white-slight"
+                        style="width: 300px; font-size: 15px; display: flex; align-items: center;justify-content: center;"
+                        id="" class="">Continue</button>
                 </div>
             </div>
-          
-        </form>
+
+        </div>
     </div>
 </div>
-{{!-- <script>
-    const clickEvent = (first, last) => {
-        if (first.value.length) {
-            document.getElementById(last).focus()
+
+
+
+
+
+
+<div class="location-wrapper">
+    <div id="map">
+        {{!-- <button class="btn btn-mdb-color">Signup</button> --}}
+
+    </div>
+</div>
+
+
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+<!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1Ijoic29vcnlhLWtyaXoiLCJhIjoiY2tqYTcydDN1NWc1bTJ5bjRuYXF3eHdpayJ9.mo48bziP80gkbrXL-1kETw';
+
+
+
+
+
+    var longitude
+    var latitude
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [76.50668553736728, 10.253423005087484], // starting position
+        zoom: 9 // starting zoom
+    });
+
+
+
+    map.addControl(
+        new MapboxGeocoder({
+
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl,
+            marker: false
+        })
+
+
+    );
+
+    map.on('click', function (e) {
+
+
+
+        // e.lngLat is the longitude, latitude geographical position of the event
+        JSON.stringify(e.lngLat.wrap());
+
+
+
+        latitude = e.lngLat.lat
+        longitude = e.lngLat.lng
+
+        console.log(latitude, longitude);
+
+        var svg = document.querySelector('svg')
+        if (svg) {
+            svg.remove()
+            var marker = new mapboxgl.Marker()
+                .setLngLat([longitude, latitude])
+                .addTo(map);
+        } else {
+            var marker = new mapboxgl.Marker()
+                .setLngLat([longitude, latitude])
+                .addTo(map)
         }
-    }
-</script> --}}
 
-<script>
-    $(document).ready(function() {
-  $('.Box').on("keyup", function(e) {
-      var $input = $(this);
-      if ($input.val().length == 0 && e.which == 8) {
-        $input.toggleClass("productkey2 productkey1").prev('.Box').focus();
-      }
-      else if ($input.val().length >= parseInt($input.attr("maxlength"), 10)) {
-        $input.toggleClass("productkey1 productkey2").next('.Box').focus();
-      }
-  });
-});
-</script>
-<script>
-    var loginWindow;
 
-    window.addEventListener('message', function (e) {
-        if (e.data !== 'popup-done') { return; }
-        window.location.reload()
     });
 
 
-    document.querySelectorAll('.loginLink').forEach(function (link) {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-            var url = link.getAttribute('href');
-            var width = 500, height = 370;
-            if (url.indexOf('/google') === 0) {
-                width = 470; height = 580;
-            }
-            var w = window.outerWidth - width, h = window.outerHeight - height;
-            var left = Math.round(window.screenX + (w / 2));
-            var top = Math.round(window.screenY + (h / 2.5));
-
-            loginWindow = window.open(url, 'LogIn',
-                'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top +
-                ',toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0');
-        });
-    });
-    </script>
-<script>
-    var loginWindow;
-
-    window.addEventListener('message', function (e) {
-        if (e.data !== 'popup-done') { return; }
-        window.location.reload()
-    });
 
 
-    document.querySelectorAll('.loginLinkFacebook').forEach(function (link) {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-            var url = link.getAttribute('href');
-            var width = 500, height = 370;
-            if (url.indexOf('/facebook') === 0) {
-                width = 470; height = 580;
-            }
-            var w = window.outerWidth - width, h = window.outerHeight - height;
-            var left = Math.round(window.screenX + (w / 2));
-            var top = Math.round(window.screenY + (h / 2.5));
 
-            loginWindow = window.open(url, 'LogIn',
-                'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top +
-                ',toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0');
-        });
-    });
+
+
+
+    //get inputs value on submit 
+
+
+    var email = document.getElementById('Email')
+    var name = document.getElementById('Name')
+    var latitude = document.getElementById('Latitude')
+    var longitude = document.getElementById('Longitude')
+
+    console.log(email, name, longitude, latitude);
 </script>

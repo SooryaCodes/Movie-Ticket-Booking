@@ -308,5 +308,23 @@ module.exports = {
         resolve(data)
       })
     })
+  },
+  rateMovie:(movieId,user,data)=>{
+    return new Promise((resolve,reject)=>{
+      data.Rating=parseInt(data.Rating)
+      data.user=user
+      data.movieId=movieId
+      db.get().collection(collection.RATING_COLLECTION).insertOne(data).then((response)=>{
+        resolve(response)
+      })
+    })
+  },
+
+  getRatings:(movieId)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collection.RATING_COLLECTION).find({movieId:movieId}).toArray().then((response)=>{
+        resolve(response)
+      })
+    })
   }
 };

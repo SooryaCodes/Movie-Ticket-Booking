@@ -7,5 +7,6 @@ module.exports={
     SHOW_COLLECTION:"show",
     USER_COLLECTION:"user",
     BOOKING_COLLECTION:"booking",
+    RATING_COLLECTION:"rating",
     
 }

@@ -40,6 +40,10 @@ router.get("/", verifyLogin, function (req, res, next) {
   });
 });
 
+router.get('/user', (req, res) => {
+  res.render('user/signup')
+})
+
 router.get("/login", (req, res) => {
   if (req.isAuthenticated() && req.user.role === "user") {
     console.log(req.user);
@@ -173,7 +177,25 @@ router.get("/logout", (req, res) => {
 router.get("/movie/:id", verifyLogin, (req, res) => {
   userHelpers.getMovieDetails(req.params.id).then((Movie) => {
     userHelpers.getAllMovies().then((TopMovies) => {
-      res.render("user/movie", { user: true, Movie, TopMovies });
+      userHelpers.getRatings(req.params.id).then((Ratings) => {
+        console.log(Ratings);
+
+        for (var i = 0; i < Ratings.length; i++) {
+          if (Ratings[i].Rating === 1) {
+            Ratings[i].one = true
+          } else if (Ratings[i].Rating === 2) {
+            Ratings[i].two = true
+          } else if (Ratings[i].Rating === 3) {
+            Ratings[i].three = true
+          } else if (Ratings[i].Rating === 4) {
+            Ratings[i].four = true
+          } else if (Ratings[i].Rating === 5) {
+            Ratings[i].five = true
+          }
+        }
+
+        res.render("user/movie", { user: true, Movie, TopMovies, Ratings ,userDetails:req.user});
+      })
     });
   });
 });
@@ -274,7 +296,7 @@ router.post("/verify-payment", (req, res) => {
   });
   console.log("hey");
 });
-router.get("/Bookin-Success", (req, res) => {});
+router.get("/Bookin-Success", (req, res) => { });
 
 router.get("/failure", (req, res) => {
   res.send("failure");
@@ -290,5 +312,12 @@ const msg = {
   text: "and easy to do anywhere, even with Node.js",
   html: "<strong>and easy to do anywhere, even with Node.js</strong>",
 };
+
+
+router.post('/rating/:movieId', (req, res) => {
+  userHelpers.rateMovie(req.params.movieId, req.user, req.body).then((response) => {
+    res.json({ status: true })
+  })
+})
 
 module.exports = router;
