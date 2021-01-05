@@ -326,5 +326,34 @@ module.exports = {
         resolve(response)
       })
     })
+  },
+  addLocation: (id, data) => {
+    return new Promise((resolve, reject) => {
+
+      db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(id) }, {
+        $set: {
+          Latitude: data.Latitude,
+          Longitude: data.Longitude
+        }
+      }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
+  checkLocation: (data) => {
+    return new Promise((resolve, reject) => {
+
+      db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(data._id) }).then((response) => {
+        console.log(response, 'respo infdk ');
+        if (response.Latitude) {
+          console.log('lattude und');
+          resolve({ LocationExist: true })
+        } else {
+          console.log('no laitude');
+          resolve({ LocationExist: false })
+        }
+      })
+    })
   }
 };
+

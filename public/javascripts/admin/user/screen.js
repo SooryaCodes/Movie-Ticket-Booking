@@ -188,8 +188,12 @@ function payment(paymentMethod) {
         console.log(response, "response");
         // alert('success')
       } else {
+        var bookingDetails = {
+          message: 'New Booking Confirmed',
+          ownerId: ownerId
+        }
+        socket.emit('booking', bookingDetails)
         location.href = response;
-        alert('paypal')
       }
     },
   });

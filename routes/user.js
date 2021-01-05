@@ -21,23 +21,38 @@ const verifyLogin = (req, res, next) => {
   }
 };
 router.get("/", verifyLogin, function (req, res, next) {
-  console.log(req.user);
-  userHelpers.getMovies().then((Movie) => {
-    // console.log(Horror,Action,Comedy,Drama,Romance);
-    var Horror = Movie.filter((value) => value.Category === "Horror");
-    var Action = Movie.filter((value) => value.Category === "Action");
-    var Comedy = Movie.filter((value) => value.Category === "Comedy");
-    var Drama = Movie.filter((value) => value.Category === "Drama");
-    var Romance = Movie.filter((value) => value.Category === "Romance");
-    res.render("user/home", {
-      user: true,
-      Horror,
-      Action,
-      Comedy,
-      Drama,
-      Romance,
+  console.log(req.user, "hey");
+
+  userHelpers.checkLocation(req.user).then((response) => {
+
+    if (response.LocationExist) {
+      console.log('hey');
+      req.session.Location = true
+    } else {
+      req.session.Location=false
+    }
+    userHelpers.getMovies().then((Movie) => {
+      var Horror = Movie.filter((value) => value.Category === "Horror");
+      var Action = Movie.filter((value) => value.Category === "Action");
+      var Comedy = Movie.filter((value) => value.Category === "Comedy");
+      var Drama = Movie.filter((value) => value.Category === "Drama");
+      var Romance = Movie.filter((value) => value.Category === "Romance");
+      res.render("user/home", {
+        user: true,
+        Horror,
+        Action,
+        Comedy,
+        Drama,
+        Romance,
+        userDetails: req.user,
+        noLocation: req.session.noLocation
+        ,Location:req.session.Location
+      });
     });
-  });
+
+
+
+  })
 });
 
 
@@ -356,4 +371,12 @@ router.post('/rating/:movieId', (req, res) => {
   })
 })
 
+
+
+router.post('/getLocation', (req, res) => {
+  userHelpers.addLocation(req.user._id, req.body).then((response) => {
+    res.json({ status: true })
+    console.log(response);
+  })
+})
 module.exports = router;
