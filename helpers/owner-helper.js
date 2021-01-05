@@ -461,4 +461,17 @@ module.exports = {
       console.log(thisOwnerBookings);
     });
   },
+
+  forgotPasswordUpdateNewPassword:(email,password)=>{
+    return new Promise(async(resolve,reject)=>{
+     password=await bcrypt.hash(password,10)
+      db.get().collection(collection.OWNER_COLLECTION).updateOne({Email:email},{
+        $set:{
+            Password:password
+        }
+      }).then((response)=>{
+        resolve(response)
+      })
+    })
+  }
 };

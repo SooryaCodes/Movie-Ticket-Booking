@@ -4,7 +4,7 @@ const ownerHelper = require("../helpers/owner-helper");
 const adminHelper = require("../helpers/admin-helpers");
 const bcrypt = require("bcrypt");
 const hbs = require("nodemailer-express-handlebars");
-
+var mailHelper=require('../helpers/mail-helper')
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const nodemailer = require("nodemailer");
@@ -426,6 +426,11 @@ router.post("/forgot-password", (req, res) => {
       let token = jwt.sign(profile, process.env.OWNER_SECRET, {
         expiresIn: 600,
       });
+
+      var template_data={
+        Link:`http://localhost:3000/owner/forgot-password/verify-mail/${token}`
+      }
+      mailHelper.sendForgotPassword(req.body.email,process.env.OFFICIAL_EMAIL_ID,'d-be0314b8f200467788d3dc4fd0ab4f7d',template_data)
       req.session.ownerNoAccount = false;
       res.redirect("/owner/forgot-password/"+req.body.email);
     } else {
@@ -439,18 +444,26 @@ router.get("/forgot-password/:email", (req, res) => {
   var email=req.params.email.slice(0,6)
   res.render("owner/show-page",{email:email});
 });
-router.get("/forgot-password/:token", (req, res) => {
+router.get("/forgot-password/verify-mail/:token", (req, res) => {
   let token = req.params.token;
 
   jwt.verify(token, process.env.OWNER_SECRET, (err, decoded) => {
     if (err) {
       res.send("authentication failed");
     } else {
-      res.send("success");
+      console.log(decoded.email);
+      res.render('owner/forgot-password-reset',{email:decoded.email})
     }
   });
 });
 
+
+
+router.post('/forgot-password-update-password/:email',(req,res)=>{
+  ownerHelper.forgotPasswordUpdateNewPassword(req.params.email,req.body.Password).then((response)=>{
+    res.redirect('/owner')
+  })
+})
 //post update password
 
 router.post("/update-password", (req, res) => {

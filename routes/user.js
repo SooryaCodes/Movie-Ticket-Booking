@@ -29,7 +29,7 @@ router.get("/", verifyLogin, function (req, res, next) {
       console.log('hey');
       req.session.Location = true
     } else {
-      req.session.Location=false
+      req.session.Location = false
     }
     userHelpers.getMovies().then((Movie) => {
       var Horror = Movie.filter((value) => value.Category === "Horror");
@@ -46,7 +46,7 @@ router.get("/", verifyLogin, function (req, res, next) {
         Romance,
         userDetails: req.user,
         noLocation: req.session.noLocation
-        ,Location:req.session.Location
+        , Location: req.session.Location
       });
     });
 
@@ -347,22 +347,12 @@ router.post("/verify-payment", (req, res) => {
   });
   console.log("hey");
 });
-router.get("/Bookin-Success", (req, res) => { });
 
 router.get("/failure", (req, res) => {
   res.send("failure");
 });
 
-const sgMail = require("@sendgrid/mail");
-const { response } = require("express");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const msg = {
-  to: "lakshmipr120@gmail.com", // Change to your recipient
-  from: "lakshmipr120@gmail.com", // Change to your verified sender
-  subject: "Sending with SendGrid is Fun",
-  text: "and easy to do anywhere, even with Node.js",
-  html: "<strong>and easy to do anywhere, even with Node.js</strong>",
-};
+
 
 
 router.post('/rating/:movieId', (req, res) => {
@@ -378,5 +368,11 @@ router.post('/getLocation', (req, res) => {
     res.json({ status: true })
     console.log(response);
   })
+})
+
+//search 
+
+router.get('/search', (req, res) => {
+  res.render('user/search', { user: true, userDetails: req.user })
 })
 module.exports = router;
