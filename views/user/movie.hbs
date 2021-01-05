@@ -3,502 +3,503 @@
 
 
 
-    <div class="movie-view">
-        <div class="left-section">
-            <div class="movie-poster">
+<div class="movie-view">
+    <div class="left-section">
+        <div class="movie-poster">
 
+            <div class="card">
+                <img src="/images/owner/movie/{{Movie._id}}.jpg" alt="">
+                <button class="rating-btn mask waves-effect waves-light rgba-white-slight" onclick="ratePopUp()"><i
+                        class="fa fa-star" aria-hidden="true"></i></button>
+            </div>
+        </div>
+        <div class="content">
+            <h1>{{Movie.Title}}({{Movie.Date}})</h1>
+            <div class="rating">
+                {{#if RatingAverageOne}}
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star unselected"></i>
+                <i class="fas fa-star unselected"></i>
+                <i class="fas fa-star unselected"></i>
+                <i class="fas fa-star unselected"></i>
+                {{/if}}
+                {{#if RatingAverageTwo}}
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star unselected"></i>
+                <i class="fas fa-star unselected"></i>
+                <i class="fas fa-star unselected"></i>
+                {{/if}}
+                {{#if RatingAverageThree}}
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star unselected"></i>
+                <i class="fas fa-star unselected"></i>
+                {{/if}}
+                {{#if RatingAverageFour}}
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star unselected"></i>
+                {{/if}}
+                {{#if RatingAverageFive}}
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                {{/if}}
+            </div>
+            <div class="movie-details">
+                <p>{{Movie.Category}}</p>
+                <p>{{Movie.Runtime}}</p>
+                <p>English</p>
+                <p>2D</p>
+            </div>
+            <p>{{Movie.Description}}. </p>
+            <h6>Director : <span class="director-cast">{{Movie.Director}}</span></h6>
+            <h6>Cast : <span class="director-cast">{{Movie.Cast}}</span></h6>
+            <div class="movie-button">
+                <button class="trailer-btn mask waves-effect waves-light rgba-white-slight">
+                    <div id="bm"></div>
+                </button>
+                <button class="mask waves-effect waves-light rgba-white-slight " onclick="selection('{{Movie._id}}')"
+                    id="book">
+                    Book Now
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="right-section">
+        <img src="{{Movie.Image}}" alt="">
+    </div>
+</div>
+
+<button style="display: none;" disabled id="btn-n"></button>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="selecting-wrapper">
+    <div class="selection">
+        <div class="theaters">
+            <div class="heading">
+                <p>Theaters</p>
+            </div>
+
+            <!-- ---Theater--- -->
+            <div class="date-wrapper">
+                <!-- Swiper -->
+                <div class="swiper-container date-slider">
+                    <div class="swiper-wrapper Theaters">
+
+
+
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="select-btns">
+
+                <button class="mask waves-effect waves-light rgba-white-slight " id="tl-btn">Location</button>
+                <button class="mask waves-effect waves-light rgba-white-slight " onclick="getScreen('{{Movie._id}}')"
+                    id="tbtn">Next</button>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+        <div class="theaters screen">
+            <div class="heading">
+                <p>Screens</p>
+            </div>
+
+            <!-- ---Theater--- -->
+            <div class="date-wrapper">
+                <!-- Swiper -->
+                <div class="swiper-container date-slider">
+                    <div class="swiper-wrapper Screens">
+
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="select-btns">
+
+                <button class="mask waves-effect waves-light rgba-white-slight "
+                    onclick="getShows('{{Movie._id}}')">Next</button>
+            </div>
+
+            <div class="pop-content">
+
+            </div>
+
+        </div>
+
+        <div class="theaters show">
+            <div class="heading">
+                <p>Shows</p>
+            </div>
+
+            <!-- ---Theater--- -->
+            <div class="date-wrapper">
+                <!-- Swiper -->
+                <div class="swiper-container date-slider">
+                    <div class="swiper-wrapper Show">
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="select-btns">
+
+                <button class="mask waves-effect waves-light rgba-white-slight "
+                    onclick="goNext('{{Movie._id}}')">Next</button>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <div class="loader-small">
+            <div class="sk-cube-small-grid">
+                <div class="sk-cube-small sk-cube1-small"></div>
+                <div class="sk-cube-small sk-cube2-small"></div>
+                <div class="sk-cube-small sk-cube3-small"></div>
+                <div class="sk-cube-small sk-cube4-small"></div>
+                <div class="sk-cube-small sk-cube5-small"></div>
+                <div class="sk-cube-small sk-cube6-small"></div>
+                <div class="sk-cube-small sk-cube7-small"></div>
+                <div class="sk-cube-small sk-cube8-small"></div>
+                <div class="sk-cube-small sk-cube9-small"></div>
+            </div>
+        </div>
+        <div class="close">
+            <img src="/images/user/x.svg" alt="" srcset="">
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+<!-- Swiper -->
+<div class="swiper-container movie">
+    <div class="category">
+        <p>Top Trends</p>
+    </div>
+    <div class="swiper-wrapper">
+        {{#each TopMovies}}
+
+        <div class="swiper-slide">
+            <!-- Swiper -->
+
+            <a href="/movie/{{this._id}}">
                 <div class="card">
-                    <img src="/images/owner/movie/{{Movie._id}}.jpg" alt="">
-                    <button class="rating-btn mask waves-effect waves-light rgba-white-slight" onclick="ratePopUp()"><i
-                            class="fa fa-star" aria-hidden="true"></i></button>
-                </div>
-            </div>
-            <div class="content">
-                <h1>{{Movie.Title}}({{Movie.Date}})</h1>
-                <div class="rating">
-                    {{#if RatingAverageOne}}
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star unselected"></i>
-                    <i class="fas fa-star unselected"></i>
-                    <i class="fas fa-star unselected"></i>
-                    <i class="fas fa-star unselected"></i>
-                    {{/if}}
-                    {{#if RatingAverageTwo}}
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star unselected"></i>
-                    <i class="fas fa-star unselected"></i>
-                    <i class="fas fa-star unselected"></i>
-                    {{/if}}
-                    {{#if RatingAverageThree}}
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star unselected"></i>
-                    <i class="fas fa-star unselected"></i>
-                    {{/if}}
-                    {{#if RatingAverageFour}}
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star unselected"></i>
-                    {{/if}}
-                    {{#if RatingAverageFive}}
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    {{/if}}
-                </div>
-                <div class="movie-details">
-                    <p>{{Movie.Category}}</p>
-                    <p>{{Movie.Runtime}}</p>
-                    <p>English</p>
-                    <p>2D</p>
-                </div>
-                <p>{{Movie.Description}}. </p>
-                <h6>Director : <span class="director-cast">{{Movie.Director}}</span></h6>
-                <h6>Cast : <span class="director-cast">{{Movie.Cast}}</span></h6>
-                <div class="movie-button">
-                    <button class="trailer-btn mask waves-effect waves-light rgba-white-slight">
-                        <div id="bm"></div>
-                    </button>
-                    <button class="mask waves-effect waves-light rgba-white-slight "
-                        onclick="selection('{{Movie._id}}')" id="book">
-                        Book Now
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="right-section">
-            <img src="{{Movie.Image}}" alt="">
-        </div>
-    </div>
-
-    <button style="display: none;" disabled id="btn-n"></button>
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="selecting-wrapper">
-        <div class="selection">
-            <div class="theaters">
-                <div class="heading">
-                    <p>Theaters</p>
+                    <img src="/images/owner/movie/{{this._id}}.jpg" alt="">
                 </div>
 
-                <!-- ---Theater--- -->
-                <div class="date-wrapper">
-                    <!-- Swiper -->
-                    <div class="swiper-container date-slider">
-                        <div class="swiper-wrapper Theaters">
-
-
-
-                        </div>
-                        <!-- Add Arrows -->
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
-                    </div>
-
-
-                </div>
-
-
-
-                <div class="select-btns">
-
-                    <button class="mask waves-effect waves-light rgba-white-slight " id="tl-btn">Location</button>
-                    <button class="mask waves-effect waves-light rgba-white-slight "
-                        onclick="getScreen('{{Movie._id}}')" id="tbtn">Next</button>
-                </div>
-
-            </div>
-
-
-
-
-
-
-
-            <div class="theaters screen">
-                <div class="heading">
-                    <p>Screens</p>
-                </div>
-
-                <!-- ---Theater--- -->
-                <div class="date-wrapper">
-                    <!-- Swiper -->
-                    <div class="swiper-container date-slider">
-                        <div class="swiper-wrapper Screens">
-
-                        </div>
-                        <!-- Add Arrows -->
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
-                    </div>
-
-
-                </div>
-
-
-
-                <div class="select-btns">
-
-                    <button class="mask waves-effect waves-light rgba-white-slight "
-                        onclick="getShows('{{Movie._id}}')">Next</button>
-                </div>
-
-                <div class="pop-content">
-
-                </div>
-
-            </div>
-
-            <div class="theaters show">
-                <div class="heading">
-                    <p>Shows</p>
-                </div>
-
-                <!-- ---Theater--- -->
-                <div class="date-wrapper">
-                    <!-- Swiper -->
-                    <div class="swiper-container date-slider">
-                        <div class="swiper-wrapper Show">
-                        </div>
-                        <!-- Add Arrows -->
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
-                    </div>
-
-
-                </div>
-
-
-
-                <div class="select-btns">
-
-                    <button class="mask waves-effect waves-light rgba-white-slight "
-                        onclick="goNext('{{Movie._id}}')">Next</button>
-                </div>
-
-            </div>
-
-
-
-
-
-
-
-
-
-            <div class="loader">
-                <div class="sk-cube-grid">
-                    <div class="sk-cube sk-cube1"></div>
-                    <div class="sk-cube sk-cube2"></div>
-                    <div class="sk-cube sk-cube3"></div>
-                    <div class="sk-cube sk-cube4"></div>
-                    <div class="sk-cube sk-cube5"></div>
-                    <div class="sk-cube sk-cube6"></div>
-                    <div class="sk-cube sk-cube7"></div>
-                    <div class="sk-cube sk-cube8"></div>
-                    <div class="sk-cube sk-cube9"></div>
-                </div>
-            </div>
-            <div class="close">
-                <img src="/images/user/x.svg" alt="" srcset="">
-            </div>
-
+            </a>
 
         </div>
+
+        {{/each}}
+
 
     </div>
+</div>
 
 
 
+{{#if Ratings}}
 
 
-
-
+{{!-- ---rating-of-the-people--- --}}
+<div class="rating-wrapper">
+    <p id="r-p">Ratings And Reviews</p>
     <!-- Swiper -->
-    <div class="swiper-container movie">
-        <div class="category">
-            <p>Top Trends</p>
-        </div>
-        <div class="swiper-wrapper">
-            {{#each TopMovies}}
+    <div class="swiper-container rate-slider">
+        <div class="swiper-wrapper rate-slider-wrapper ">
+
+
+
+
+
+
+
+            {{#each Ratings}}
 
             <div class="swiper-slide">
-                <!-- Swiper -->
-
-                <a href="/movie/{{this._id}}">
-                    <div class="card">
-                        <img src="/images/owner/movie/{{this._id}}.jpg" alt="">
+                <div class="rating-container">
+                    <div class="rating-middle-section">
+                        <p>{{this.user.Name}}</p>
+                        <span>Certified Buyer</span>
                     </div>
+                    <div class="rating-top-section">
+                        <p>{{this.Review}}</p>
+                    </div>
+                    <div class="rating-bottom-section">
+                        {{#if this.one}}
+                        <i class="fa fa-star start" aria-hidden="true"></i>
+                        <i class="fa fa-star " aria-hidden="true"></i>
+                        <i class="fa fa-star " aria-hidden="true"></i>
+                        <i class="fa fa-star " aria-hidden="true"></i>
+                        <i class="fa fa-star " aria-hidden="true"></i>
+                        {{/if}}
+                        {{#if this.two}}
+                        <i class="fa fa-star star" aria-hidden="true"></i>
+                        <i class="fa fa-star star" aria-hidden="true"></i>
+                        <i class="fa fa-star " aria-hidden="true"></i>
+                        <i class="fa fa-star " aria-hidden="true"></i>
+                        <i class="fa fa-star " aria-hidden="true"></i>
+                        {{/if}}
+                        {{#if this.three}}
+                        <i class="fa fa-star star" aria-hidden="true"></i>
+                        <i class="fa fa-star star" aria-hidden="true"></i>
+                        <i class="fa fa-star star" aria-hidden="true"></i>
+                        <i class="fa fa-star " aria-hidden="true"></i>
+                        <i class="fa fa-star " aria-hidden="true"></i>
+                        {{/if}}
+                        {{#if this.four}}
+                        <i class="fa fa-star star" aria-hidden="true"></i>
+                        <i class="fa fa-star star" aria-hidden="true"></i>
+                        <i class="fa fa-star star" aria-hidden="true"></i>
+                        <i class="fa fa-star star" aria-hidden="true"></i>
+                        <i class="fa fa-star " aria-hidden="true"></i>
+                        {{/if}}
+                        {{#if this.five}}
+                        <i class="fa fa-star  star" aria-hidden="true"></i>
+                        <i class="fa fa-star  star" aria-hidden="true"></i>
+                        <i class="fa fa-star  star" aria-hidden="true"></i>
+                        <i class="fa fa-star  star" aria-hidden="true"></i>
+                        <i class="fa fa-star  star" aria-hidden="true"></i>
+                        {{/if}}
 
-                </a>
+                    </div>
+                </div>
+
 
             </div>
-
             {{/each}}
-
-
-        </div>
-    </div>
-
-
-
-    {{#if Ratings}}
-
-
-    {{!-- ---rating-of-the-people--- --}}
-    <div class="rating-wrapper">
-        <p id="r-p">Ratings And Reviews</p>
-        <!-- Swiper -->
-        <div class="swiper-container rate-slider">
-            <div class="swiper-wrapper rate-slider-wrapper ">
-
-
-
-
-
-
-
-                {{#each Ratings}}
-
-                <div class="swiper-slide">
-                    <div class="rating-container">
-                        <div class="rating-middle-section">
-                            <p>{{this.user.Name}}</p>
-                            <span>Certified Buyer</span>
-                        </div>
-                        <div class="rating-top-section">
-                            <p>{{this.Review}}</p>
-                        </div>
-                        <div class="rating-bottom-section">
-                            {{#if this.one}}
-                            <i class="fa fa-star start" aria-hidden="true"></i>
-                            <i class="fa fa-star " aria-hidden="true"></i>
-                            <i class="fa fa-star " aria-hidden="true"></i>
-                            <i class="fa fa-star " aria-hidden="true"></i>
-                            <i class="fa fa-star " aria-hidden="true"></i>
-                            {{/if}}
-                            {{#if this.two}}
-                            <i class="fa fa-star star" aria-hidden="true"></i>
-                            <i class="fa fa-star star" aria-hidden="true"></i>
-                            <i class="fa fa-star " aria-hidden="true"></i>
-                            <i class="fa fa-star " aria-hidden="true"></i>
-                            <i class="fa fa-star " aria-hidden="true"></i>
-                            {{/if}}
-                            {{#if this.three}}
-                            <i class="fa fa-star star" aria-hidden="true"></i>
-                            <i class="fa fa-star star" aria-hidden="true"></i>
-                            <i class="fa fa-star star" aria-hidden="true"></i>
-                            <i class="fa fa-star " aria-hidden="true"></i>
-                            <i class="fa fa-star " aria-hidden="true"></i>
-                            {{/if}}
-                            {{#if this.four}}
-                            <i class="fa fa-star star" aria-hidden="true"></i>
-                            <i class="fa fa-star star" aria-hidden="true"></i>
-                            <i class="fa fa-star star" aria-hidden="true"></i>
-                            <i class="fa fa-star star" aria-hidden="true"></i>
-                            <i class="fa fa-star " aria-hidden="true"></i>
-                            {{/if}}
-                            {{#if this.five}}
-                            <i class="fa fa-star  star" aria-hidden="true"></i>
-                            <i class="fa fa-star  star" aria-hidden="true"></i>
-                            <i class="fa fa-star  star" aria-hidden="true"></i>
-                            <i class="fa fa-star  star" aria-hidden="true"></i>
-                            <i class="fa fa-star  star" aria-hidden="true"></i>
-                            {{/if}}
-
-                        </div>
-                    </div>
-
-
-                </div>
-                {{/each}}
-            </div>
-
-        </div>
-    </div>
-
-    {{/if}}
-
-
-
-
-
-    <div class="rate-pop-up-wrapper">
-        <div class="rate-pop-up">
-            <div class="rate-pop-up-header">
-                <i class="fas fa-edit    "> Rate and Review.</i>
-            </div>
-            <div class="author">
-                <p>Rating as <span>{{userDetails.Name}}</span>.</p>
-            </div>
-            <div class="rate-input-container">
-                <div class="rate-input">
-                    <input type="checkbox" value="1" onchange="rate(value)" name="rating" id="1">
-                    <label class="fa fa-star" for="1"></label>
-                </div>
-                <div class="rate-input">
-                    <input type="checkbox" value="2" onchange="rate(value)" name="rating" id="2">
-                    <label class="fa fa-star" for="2"></label>
-                </div>
-                <div class="rate-input">
-                    <input type="checkbox" value="3" onchange="rate(value)" name="rating" id="3">
-                    <label class="fa fa-star" for="3"></label>
-                </div>
-                <div class="rate-input">
-                    <input type="checkbox" value="4" onchange="rate(value)" name="rating" id="4">
-                    <label class="fa fa-star" for="4"></label>
-                </div>
-                <div class="rate-input">
-                    <input type="checkbox" value="5" onchange="rate(value)" name="rating" id="5">
-                    <label class="fa fa-star" for="5"></label>
-                </div>
-            </div>
-            <textarea name="" id="Review" placeholder=" Write Some Review." cols="30" rows="7"></textarea>
-            <button class="btn btn-mdb-color" onclick="rateSubmit('{{Movie._id}}')">Rate</button>
         </div>
 
     </div>
-    <script>
-        function ratePopUp() {
-            var wrapper = document.querySelector('.rate-pop-up-wrapper')
+</div>
 
-            wrapper.classList.toggle('active')
+{{/if}}
+
+
+
+
+
+<div class="rate-pop-up-wrapper">
+    <div class="rate-pop-up">
+        <div class="rate-pop-up-header">
+            <i class="fas fa-edit    "> Rate and Review.</i>
+        </div>
+        <div class="author">
+            <p>Rating as <span>{{userDetails.Name}}</span>.</p>
+        </div>
+        <div class="rate-input-container">
+            <div class="rate-input">
+                <input type="checkbox" value="1" onchange="rate(value)" name="rating" id="1">
+                <label class="fa fa-star" for="1"></label>
+            </div>
+            <div class="rate-input">
+                <input type="checkbox" value="2" onchange="rate(value)" name="rating" id="2">
+                <label class="fa fa-star" for="2"></label>
+            </div>
+            <div class="rate-input">
+                <input type="checkbox" value="3" onchange="rate(value)" name="rating" id="3">
+                <label class="fa fa-star" for="3"></label>
+            </div>
+            <div class="rate-input">
+                <input type="checkbox" value="4" onchange="rate(value)" name="rating" id="4">
+                <label class="fa fa-star" for="4"></label>
+            </div>
+            <div class="rate-input">
+                <input type="checkbox" value="5" onchange="rate(value)" name="rating" id="5">
+                <label class="fa fa-star" for="5"></label>
+            </div>
+        </div>
+        <textarea name="" id="Review" placeholder=" Write Some Review." cols="30" rows="7"></textarea>
+        <button class="btn btn-mdb-color" onclick="rateSubmit('{{Movie._id}}')">Rate</button>
+    </div>
+
+</div>
+<script>
+    function ratePopUp() {
+        var wrapper = document.querySelector('.rate-pop-up-wrapper')
+
+        wrapper.classList.toggle('active')
+    }
+
+    function rate(value) {
+        var rateStatus
+        console.log(value)
+        var num = parseInt(value) - 1
+        console.log(num)
+        var stars = document.querySelectorAll('input[name="rating"]')
+        for (var j = 0; j < stars.length; j++) {
+            if (stars[j].checked) {
+                stars[j].checked = false
+            } else {
+                rateStatus = true
+            }
         }
 
-        function rate(value) {
-            var rateStatus
-            console.log(value)
-            var num = parseInt(value) - 1
-            console.log(num)
-            var stars = document.querySelectorAll('input[name="rating"]')
-            for (var j = 0; j < stars.length; j++) {
-                if (stars[j].checked) {
-                    stars[j].checked = false
-                } else {
-                    rateStatus = true
-                }
+        if (rateStatus === true) {
+
+            for (var i = 0; i <= num; i++) {
+                stars[i].checked = true
             }
-
-            if (rateStatus === true) {
-
-                for (var i = 0; i <= num; i++) {
-                    stars[i].checked = true
-                }
-            }
-
         }
 
-        function rateSubmit(id) {
-            var stars = document.querySelectorAll('input[name="rating"]:checked')
-            var Review = document.getElementById('Review').value
-            console.log(stars.length, "hey")
-            var Rating = stars.length
-            console.log(Rating, Review)
-            $.ajax({
-                url: '/rating/' + id,
-                method: 'post',
-                data: {
-                    Rating,
-                    Review
+    }
+
+    function rateSubmit(id) {
+        var stars = document.querySelectorAll('input[name="rating"]:checked')
+        var Review = document.getElementById('Review').value
+        console.log(stars.length, "hey")
+        var Rating = stars.length
+        console.log(Rating, Review)
+        $.ajax({
+            url: '/rating/' + id,
+            method: 'post',
+            data: {
+                Rating,
+                Review
+            },
+            success: () => {
+                var wrapper = document.querySelector('.rate-pop-up-wrapper')
+                wrapper.classList.remove('active')
+                location.reload()
+            }
+        })
+    }
+</script>
+<script>
+    var content = document.querySelector('.pop-content')
+    var wrapper = document.querySelector('.selecting-wrapper')
+    function removeSlider() {
+        var theaterSliders = document.querySelectorAll('.swiper-slide.booking')
+        theaterSliders.forEach(value => {
+            value.remove()
+        })
+    }
+    function slider() {
+        var swiper = new Swiper('.swiper-container.date-slider', {
+            slidesPerView: 8,
+            spaceBetween: 10,
+
+
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                // 550:{
+                //     slidesPerView:1,
+                //     spaceBetween:10
+                // },
+                300: {
+                    slidesPerView: 2,
+                    spaceBetween: 0,
+
                 },
-                success: () => {
-                    var wrapper = document.querySelector('.rate-pop-up-wrapper')
-                    wrapper.classList.remove('active')
-                    location.reload()
+                550: {
+                    slidesPerView: 2,
+                },
+                // when window width is >= 320px
+                622: {
+                    slidesPerView: 2,
+                    spaceBetween: 0
+                },
+
+                // when window width is >= 480px
+                966: {
+                    slidesPerView: 3,
+                    spaceBetween: 0
+                },
+                // when window width is >= 640px
+                1382: {
+                    slidesPerView: 4,
+                    spaceBetween: 0,
                 }
-            })
-        }
-    </script>
-    <script>
-        var content = document.querySelector('.pop-content')
+            }
+        });
+    }
+
+    var tbtn = document.getElementById('tbtn')
+    var tlbtn = document.getElementById('tl-btn')
+
+    const selection = (movieId) => {
+        console.log(movieId)
         var wrapper = document.querySelector('.selecting-wrapper')
-        function removeSlider() {
-            var theaterSliders = document.querySelectorAll('.swiper-slide.booking')
-            theaterSliders.forEach(value => {
-                value.remove()
-            })
-        }
-        function slider() {
-            var swiper = new Swiper('.swiper-container.date-slider', {
-                slidesPerView: 8,
-                spaceBetween: 10,
-
-
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                breakpoints: {
-                    // 550:{
-                    //     slidesPerView:1,
-                    //     spaceBetween:10
-                    // },
-                    300: {
-                        slidesPerView: 2,
-                        spaceBetween: 0,
-
-                    },
-                    550: {
-                        slidesPerView: 2,
-                    },
-                    // when window width is >= 320px
-                    622: {
-                        slidesPerView: 2,
-                        spaceBetween: 0
-                    },
-
-                    // when window width is >= 480px
-                    966: {
-                        slidesPerView: 3,
-                        spaceBetween: 0
-                    },
-                    // when window width is >= 640px
-                    1382: {
-                        slidesPerView: 4,
-                        spaceBetween: 0,
-                    }
-                }
-            });
-        }
-
-        var tbtn = document.getElementById('tbtn')
-        var tlbtn = document.getElementById('tl-btn')
-
-        const selection = (movieId) => {
-            console.log(movieId)
-            var wrapper = document.querySelector('.selecting-wrapper')
-            var loader = document.querySelector('.loader')
-            wrapper.classList.toggle('active')
-            var theater = document.querySelector('.theaters')
-            loader.classList.toggle('active')
-            var sliderWrapperTheater = document.querySelector('.swiper-wrapper.Theaters')
-            $.ajax({
-                url: '/getTheater/' + movieId,
-                method: 'post',
-                success: (Theater) => {
-                    if (Theater.length < 1) {
-                        alert('Sorry , No Theaters Available!  :(')
-                        wrapper.classList.remove('active')
-                    } else {
-                        Theater.forEach(Details => {
-                            console.log(Details)
-                            sliderWrapperTheater.innerHTML += `
+        var loader = document.querySelector('.loader-small')
+        wrapper.classList.toggle('active')
+        var theater = document.querySelector('.theaters')
+        loader.classList.toggle('active')
+        var sliderWrapperTheater = document.querySelector('.swiper-wrapper.Theaters')
+        $.ajax({
+            url: '/getTheater/' + movieId,
+            method: 'post',
+            success: (Theater) => {
+                if (Theater.length < 1) {
+                    wrapper.classList.remove('active')
+                    loader.classList.remove('active')
+                    alert('Sorry , No Theaters Available!  :(')
+                } else {
+                    Theater.forEach(Details => {
+                        console.log(Details)
+                        sliderWrapperTheater.innerHTML += `
                     <div class="swiper-slide booking" >
 <input type="radio" name="Theater" onchange="" value="${Details._id}" id="date">
     <label id="label" for="date" class="date">
@@ -506,70 +507,70 @@
     </label>
 </div>
 `
-                        })
-                    }
-
-
-
-
-                    slider()
-
+                    })
                 }
-            })
-            setTimeout(() => {
 
 
 
-                theater.classList.toggle('active')
-                loader.classList.remove('active')
-            }, 3500)
+
+                slider()
+
+            }
+        })
+        setTimeout(() => {
 
 
-        }
 
-        var screen = document.querySelector('.screen')
-        var show = document.querySelector('.show')
+            theater.classList.toggle('active')
+            loader.classList.remove('active')
+        }, 3500)
 
-        var loader = document.querySelector('.loader')
-        var theater = document.querySelector('.theaters')
+
+    }
+
+    var screen = document.querySelector('.screen')
+    var show = document.querySelector('.show')
+
+    var loader = document.querySelector('.loader')
+    var theater = document.querySelector('.theaters')
+    var wrapper = document.querySelector('.selecting-wrapper')
+    var close = document.querySelector('.close')
+    close.addEventListener('click', () => {
+        removeSlider()
+        wrapper.classList.remove('active')
+        theater.classList.remove('active')
+        screen.classList.remove('active')
+        show.classList.remove('active')
+
+    })
+
+
+
+
+
+    const getScreen = (movieId) => {
+        var checkedTheater = document.querySelector('input[name="Theater"]:checked');
         var wrapper = document.querySelector('.selecting-wrapper')
-        var close = document.querySelector('.close')
-        close.addEventListener('click', () => {
+
+        loader.classList.toggle('active')
+        theater.classList.remove('active')
+        var sliderWrapperScreen = document.querySelector('.swiper-wrapper.Screens')
+
+
+
+        if (checkedTheater === null) {
+            alert('You Didn"t Select Any Theater ! Try Again ')
             removeSlider()
             wrapper.classList.remove('active')
-            theater.classList.remove('active')
-            screen.classList.remove('active')
-            show.classList.remove('active')
-
-        })
-
-
-
-
-
-        const getScreen = (movieId) => {
-            var checkedTheater = document.querySelector('input[name="Theater"]:checked');
-            var wrapper = document.querySelector('.selecting-wrapper')
-
-            loader.classList.toggle('active')
-            theater.classList.remove('active')
-            var sliderWrapperScreen = document.querySelector('.swiper-wrapper.Screens')
-
-
-
-            if (checkedTheater === null) {
-                alert('You Didn"t Select Any Theater ! Try Again ')
-                removeSlider()
-                wrapper.classList.remove('active')
-            } else {
-                $.ajax({
-                    url: `/getScreenDetails/${movieId}/${checkedTheater.value}`,
-                    method: 'post',
-                    success: (screenDetails) => {
-                        console.log(screenDetails)
-                        screenDetails.forEach(Details => {
-                            console.log(Details)
-                            sliderWrapperScreen.innerHTML += `
+        } else {
+            $.ajax({
+                url: `/getScreenDetails/${movieId}/${checkedTheater.value}`,
+                method: 'post',
+                success: (screenDetails) => {
+                    console.log(screenDetails)
+                    screenDetails.forEach(Details => {
+                        console.log(Details)
+                        sliderWrapperScreen.innerHTML += `
                     <div class="swiper-slide booking" >
 <input type="radio" name="Screen" onchange="" value="${Details._id}" id="date">
     <label id="label" for="date" class="date">
@@ -577,27 +578,20 @@
     </label>
 </div>
 `
-                        })
+                    })
 
 
 
-                        slider()
-                    }
-                })
+                    slider()
+                }
+            })
 
 
 
-                setTimeout(() => {
-                    screen.classList.toggle('active')
-                    loader.classList.remove('active')
-                }, 3500)
-
-            }
-
-
-
-
-
+            setTimeout(() => {
+                screen.classList.toggle('active')
+                loader.classList.remove('active')
+            }, 3500)
 
         }
 
@@ -606,71 +600,146 @@
 
 
 
+    }
 
 
 
-        const getShows = (movieId) => {
-            var checkedScreen = document.querySelector('input[name="Screen"]:checked');
-            loader.classList.toggle('active')
-            screen.classList.remove('active')
-            var sliderWrapperShow = document.querySelector('.swiper-wrapper.Show')
-            if (checkedScreen === null) {
-                alert('You Didn"t Select Any Screen ! Try Again ')
-                removeSlider()
-                wrapper.classList.remove('active')
-            } else {
-                $.ajax({
-                    url: `/getShowDetails/${movieId}/${checkedScreen.value}`,
-                    method: 'post',
-                    success: (showDetails) => {
-                        console.log(showDetails)
-                        showDetails.forEach(Details => {
-                            console.log(Details)
-                            sliderWrapperShow.innerHTML += `
+
+
+
+
+
+
+    const getShows = (movieId) => {
+        var checkedScreen = document.querySelector('input[name="Screen"]:checked');
+        loader.classList.toggle('active')
+        screen.classList.remove('active')
+        var sliderWrapperShow = document.querySelector('.swiper-wrapper.Show')
+        if (checkedScreen === null) {
+            alert('You Didn"t Select Any Screen ! Try Again ')
+            removeSlider()
+            wrapper.classList.remove('active')
+        } else {
+            $.ajax({
+                url: `/getShowDetails/${movieId}/${checkedScreen.value}`,
+                method: 'post',
+                success: (showDetails) => {
+                    console.log(showDetails)
+                    showDetails.forEach(Details => {
+                        console.log(Details)
+                        sliderWrapperShow.innerHTML += `
                     <div class="swiper-slide booking" >
 <input type="radio" name="Show" onchange="" value="${Details._id}" id="date">
 <input type="radio" name="" onchange="" id="${Details._id}" value="${Details.ownerId}" hidden  >
     <label id="label" for="date" class="date">
 <span>${Details.Month}</span>
-<p>${Details.DayDate}</p>
+<p id="daydate">${Details.DayDate}</p>
  <span>${Details.Time}</span>   
      </label>
 </div>
 `
-                        })
+                    })
 
 
 
-                        slider()
-                    }
-                })
+                    slider()
+                }
+            })
 
 
 
-                setTimeout(() => {
-                    show.classList.toggle('active')
-                    loader.classList.remove('active')
-                }, 3500)
-            }
-
-
-
+            setTimeout(() => {
+                show.classList.toggle('active')
+                loader.classList.remove('active')
+            }, 3500)
         }
 
 
 
-        const goNext = () => {
-            var checkedShow = document.querySelector('input[name="Show"]:checked');
-            var ownerId = document.getElementById(`${checkedShow.value}`).value
-            if (checkedShow === null) {
-                alert('You Didn"t Select Any Show ! Try Again ')
-                removeSlider()
-                wrapper.classList.remove('active')
-            } else {
+    }
 
-                location.href = "/seat-select/" + checkedShow.value + '/' + ownerId
+
+
+    const goNext = () => {
+        var checkedShow = document.querySelector('input[name="Show"]:checked');
+        var ownerId = document.getElementById(`${checkedShow.value}`).value
+        if (checkedShow === null) {
+            alert('You Didn"t Select Any Show ! Try Again ')
+            removeSlider()
+            wrapper.classList.remove('active')
+        } else {
+
+            location.href = "/seat-select/" + checkedShow.value + '/' + ownerId
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+<script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+
+
+
+
+
+
+
+<script>
+    var swiper = new Swiper('.swiper-container.movie', {
+        // pagination: {
+        //     el: '.swiper-pagination',
+        //     clickable: true,
+        // },
+        // navigation: {
+        //     nextEl: '.swiper-button-next',
+        //     prevEl: '.swiper-button-prev',
+        // },
+        // Responsive breakpoints
+        breakpoints: {
+            // 550:{
+            //     slidesPerView:1,
+            //     spaceBetween:10
+            // },
+            300: {
+                slidesPerView: 3.3,
+                spaceBetween: 0,
+            },
+            550: {
+                slidesPerView: 4.5,
+                spaceBetween: 5,
+            },
+            // when window width is >= 320px
+            622: {
+                slidesPerView: 3.5,
+                spaceBetween: 20
+            },
+            // when window width is >= 480px
+            966: {
+                slidesPerView: 4.5,
+                spaceBetween: 30
+            },
+            // when window width is >= 640px
+            1382: {
+                slidesPerView: 6.5,
+                spaceBetween: 0
             }
         }
+    });
+</script>
 
 
 
@@ -681,64 +750,45 @@
 
 
 
+<script>
+    var swiper = new Swiper('.swiper-container.rate-slider', {
+        slidesPerView: 8,
+        spaceBetween: 10,
 
 
 
-
-
-    </script>
-
-
-    <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
-
-
-
-
-
-
-
-    <script>
-        var swiper = new Swiper('.swiper-container.movie', {
-            // pagination: {
-            //     el: '.swiper-pagination',
-            //     clickable: true,
+        breakpoints: {
+            // 550:{
+            //     slidesPerView:1,
+            //     spaceBetween:10
             // },
-            // navigation: {
-            //     nextEl: '.swiper-button-next',
-            //     prevEl: '.swiper-button-prev',
-            // },
-            // Responsive breakpoints
-            breakpoints: {
-                // 550:{
-                //     slidesPerView:1,
-                //     spaceBetween:10
-                // },
-                300: {
-                    slidesPerView: 3.3,
-                    spaceBetween: 0,
-                },
-                550: {
-                    slidesPerView: 4.5,
-                    spaceBetween: 5,
-                },
-                // when window width is >= 320px
-                622: {
-                    slidesPerView: 3.5,
-                    spaceBetween: 20
-                },
-                // when window width is >= 480px
-                966: {
-                    slidesPerView: 4.5,
-                    spaceBetween: 30
-                },
-                // when window width is >= 640px
-                1382: {
-                    slidesPerView: 6.5,
-                    spaceBetween: 0
-                }
+            300: {
+                slidesPerView: 1.1,
+                spaceBetween: 0,
+
+            },
+            550: {
+                slidesPerView: 1.3,
+            },
+            // when window width is >= 320px
+            622: {
+                slidesPerView: 1.3,
+                spaceBetween: 0
+            },
+
+            // when window width is >= 480px
+            966: {
+                slidesPerView: 2.3,
+                spaceBetween: 0
+            },
+            // when window width is >= 640px
+            1382: {
+                slidesPerView: 3.3,
+                spaceBetween: 0,
             }
-        });
-    </script>
+        }
+    });
+</script>
 
 
 
@@ -749,45 +799,11 @@
 
 
 
-    <script>
-        var swiper = new Swiper('.swiper-container.rate-slider', {
-            slidesPerView: 8,
-            spaceBetween: 10,
 
 
 
-            breakpoints: {
-                // 550:{
-                //     slidesPerView:1,
-                //     spaceBetween:10
-                // },
-                300: {
-                    slidesPerView: 1.1,
-                    spaceBetween: 0,
 
-                },
-                550: {
-                    slidesPerView: 1.3,
-                },
-                // when window width is >= 320px
-                622: {
-                    slidesPerView: 1.3,
-                    spaceBetween: 0
-                },
 
-                // when window width is >= 480px
-                966: {
-                    slidesPerView: 2.3,
-                    spaceBetween: 0
-                },
-                // when window width is >= 640px
-                1382: {
-                    slidesPerView: 3.3,
-                    spaceBetween: 0,
-                }
-            }
-        });
-    </script>
 
 
 
@@ -888,39 +904,24 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- ---modal---- -->
-    <div class="trailer-wrapper">
-        <div class="trailer">
-            <iframe src="{{Movie.Trailer}}" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
-        </div>
+<!-- ---modal---- -->
+<div class="trailer-wrapper">
+    <div class="trailer">
+        <iframe src="{{Movie.Trailer}}" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
     </div>
-    <script>
-        var modal = document.querySelector('.trailer-wrapper')
-        var btn = document.querySelector('.trailer-btn')
-        btn.addEventListener('click', () => {
-            modal.classList.toggle('active')
-        })
-        modal.addEventListener('click', () => {
-            modal.classList.remove('active')
-        })
-    </script>
+</div>
+<script>
+    var modal = document.querySelector('.trailer-wrapper')
+    var btn = document.querySelector('.trailer-btn')
+    btn.addEventListener('click', () => {
+        modal.classList.toggle('active')
+    })
+    modal.addEventListener('click', () => {
+        modal.classList.remove('active')
+    })
+</script>
 
 
 
@@ -1004,13 +1005,13 @@
 
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.5.9/lottie.js"></script>
-    <script>
-        var animation = bodymovin.loadAnimation({
-            container: document.getElementById('bm'),
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            path: '/javascripts/admin/user/lottieflow-play-06-ffffff-easey.json'
-        })
-    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.5.9/lottie.js"></script>
+<script>
+    var animation = bodymovin.loadAnimation({
+        container: document.getElementById('bm'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/javascripts/admin/user/lottieflow-play-06-ffffff-easey.json'
+    })
+</script>

@@ -111,6 +111,8 @@
   <div class="notification-nothing"></div>
   <p><img src="/images/owner/profile/owner${ownerId}.jpg" alt=""> Hey <span>${ownerName}</span>,  New Booking Confirmed.</p>
 </div>`
+      var notification_audio = new Audio('/images/audio/notification.mp3')
+      notification_audio.play()
       notification_wrapper.classList.add('active')
     })
 
