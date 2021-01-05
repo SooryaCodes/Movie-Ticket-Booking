@@ -72,14 +72,16 @@
             <span id="totalAmount"></span>
         </div>
         <div class="pay">
-            
-            <input type="submit" class="mask waves-effect waves-light rgba-white-slight" name="Payment-method" onclick="payment(value)" id="rzp-button1" value="Razorpay">
+
+            <input type="submit" class="mask waves-effect waves-light rgba-white-slight" name="Payment-method"
+                onclick="payment(value)" id="rzp-button1" value="Razorpay">
             <p>Or</p>
-            <input type="submit" class="mask waves-effect waves-light rgba-white-slight" name="Payment-method" onclick="payment(value)" id="" value="Paypal">
+            <input type="submit" class="mask waves-effect waves-light rgba-white-slight" name="Payment-method"
+                onclick="payment(value)" id="" value="Paypal">
             {{!-- <p>or</p> --}}
-<div id="paypal-btn" onclick="payment('Paypal')">
-    
-</div>
+            <div id="paypal-btn" onclick="payment('Paypal')">
+
+            </div>
         </div>
     </div>
 
@@ -119,7 +121,9 @@
 
 
 <script>
-    var show={}
+    var TotalNumberOfSeat='{{screen.Seat}}'
+    console.log(TotalNumberOfSeat)
+    var show = {}
     show.Vip = parseInt('{{data.show.Vip}}')
     show.Excecutive = parseInt('{{data.show.Excecutive}}')
     show.Premium = parseInt('{{data.show.Premium}}')
@@ -127,7 +131,7 @@
     show._id = '{{data.show._id}}'
     show.Movie = '{{data.show.Movie}}'
     show.screenName = '{{screen.Name}}'
-    var ownerId='{{ownerId}}'
+    var ownerId = '{{ownerId}}'
 
 </script>
 <script src="/javascripts/admin/user/screen.js"></script>

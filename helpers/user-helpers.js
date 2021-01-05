@@ -29,7 +29,7 @@ module.exports = {
   signup: (mobile, data) => {
     return new Promise((reolve, reject) => {
       data.Mobile = mobile;
-      data.role = "user"; 
+      data.role = "user";
       db.get()
         .collection(collection.USER_COLLECTION)
         .insertOne(data)
@@ -104,7 +104,7 @@ module.exports = {
       details.Seat = data.seat;
       details.userId = userId;
       details.Show = data.show;
-      details.Payment=data.paymentMethod
+      details.Payment = data.paymentMethod
 
       console.log(data.show, "shoe");
       console.log(details, "details");
@@ -153,7 +153,7 @@ module.exports = {
       details.Seat = data.seat;
       details.userId = userId;
       details.Show = data.show;
-      details.Payment=data.paymentMethod
+      details.Payment = data.paymentMethod
 
       console.log(details, "details");
 
@@ -163,7 +163,7 @@ module.exports = {
         .insertOne(details);
 
       var bookingId = booking.ops[0]._id;
-      resolve(details,bookingId);
+      resolve(details, bookingId);
     });
   },
   verifyPayment: (details) => {
@@ -173,8 +173,8 @@ module.exports = {
 
       hash.update(
         details["payment[razorpay_order_id]"] +
-          "|" +
-          details["payment[razorpay_payment_id]"]
+        "|" +
+        details["payment[razorpay_payment_id]"]
       );
       hash = hash.digest("hex");
       if (hash === details["payment[razorpay_signature]"]) {
@@ -192,7 +192,7 @@ module.exports = {
         order.Show.Excecutive +
         order.Show.Premium +
         order.Show.Normal;
-        console.log(average/4*order.Seat.length);
+      console.log(average / 4 * order.Seat.length);
       // console.log(average);
       var paypal = require("paypal-rest-sdk");
       paypal.configure({
@@ -202,7 +202,7 @@ module.exports = {
       });
       console.log(order.Amount);
       var create_payment_json = {
-        transactionId:id,
+        transactionId: id,
         intent: "sale",
         payer: {
           payment_method: "paypal",
@@ -220,7 +220,7 @@ module.exports = {
                   sku: "Tickets",
                   price: order.Amount,
                   currency: "INR",
-                  quantity:1,
+                  quantity: 1,
                 },
               ],
             },
@@ -228,7 +228,7 @@ module.exports = {
               currency: "INR",
               total: order.Amount
             },
-            
+
             description: "This is the payment description.",
           },
         ],
@@ -290,39 +290,39 @@ module.exports = {
   },
 
 
-  getShowDetails:(movieId,screenId)=>{
-    return new Promise(async(resolve,reject)=>{
-      var showsWithScreenId=await db.get().collection(collection.SHOW_COLLECTION).find({screenId:screenId}).toArray()
-      console.log(showsWithScreenId,"shows width screen id");
-        var shows=await db.get().collection(collection.SHOW_COLLECTION).find({Movie:movieId}).toArray()
+  getShowDetails: (movieId, screenId) => {
+    return new Promise(async (resolve, reject) => {
+      var showsWithScreenId = await db.get().collection(collection.SHOW_COLLECTION).find({ screenId: screenId }).toArray()
+      console.log(showsWithScreenId, "shows width screen id");
+      var shows = await db.get().collection(collection.SHOW_COLLECTION).find({ Movie: movieId }).toArray()
 
-        console.log(shows,"shows");
-        resolve(shows)
+      console.log(shows, "shows");
+      resolve(shows)
     })
   },
 
 
-  getAllMovies:()=>{
-    return new Promise((resolve,reject)=>{
-      db.get().collection(collection.MOVIE_COLLECTION).find().toArray().then((data)=>{
+  getAllMovies: () => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.MOVIE_COLLECTION).find().toArray().then((data) => {
         resolve(data)
       })
     })
   },
-  rateMovie:(movieId,user,data)=>{
-    return new Promise((resolve,reject)=>{
-      data.Rating=parseInt(data.Rating)
-      data.user=user
-      data.movieId=movieId
-      db.get().collection(collection.RATING_COLLECTION).insertOne(data).then((response)=>{
+  rateMovie: (movieId, user, data) => {
+    return new Promise((resolve, reject) => {
+      data.Rating = parseInt(data.Rating)
+      data.user = user
+      data.movieId = movieId
+      db.get().collection(collection.RATING_COLLECTION).insertOne(data).then((response) => {
         resolve(response)
       })
     })
   },
 
-  getRatings:(movieId)=>{
-    return new Promise((resolve,reject)=>{
-      db.get().collection(collection.RATING_COLLECTION).find({movieId:movieId}).toArray().then((response)=>{
+  getRatings: (movieId) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.RATING_COLLECTION).find({ movieId: movieId }).toArray().then((response) => {
         resolve(response)
       })
     })

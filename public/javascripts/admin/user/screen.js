@@ -14,14 +14,14 @@ console.log(bookedSeats);
 var Reserved = bookedSeats.split(",");
 
 window.addEventListener("load", function () {
-    for (var i = 0; i < Reserved.length; i++) {
-      document.getElementById(Reserved[i]).parentNode.classList.add("Reserved-Seat");
-      document.getElementById(Reserved[i]).classList.add("Reserved");
-      var reservedS = document.querySelectorAll(".Reserved");
-      reservedS.forEach((value) => {
-        value.disabled = true;
-      });
-    }
+  for (var i = 0; i < Reserved.length; i++) {
+    document.getElementById(Reserved[i]).parentNode.classList.add("Reserved-Seat");
+    document.getElementById(Reserved[i]).classList.add("Reserved");
+    var reservedS = document.querySelectorAll(".Reserved");
+    reservedS.forEach((value) => {
+      value.disabled = true;
+    });
+  }
 });
 console.log(Reserved, "rese");
 var Vip = {
@@ -256,9 +256,6 @@ function verifyPayment(payment, order) {
       }
       socket.emit('booking', bookingDetails)
       location.href = "/";
-
-
-
     },
   });
 }

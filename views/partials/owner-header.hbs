@@ -55,8 +55,7 @@
 
   <div class="side-bar" id="side-bar">
     <div class="side-bar-top">
-      <img src="/images/owner/profile/owner{{ownerDetails._id}}.jpg"
-        alt="">
+      <img src="/images/owner/profile/owner{{ownerDetails._id}}.jpg" alt="">
       <p>Hello, <span>{{ownerDetails.Name}}</span></p>
     </div>
     <div class="side-bar-bottom">
@@ -71,7 +70,9 @@
   </div>
 
 
+  <div class="notification-wrapper">
 
+  </div>
 
   <script>
     const menuToggle = () => {
@@ -94,7 +95,24 @@
     }
   </script>
 
+<script src="/socket.io/socket.io.js"></script>
 
+  <script>
+    var ownerName='{{ownerDetails.Name}}'
+    var notification_wrapper = document.querySelector('.notification-wrapper')
+    var socket = io()
+    var ownerId = '{{ownerDetails._id}}'
+    console.log(ownerName,ownerId)
+    socket.on(ownerId, (msg) => {
+      notification_wrapper.innerHTML += `<div class="notification">
+  <i class="fa fa-times" onclick="this.parentNode.remove()" aria-hidden="true"></i>
+  <div class="notification-nothing"></div>
+  <p><img src="/images/owner/profile/owner${ownerId}.jpg" alt=""> Hey <span>${ownerName}</span>,  New Booking Confirmed.</p>
+</div>`
+notification_wrapper.classList.add('active')
+    })
+
+  </script>
   <script>
 
 
@@ -107,7 +125,8 @@
 
   </script>
 
-  {{!-- <script>
+  {{!--
+  <script>
     const currentLocation = location.href();
     const sidebar = document.querySelector('.side-bar-items')
 
@@ -115,18 +134,18 @@
     for (let i = 0; i < sidebarLength; i++) {
       sidebar[i].classList = "side-bar-items active";
     }
-            
+
   </script> --}}
 
-<script>
-  const currentLocation = location.href;
-  const sidebar = document.getElementsByClassName("side-bar-items");
-  const sidebarLength = sidebar.length;
-  for (let i = 0; i < sidebarLength; i++) {
-    if (sidebar[i].href === currentLocation) {
-      sidebar[i].classList = "side-bar-items active";
+  <script>
+    const currentLocation = location.href;
+    const sidebar = document.getElementsByClassName("side-bar-items");
+    const sidebarLength = sidebar.length;
+    for (let i = 0; i < sidebarLength; i++) {
+      if (sidebar[i].href === currentLocation) {
+        sidebar[i].classList = "side-bar-items active";
+      }
     }
-  }
   </script>
 
   <script>

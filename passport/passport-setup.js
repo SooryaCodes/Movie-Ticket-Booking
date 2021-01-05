@@ -104,7 +104,6 @@ module.exports.initializePassport = (passport) => {
             }
           });
 
-        return done(null, user);
       }
     )
   );

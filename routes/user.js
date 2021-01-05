@@ -194,13 +194,42 @@ router.get("/movie/:id", verifyLogin, (req, res) => {
           }
         }
 
+
+
+
+
+
         var AverageRatingCalculation = (RatingAverage.reduce((a, b) => a + b, 0)) / (RatingAverage.length)
         console.log(AverageRatingCalculation);
 
+        var RatingAverageOne = false
+        var RatingAverageTwo = false
+        var RatingAverageThree = false
+        var RatingAverageFour = false
+        var RatingAverageFive = false
+        if (AverageRatingCalculation >= 1 && AverageRatingCalculation < 2) {
+          RatingAverageOne = true
+        } else if (AverageRatingCalculation >= 2 && AverageRatingCalculation < 3) {
+          RatingAverageTwo = true
+        } else if (AverageRatingCalculation >= 3 && AverageRatingCalculation < 4) {
+          RatingAverageThree = true
+        } else if (AverageRatingCalculation >= 4 && AverageRatingCalculation < 5) {
+          RatingAverageFour = true
+        } else if (AverageRatingCalculation >= 5 && AverageRatingCalculation < 6) {
+          RatingAverageFive = true
+        }
 
 
 
-        res.render("user/movie", { user: true, Movie, TopMovies, Ratings, userDetails: req.user });
+
+        res.render("user/movie", {
+          user: true, Movie, TopMovies, Ratings, userDetails: req.user,
+          RatingAverageOne,
+          RatingAverageTwo,
+          RatingAverageThree,
+          RatingAverageFour,
+          RatingAverageFive,
+        });
       })
     });
   });
@@ -267,7 +296,7 @@ router.get("/seat-select/:id/:ownerId", verifyLogin, (req, res) => {
       data,
       bookedSeats,
       user: req.user.Name,
-      ownerId:req.params.ownerId
+      ownerId: req.params.ownerId
     });
   });
 });

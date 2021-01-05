@@ -41,7 +41,7 @@ io.on('connection', (socket) => {
     console.log(booking);
     var ownerId=booking.ownerId
     var message=booking.message
-    io.emit('ownerId', message)
+    io.emit(ownerId, message)
   })
 })
 /**
