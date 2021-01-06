@@ -329,9 +329,8 @@ router.post("/ticket-booking", (req, res) => {
   } else if (req.body.paymentMethod === "Paypal") {
     userHelpers.insertBooking(req.body, req.user._id).then((data) => {
       userHelpers.generatePaypal(data).then((response) => {
-        console.log(response, "trespo");
-        console.log(response.transactions[0].amount, "response");
-        // console.log(,"response");
+        console.log(response.transactions[0].item_list, "paypal");
+        console.log(response.transactions[0].item_list.items, "paypal");
         res.json(response.links[1].href);
       });
     });
@@ -343,9 +342,12 @@ router.post("/ticket-booking", (req, res) => {
 router.post("/verify-payment", (req, res) => {
   console.log(req.body);
   userHelpers.verifyPayment(req.body).then((response) => {
-    res.json({ status: true });
+    if (response.status === true) {
+      res.json({ status: true });
+    } else {
+      res.json({ status: false });
+    }
   });
-  console.log("hey");
 });
 
 router.get("/failure", (req, res) => {

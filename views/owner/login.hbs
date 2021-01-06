@@ -1,126 +1,297 @@
-<link rel="stylesheet" href="/stylesheets/admin/login.css" />
-{{! <!-- ------wrapper----- --> }}
+{{!--
+<link rel="stylesheet" href="/stylesheets/admin/login.css" /> --}}
+{{!
+<!-- ------wrapper----- --> }}
 
 <style>
-  #forgot{
-    padding-left: 20px;
-    color: red;
+  body {
+    width: 100%;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background: #efeeee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .alert {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    height: 70px;
+    width: 100%;
+    box-shadow:
+      4px 4px 6px #ccc,
+      -4px -4px 6px #fff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    color: gray;
+    border-radius: 10px;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+  }
+
+  .wrapper form {
+    background: #efeeee;
+    height: 600px;
+    width: 390px;
+    border-radius: 20px;
+    box-shadow:
+      10px 10px 16px -2px #ccc,
+      -10px -10px 16px -2px #fff;
+    text-align: center;
+    padding: 2em;
+  }
+
+  .wrapper p {
+    padding: 20px;
+    color: #777;
+    margin-bottom: 2em;
+    font-size: 24px;
+    font-weight: 300;
+  }
+
+  .wrapper input,
+  #btn {
+    width: 300px;
+    border: none;
+    border-radius: 5000px;
+    padding: 1em;
+    background: #efeeee;
+    box-shadow:
+      inset 4px 4px 6px #ccc,
+      inset -4px -4px 6px #fff;
+    margin-bottom: 2em;
+    color: #888;
+    font-family: 'Poppins', sans-serif;
+
 
   }
-</style>
-<div class="wrapper">
-  {{! <!-- ---Login-section--- --> }}
-  <div class="login-section">
-    {{! <!-- ---Welcome title--- --> }}
-    <div class="title">
-      <h3>
-        Welcome
-      </h3>
-    </div>
-    {{! <!-- ---login input field--- --> }}
-    <form action="/owner/login" method="POST">
-      <div class="input-group">
-        <input type="text" name="username" id=""  />
-        <label for="">
-          <i class="fa fa-user" aria-hidden="true"></i>
-          Username
-        </label>
-      </div>
-      <div class="input-group">
-        <input type="password" name="password" id=""  />
-        <label for="">
-          <i class="fa fa-lock" aria-hidden="true"></i>
-          Password
-        </label>
-      </div>
-      {{#if messages.error}}
-        <div class="alert alert-danger" role="alert">
-          {{messages.error}}!
-        </div>
-      {{/if}}
-      {{#if noOwner}}
-        <div class="alert alert-danger" role="alert">
-          No Account With This Email.
-        </div>
-      {{/if}}
-<a id="forgot" class="text-primary" data-toggle="modal" data-target="#modalContactForm">Forgot Password ?</a>
-      <div class="input-submit" style="margin-top: 20px;">
 
-<a href="/owner/google"  class="loginLink"><i class="fa fa-google" aria-hidden="true">oogle</i>  </a>
-        <input type="submit" name="" id="" value="Login" />
-      </div>
-    </form>
-  </div>
+  .wrapper input:active {
+    box-shadow:
+      inset 4px 4px 6px #ccc,
+      inset -4px -4px 6px #fff;
+  }
+
+  .wrapper input:hover {
+    cursor: pointer;
+  }
+
+  .wrapper input:focus {
+    outline: none;
+  }
+
+  .wrapper input[type="submit"],
+  #btn {
+    width: 270px;
+    box-shadow:
+      4px 4px 6px #ccc,
+      -4px -4px 6px #fff;
+    margin-top: 1em;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    color: white;
+  }
+
+  .wrapper input[type="submit"]:active {
+    box-shadow:
+      inset 7px 7px 15px rgba(255, 184, 184, 0.15),
+      inset -7px -7px 20px rgba(255, 106, 106, 0.637),
+      0px 0px 4px rgba(255, 255, 255, .2);
+  }
+
+  .wrapper #btn:active {
+    box-shadow:
+      inset 7px 7px 15px rgba(79, 80, 85, 0.15),
+      inset -7px -7px 20px rgba(255, 255, 255, 1),
+      0px 0px 4px rgba(255, 255, 255, 0.514);
+  }
+
+  ::placeholder {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: #aaa;
+  }
+
+  .wrapper a {
+    text-decoration: none;
+    color: rgb(163, 163, 163);
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+
+
+
+  }
+
+
+  .wrapper a:active {
+    color: rgb(235, 235, 235);
+  }
+
+  .wrapper a:focus {
+    outline: none;
+
+  }
+
+  .wrapper a:hover {
+    color: rgb(221, 221, 221);
+  }
+</style>
+
+
+
+
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<div class="container wrapper">
+  <form action="/owner/login" method="POST">
+    <p>Welcome</p>
+    <input type="text" placeholder="Username" name="username"><br>
+    <input type="password" placeholder="Password" name="password"><br>
+    <input type="submit" style="    background: #fa5f5f;" value="Sign in"><br>
+    <a href="/owner/google" id="btn" class="loginLink" type="button"><img src="/images/user/google.svg" alt=""></a><br>
+
+    <a data-toggle="modal" data-target="#modalContactForm">Forgot Password?</a>
+  </form>
 </div>
+
+{{#if messages.error}}
+<div class="alert " role="alert">
+  {{messages.error}}!
+</div>
+{{/if}}
+{{#if noOwner}}
+<div class="alert " role="alert">
+  No Account With This Email.
+</div>
+{{/if}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Button trigger modal -->
- 
+
 
 <div class="modal fade" id="modalContactForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   aria-hidden="true">
- <form action="/owner/forgot-password" method="POST">
-  <!--Modal: Contact form-->
-  <div class="modal-dialog cascading-modal" role="document">
+  <form action="/owner/forgot-password" method="POST">
+    <!--Modal: Contact form-->
+    <div class="modal-dialog cascading-modal" role="document">
 
-    <!--Content-->
-    <div class="modal-content">
+      <!--Content-->
+      <div class="modal-content">
 
-      <!--Header-->
-      <div class="modal-header mdb-color white-text">
-        <h4 class="title">
-          Forgot Password</h4>
-        <button type="button" class="close waves-effect waves-light" data-dismiss="modal"
-          aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <!--Body-->
-      <div class="modal-body">
-
-        <!-- Material input name -->
-        <div class="md-form form-sm">
-          <i class="fa fa-envelope prefix"></i>
-          <input type="email" id="materialFormNameModalEx1" name="email" class="form-control form-control-sm">
-          <label for="materialFormNameModalEx1">Email</label>
-        </div>
-
-       
-        <div class="text-center mt-4 mb-2">
-          <button class="btn btn-mdb-color">Send
-            <i class="fa fa-send ml-2"></i>
+        <!--Header-->
+        <div class="modal-header mdb-color white-text">
+          <h4 class="title">
+            Forgot Password</h4>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
           </button>
         </div>
+        <!--Body-->
+        <div class="modal-body">
 
+          <!-- Material input name -->
+          <div class="md-form form-sm">
+            <i class="fa fa-envelope prefix"></i>
+            <input type="email" id="materialFormNameModalEx1" name="email" class="form-control form-control-sm">
+            <label for="materialFormNameModalEx1">Email</label>
+          </div>
+
+
+          <div class="text-center mt-4 mb-2">
+            <button class="btn btn-mdb-color">Send
+              <i class="fa fa-send ml-2"></i>
+            </button>
+          </div>
+
+        </div>
       </div>
+      <!--/.Content-->
     </div>
-    <!--/.Content-->
-  </div>
   </form>
   <!--/Modal: Contact form-->
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
-	var loginWindow;
+  var loginWindow;
 
-	window.addEventListener('message', function(e) {
-		if (e.data !== 'popup-done') { return; }
-window.location.reload()
-	});
+  window.addEventListener('message', function (e) {
+    if (e.data !== 'popup-done') { return; }
+    window.location.reload()
+  });
 
 
-	document.querySelectorAll('.loginLink').forEach(function(link) {
-		link.addEventListener('click', function(e) {
-			e.preventDefault();
-			var url = link.getAttribute('href');
-			var width = 500, height = 370;
-			if (url.indexOf('/owner/google') === 0) {
-				width = 470; height = 580;
-			}
-			var w = window.outerWidth - width, h = window.outerHeight - height;
-			var left = Math.round(window.screenX + (w / 2));
-			var top = Math.round(window.screenY + (h / 2.5));
+  document.querySelectorAll('.loginLink').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      var url = link.getAttribute('href');
+      var width = 500, height = 370;
+      if (url.indexOf('/owner/google') === 0) {
+        width = 470; height = 580;
+      }
+      var w = window.outerWidth - width, h = window.outerHeight - height;
+      var left = Math.round(window.screenX + (w / 2));
+      var top = Math.round(window.screenY + (h / 2.5));
 
-			loginWindow = window.open(url, 'LogIn', 
-				'width='+width+',height='+height+',left='+left+',top='+top+
-				',toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0');
-		});
-	});
+      loginWindow = window.open(url, 'LogIn',
+        'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top +
+        ',toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0');
+    });
+  });
 </script>

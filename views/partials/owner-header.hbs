@@ -74,6 +74,24 @@
 
   </div>
 
+
+
+
+
+  <script>
+    window.addEventListener('click', () => {
+      $.ajax({
+        url: '/owner/getAnalytics',
+        method: 'post',
+        success: (response) => {
+          console.log(response)
+        }
+      })
+    })
+  </script>
+
+
+
   <script>
     const menuToggle = () => {
       var side_bar = document.getElementById('side-bar')
@@ -110,10 +128,10 @@
   <i class="fa fa-times" onclick="this.parentNode.remove()" aria-hidden="true"></i>
   <div class="notification-nothing"></div>
   <p><img src="/images/owner/profile/owner${ownerId}.jpg" alt=""> Hey <span>${ownerName}</span>,  New Booking Confirmed.</p>
-</div>`
+</div> `
       var notification_audio = new Audio('/images/audio/notification.mp3')
       notification_audio.play()
-      notification_wrapper.classList.add('active')
+
     })
 
   </script>

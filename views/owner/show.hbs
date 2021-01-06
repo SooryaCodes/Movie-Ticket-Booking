@@ -158,15 +158,12 @@
     {{/each}}
   </table>
 </div>
-
-
-
 <script>
-    const closeDelet = () => {
+  const closeDelet = () => {
     var wrapper = document.querySelector('.delete-wrapper')
     wrapper.classList.remove('active')
   }
-   function getDeleteWrapper(Name) {
+  function getDeleteWrapper(Name) {
     var Delspan = document.getElementById('delete')
     Delspan.innerText = `Delete ${Name} ?`
 
@@ -174,25 +171,27 @@
     wrapper.classList.toggle('active')
   }
   function deleteShow(Id) {
-      $.ajax({
-        url: '/owner/delete-show/' + Id,
-        data: Id,
-        method: 'post',
-        success: (response) => {
+    $.ajax({
+      url: '/owner/delete-show/' + Id,
+      data: Id,
+      method: 'post',
+      success: (response) => {
 
-          console.log(response.status)
-          if (response.status) {
-                      wrapper.classList.remove('active')
+        console.log(response.status)
+        if (response.status) {
+          var wrapper = document.querySelector('.delete-wrapper')
 
-              location.reload()
+          wrapper.classList.remove('active')
 
-            console.log('delete')
+          location.reload()
 
-          }
+          console.log('delete')
+
         }
-      })
-    }
-  
+      }
+    })
+  }
+
 </script>
 <!-- ----tables--- -->
 
@@ -202,7 +201,8 @@
     $('#dtBasicExample').DataTable();
     $('.dataTables_length').addClass('bs-select');
   });
-</script>  <script>
+</script>
+<script>
   var loader = document.querySelector('.loader')
   setTimeout(function () {
 

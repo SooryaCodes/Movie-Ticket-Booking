@@ -4,7 +4,7 @@ const ownerHelper = require("../helpers/owner-helper");
 const adminHelper = require("../helpers/admin-helpers");
 const bcrypt = require("bcrypt");
 const hbs = require("nodemailer-express-handlebars");
-var mailHelper=require('../helpers/mail-helper')
+var mailHelper = require('../helpers/mail-helper')
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const nodemailer = require("nodemailer");
@@ -54,8 +54,7 @@ const verifyLoginGoogle = (req, res, next) => {
 /* GET users listing. */
 router.get("/", verifyLogin, function (req, res, next) {
   adminHelper.getOwnerDetails().then((details) => {
-    // console.log(req.session.passport.user);
-    res.render("owner/home", { owner: true, ownerDetails: req.user ,ownerId:req.user._id});
+    res.render("owner/home", { owner: true, ownerDetails: req.user, ownerId: req.user._id });
   });
 });
 
@@ -93,7 +92,6 @@ router.post(
   }),
   (req, res) => {
     res.redirect("/owner");
-    // console.log(response);
   }
 );
 
@@ -112,7 +110,6 @@ router.get("/screen", verifyLogin, (req, res) => {
     if (data.length < 1) {
       res.render("owner/screen-dummy", { owner: true, ownerDetails: req.user });
     } else {
-      console.log(data.length);
       res.render("owner/screen", {
         owner: true,
         Screen: data,
@@ -127,16 +124,14 @@ router.get("/add-screen", verifyLogin, (req, res) => {
 });
 
 router.post("/add-screen", (req, res) => {
-  console.log(req.body);
 
   ownerHelper
     .addScreen(req.body, req.session.passport.user._id)
-    .then((data) => {});
+    .then((data) => { });
   res.redirect("/owner/screen");
 });
 
 router.get("/edit-screen/:id", verifyLogin, (req, res) => {
-  console.log(req.params.id);
   var id = req.params.id;
   ownerHelper.getScreen(id).then((response) => {
     res.render("owner/edit-screen", {
@@ -150,14 +145,12 @@ router.get("/edit-screen/:id", verifyLogin, (req, res) => {
 
 router.post("/edit-screen/:id", (req, res) => {
   ownerHelper.editScreen(req.params.id, req.body).then((response) => {
-    console.log(response);
     res.redirect("/owner/screen");
   });
 });
 
 router.post("/delete-screen/:id", (req, res) => {
   ownerHelper.deleteScreen(req.params.id).then((response) => {
-    console.log(response, "delete");
     res.json({ status: true });
   });
 });
@@ -166,9 +159,7 @@ router.get("/bookings", verifyLogin, (req, res) => {
 });
 
 router.get("/movies", verifyLogin, (req, res) => {
-  console.log(req.user);
   ownerHelper.getMovies().then((details) => {
-    console.log(details);
     if (details.length < 1) {
       res.render("owner/movie-dummy", { owner: true, ownerDetails: req.user });
     } else {
@@ -186,13 +177,11 @@ router.get("/add-movie", (req, res) => {
 });
 router.post("/add-movie", (req, res) => {
   ownerHelper.addMovie(req.body, req.user._id).then((response) => {
-    console.log(response);
-    res.render("owner/movie-image-upload", { id: req.body._id, owner: true ,ownerDetails: req.user,});
+    res.render("owner/movie-image-upload", { id: req.body._id, owner: true, ownerDetails: req.user, });
   });
 });
 
 router.post("/movie-image-upload/:id", (req, res) => {
-  console.log(req.files);
   var id = req.params.id;
   var image = req.files.croppedImage;
   image.mv("./public/images/owner/movie/" + id + ".jpg");
@@ -212,7 +201,7 @@ router.get("/edit-movie/:id", verifyLogin, (req, res) => {
 
 router.post("/edit-movie/:id", (req, res) => {
   var id = req.params.id;
-  ownerHelper.editMovie(req.body, id).then((response) => {});
+  ownerHelper.editMovie(req.body, id).then((response) => { });
   res.render("owner/edit-movie-image-upload", {
     id,
     owner: true,
@@ -237,10 +226,7 @@ router.post("/delete-movie/:id", (req, res) => {
 
 //upcoming movie
 router.get("/upcoming-movies", verifyLogin, (req, res) => {
-  console.log(req.user);
   ownerHelper.getUpcomingMovies(req.user._id).then((details) => {
-    console.log(details);
-    console.log(details);
     if (details.length < 1) {
       res.render("owner/upcoming-movie-dummy", {
         owner: true,
@@ -264,7 +250,6 @@ router.get("/add-upcoming-movie", (req, res) => {
 
 router.post("/add-upcoming-movie", (req, res) => {
   ownerHelper.addUpcomingMovie(req.body, req.user._id).then((response) => {
-    console.log(response);
     res.render("owner/upcoming-movie-image-upload", {
       id: req.body._id,
       owner: true,
@@ -274,12 +259,10 @@ router.post("/add-upcoming-movie", (req, res) => {
 });
 
 router.post("/upcoming-movie-image-upload/:id", (req, res) => {
-  console.log(req.files);
   var id = req.params.id;
   var image = req.files.croppedImage;
-  console.log(image);
 
-  image.mv("./public/images/owner/upcoming-movie/" + id + ".jpg");
+  image.mv("./public/images/owner/movie/" + id + ".jpg");
   res.json({ status: true });
 });
 
@@ -296,16 +279,15 @@ router.get("/edit-upcoming-movie/:id", verifyLogin, (req, res) => {
 
 router.post("/edit-upcoming-movie/:id", (req, res) => {
   var id = req.params.id;
-  ownerHelper.editUpcomingMovie(req.body, id).then((response) => {});
-  res.render("owner/upcoming-edit-movie-image-upload", { id, owner: true ,ownerDetails: req.user,});
+  ownerHelper.editUpcomingMovie(req.body, id).then((response) => { });
+  res.render("owner/upcoming-edit-movie-image-upload", { id, owner: true, ownerDetails: req.user, });
 });
 
 router.post("/edit-upcoming-movie-image-upload/:id", (req, res) => {
   if (req.files.croppedImage) {
     var id = req.params.id;
     var image = req.files.croppedImage;
-    console.log(image);
-    image.mv("./public/images/owner/upcoming-movie/" + id + ".jpg");
+    image.mv("./public/images/owner/movie/" + id + ".jpg");
     res.json({ status: true });
   }
 });
@@ -399,21 +381,18 @@ router.get("/edit-show/:id", (req, res) => {
 
 router.post("/edit-show/:id", (req, res) => {
   ownerHelper.editShow(req.body, req.params.id).then((response) => {
-    console.log(response);
   });
   res.redirect("/owner/screen");
 });
 
 router.post("/delete-show/:id", (req, res) => {
   ownerHelper.deleteShow(req.params.id).then((response) => {
-    console.log(response, "delete");
     res.json({ status: true });
   });
 });
 
 router.post("/date-time/:id", (req, res) => {
   ownerHelper.getDateTime(req.body, req.params.id).then((response) => {
-    console.log(response);
     res.json(response);
   });
 });
@@ -427,12 +406,12 @@ router.post("/forgot-password", (req, res) => {
         expiresIn: 600,
       });
 
-      var template_data={
-        Link:`http://localhost:3000/owner/forgot-password/verify-mail/${token}`
+      var template_data = {
+        Link: `http://localhost:3000/owner/forgot-password/verify-mail/${token}`
       }
-      mailHelper.sendForgotPassword(req.body.email,process.env.OFFICIAL_EMAIL_ID,'d-be0314b8f200467788d3dc4fd0ab4f7d',template_data)
+      mailHelper.sendForgotPassword(req.body.email, process.env.OFFICIAL_EMAIL_ID, 'd-be0314b8f200467788d3dc4fd0ab4f7d', template_data)
       req.session.ownerNoAccount = false;
-      res.redirect("/owner/forgot-password/"+req.body.email);
+      res.redirect("/owner/forgot-password/" + req.body.email);
     } else {
       req.session.ownerNoAccount = true;
       res.redirect("/owner/login");
@@ -441,8 +420,8 @@ router.post("/forgot-password", (req, res) => {
 });
 
 router.get("/forgot-password/:email", (req, res) => {
-  var email=req.params.email.slice(0,6)
-  res.render("owner/show-page",{email:email});
+  var email = req.params.email.slice(0, 6)
+  res.render("owner/show-page", { email: email });
 });
 router.get("/forgot-password/verify-mail/:token", (req, res) => {
   let token = req.params.token;
@@ -451,16 +430,15 @@ router.get("/forgot-password/verify-mail/:token", (req, res) => {
     if (err) {
       res.send("authentication failed");
     } else {
-      console.log(decoded.email);
-      res.render('owner/forgot-password-reset',{email:decoded.email})
+      res.render('owner/forgot-password-reset', { email: decoded.email })
     }
   });
 });
 
 
 
-router.post('/forgot-password-update-password/:email',(req,res)=>{
-  ownerHelper.forgotPasswordUpdateNewPassword(req.params.email,req.body.Password).then((response)=>{
+router.post('/forgot-password-update-password/:email', (req, res) => {
+  ownerHelper.forgotPasswordUpdateNewPassword(req.params.email, req.body.Password).then((response) => {
     res.redirect('/owner')
   })
 })
@@ -485,10 +463,7 @@ router.post("/edit-profile/:id", verifyLogin, (req, res) => {
     res.redirect("/owner");
     if (req.files.image) {
       let Image = req.files.image;
-      // console.log(Image);
-      console.log(data, "data");
       Image.mv("./public/images/owner/profile/owner" + id + ".jpg");
-      console.log("exist");
     }
   });
 });
@@ -498,11 +473,26 @@ router.post("/edit-profile/:id", verifyLogin, (req, res) => {
 
 
 
-router.get('/get-box-data',(req,res)=>{
-  ownerHelper.getBoxData(req.user._id).then((response)=>{
+router.get('/get-box-data', (req, res) => {
+  ownerHelper.getBoxData(req.user._id).then((response) => {
     res.json(response)
   })
 })
 
 
+
+router.post("/change-to-now-showing/:id", (req, res) => {
+  ownerHelper.changeToNowShowing(req.params.id).then((response) => {
+    res.json({ status: true })
+  })
+})
+
+
+
+
+router.post('/owner/getAnalytics', (req, res) => {
+  ownerHelper.getAnalytics(req.user._id).then((response) => {
+
+  })
+})
 module.exports = router;

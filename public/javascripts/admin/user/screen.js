@@ -45,6 +45,7 @@ console.log(Vip, Excecutive, Premium, Normal);
 
 //---normal seat---
 
+
 function myfun(hi) {
   var reservedS = document.querySelectorAll(".Reserved");
   reservedS.forEach((value) => {
@@ -161,7 +162,7 @@ function payment(paymentMethod) {
   var seat = [];
   for (var i = 0; i < checkedSeat.length; i++) {
     seat[i] = checkedSeat[i].value;
-  }
+  }                                         
 
   var total = parseInt(
     document.getElementById("totalPriceForPayment").innerText
@@ -178,6 +179,7 @@ function payment(paymentMethod) {
       paymentMethod,
       total,
       seat,
+      ownerId: ownerId,
       show,
     }),
     success: (response) => {

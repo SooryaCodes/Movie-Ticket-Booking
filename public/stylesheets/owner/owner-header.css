@@ -401,8 +401,6 @@ body .profile-active {
 
 
 .notification-wrapper{
-  visibility: hidden;
-  opacity: 0;
   transition: .4s ease-in-out;
 
   z-index: 100000000000000000;
@@ -414,6 +412,7 @@ body .profile-active {
 
 
 .notification{
+  position: relative;
   margin-bottom: 50px;
   width: 400px;
   transition: .4s ease-in-out;
@@ -421,14 +420,9 @@ body .profile-active {
   background: #fff;
   box-shadow: 0px 0px 20px #cccd;
 }
-.notification-wrapper.active{
-  visibility: visible;
-  opacity: 1;
-}
 
-.notification-wrapper.active .notification{
-  margin-bottom: 0 !important;
-}
+
+
 .notification i{
   position: absolute;right: 10px;
   top: 10px;

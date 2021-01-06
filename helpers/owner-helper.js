@@ -473,5 +473,25 @@ module.exports = {
         resolve(response)
       })
     })
+  },
+
+  changeToNowShowing: (id) => {
+    return new Promise(async (resolve, reject) => {
+      var thisMovieData =await db.get().collection(collection.UPCOMING_MOVIE_COLLECTION).findOne({ _id: objectId(id) })
+      db.get().collection(collection.MOVIE_COLLECTION).insertOne(thisMovieData).then((firstresponse) => {
+        console.log(thisMovieData,"thismoviedata");
+        db.get().collection(collection.UPCOMING_MOVIE_COLLECTION).removeOne({ _id: objectId(id) }).then((Response) => {
+          resolve(Response)
+        })
+      })
+    })
+  },
+  getAnalytics:()=>{
+    return new Promise((resolve,reject)=>{
+      var Movies=db.get().collection(collection.MOVIE_COLLECTION).find().toArray()
+      var Upcoming=db.get().collection(collection.UPCOMING_MOVIE_COLLECTION).find().toArray()
+      var myBookings=db.get().collection()
+
+    })
   }
 };

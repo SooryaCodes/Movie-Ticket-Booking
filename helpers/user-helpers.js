@@ -105,7 +105,7 @@ module.exports = {
       details.userId = userId;
       details.Show = data.show;
       details.Payment = data.paymentMethod
-
+      details.ownerId = data.ownerId
       console.log(data.show, "shoe");
       console.log(details, "details");
       var showCollection = await db
@@ -154,6 +154,8 @@ module.exports = {
       details.userId = userId;
       details.Show = data.show;
       details.Payment = data.paymentMethod
+      details.ownerId = data.ownerId
+
 
       console.log(details, "details");
 
@@ -178,9 +180,23 @@ module.exports = {
       );
       hash = hash.digest("hex");
       if (hash === details["payment[razorpay_signature]"]) {
-        resolve();
+        db.get().collection(collection.BOOKING_COLLECTION).updateOne({ _id: objectId(details['order[receipt]']) }, {
+          $set: {
+            Payment_Status: 'Paid'
+          }
+        }).then((response) => {
+          console.log(response, 'response');
+          resolve({ status: true });
+        })
       } else {
-        reject();
+        db.get().collection(collection.BOOKING_COLLECTION).updateOne({ _id: objectId(details['order[receipt]']) }, {
+          $set: {
+            Payment_Status: 'Pending'
+          }
+        }).then((anotherresponse) => {
+          console.log(anotherresponse, 'anotherresponse')
+          resolve({ status: false });
+        })
       }
     });
   },
@@ -202,7 +218,6 @@ module.exports = {
       });
       console.log(order.Amount);
       var create_payment_json = {
-        transactionId: id,
         intent: "sale",
         payer: {
           payment_method: "paypal",
@@ -217,7 +232,7 @@ module.exports = {
               items: [
                 {
                   name: "Movie Ticket",
-                  sku: "Tickets",
+                  sku: id,
                   price: order.Amount,
                   currency: "INR",
                   quantity: 1,
