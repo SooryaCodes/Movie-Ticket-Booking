@@ -473,11 +473,11 @@ router.post("/edit-profile/:id", verifyLogin, (req, res) => {
 
 
 
-router.get('/get-box-data', (req, res) => {
-  ownerHelper.getBoxData(req.user._id).then((response) => {
-    res.json(response)
-  })
-})
+// router.get('/get-box-data', (req, res) => {
+//   ownerHelper.getBoxData(req.user._id).then((response) => {
+//     res.json(response)
+//   })
+// })
 
 
 
@@ -490,9 +490,10 @@ router.post("/change-to-now-showing/:id", (req, res) => {
 
 
 
-router.post('/owner/getAnalytics', (req, res) => {
+router.post('/getAnalytics', (req, res) => {
   ownerHelper.getAnalytics(req.user._id).then((response) => {
-
+    console.log(response);
+    res.json(response)
   })
 })
 module.exports = router;

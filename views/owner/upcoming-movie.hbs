@@ -4,22 +4,6 @@
 
 </div>
 
-{{!-- loader --}}
-
-
-<div class="loader active">
-  <div class="sk-cube-grid">
-    <div class="sk-cube sk-cube1"></div>
-    <div class="sk-cube sk-cube2"></div>
-    <div class="sk-cube sk-cube3"></div>
-    <div class="sk-cube sk-cube4"></div>
-    <div class="sk-cube sk-cube5"></div>
-    <div class="sk-cube sk-cube6"></div>
-    <div class="sk-cube sk-cube7"></div>
-    <div class="sk-cube sk-cube8"></div>
-    <div class="sk-cube sk-cube9"></div>
-  </div>
-</div>
 
 <div class="over-view">
   <div class="over-view-title">
@@ -32,7 +16,7 @@
       <div class="boxes">
         <div class="text">
           <p>Income</p>
-          <span>$.200</span>
+          <span class="box-data">$.200</span>
         </div>
         <div class="progress" style="height: 10px; width: 90%; ">
 
@@ -45,7 +29,7 @@
       <div class="boxes">
         <div class="text">
           <p>Income</p>
-          <span>$.200</span>
+          <span class="box-data">$.200</span>
         </div>
 
         <div class="progress" style="height: 10px; width: 90%; ">
@@ -60,7 +44,7 @@
       <div class="boxes">
         <div class="text">
           <p>Income</p>
-          <span>$.200</span>
+          <span class="box-data">$.200</span>
         </div>
         <div class="progress" style="height: 10px; width: 90%; ">
           <div style="background:#ff5e46!important;width: 25%" class="progress-bar bg-danger" role="progressbar"
@@ -71,7 +55,7 @@
       <div class="boxes">
         <div class="text">
           <p>Income</p>
-          <span>$.200</span>
+          <span class="box-data">$.200</span>
         </div>
         <div class="progress" style="height: 10px; width: 90%; ">
 
@@ -230,12 +214,7 @@
   }
 
 </script>
-<script>
-  var loader = document.querySelector('.loader')
-  setTimeout(function () {
 
-    loader.classList.remove('active')
-  }, 2000)  </script>
 <script>
   $(document).ready(function () {
     $('#dtBasicExample').DataTable();

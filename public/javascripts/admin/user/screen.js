@@ -162,7 +162,7 @@ function payment(paymentMethod) {
   var seat = [];
   for (var i = 0; i < checkedSeat.length; i++) {
     seat[i] = checkedSeat[i].value;
-  }                                         
+  }
 
   var total = parseInt(
     document.getElementById("totalPriceForPayment").innerText

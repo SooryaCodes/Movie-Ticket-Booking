@@ -51,6 +51,21 @@
   </div>
 
 
+  {{! loader }}
+  <div class="loader active">
+    <div class="sk-cube-grid">
+      <div class="sk-cube sk-cube1"></div>
+      <div class="sk-cube sk-cube2"></div>
+      <div class="sk-cube sk-cube3"></div>
+      <div class="sk-cube sk-cube4"></div>
+      <div class="sk-cube sk-cube5"></div>
+      <div class="sk-cube sk-cube6"></div>
+      <div class="sk-cube sk-cube7"></div>
+      <div class="sk-cube sk-cube8"></div>
+      <div class="sk-cube sk-cube9"></div>
+    </div>
+  </div>
+
   <!--side-bar-->
 
   <div class="side-bar" id="side-bar">
@@ -76,19 +91,6 @@
 
 
 
-
-
-  <script>
-    window.addEventListener('click', () => {
-      $.ajax({
-        url: '/owner/getAnalytics',
-        method: 'post',
-        success: (response) => {
-          console.log(response)
-        }
-      })
-    })
-  </script>
 
 
 
@@ -171,13 +173,42 @@
   </script>
 
   <script>
-
-
     // ---profile pop up  script---
-
     function profileToggle() {
       const toggleProfile = document.querySelector(".nav-profile-pop-up");
       toggleProfile.classList.toggle("profile-active");
     }
+  </script>
 
+
+
+  <script>
+    var loader = document.querySelector('.loader')
+    window.addEventListener('load', () => {
+      loader.classList.remove('active')
+    })
+  </script>
+
+
+
+
+
+
+  <script>
+    window.addEventListener('load', () => {
+      $.ajax({
+        url: '/owner/getAnalytics',
+        method: 'post',
+        success: (response) => {
+          console.log(response)
+          var boxes = document.querySelectorAll('.box-data')
+
+          console.log(response.myBookings)
+          boxes[0].innerHTML = `₹ `
+          boxes[1].innerHTML = `${response.Movies.length} `
+          boxes[2].innerHTML = `${response.Upcoming.length} `
+          boxes[3].innerHTML = `${response.myBookings.length} `
+        }
+      })
+    })
   </script>

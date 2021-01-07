@@ -431,36 +431,36 @@ module.exports = {
         });
     });
   },
-  getBoxData: (id) => {
-    return new Promise(async (resolve, reject) => {
-      var showsFromShowCollection = await db
-        .get()
-        .collection(collection.SHOW_COLLECTION)
-        .find({ ownerId: objectId(id) })
-        .toArray();
+  // getBoxData: (id) => {
+  //   return new Promise(async (resolve, reject) => {
+  //     var showsFromShowCollection = await db
+  //       .get()
+  //       .collection(collection.SHOW_COLLECTION)
+  //       .find({ ownerId: objectId(id) })
+  //       .toArray();
 
-      var bookings = await db
-        .get()
-        .collection(collection.BOOKING_COLLECTION)
-        .find()
-        .toArray();
-      console.log(showsFromShowCollection);
+  //     var bookings = await db
+  //       .get()
+  //       .collection(collection.BOOKING_COLLECTION)
+  //       .find()
+  //       .toArray();
+  //     console.log(showsFromShowCollection);
 
-      var thisOwnerBookings = [];
+  //     var thisOwnerBookings = [];
 
-      for (var i = 0; i < bookings.length; i++) {
-        for (var j = 0; j < showsFromShowCollection.length; j++) {
-          if (bookings[i].Show._id === showsFromShowCollection[j]._id) {
-            thisOwnerBooking.push(bookings[i]);
-            console.log(bookings[i], "boking");
-          } else {
-            thisOwnerBookings.push(0)
-          }
-        }
-      }
-      console.log(thisOwnerBookings);
-    });
-  },
+  //     for (var i = 0; i < bookings.length; i++) {
+  //       for (var j = 0; j < showsFromShowCollection.length; j++) {
+  //         if (bookings[i].Show._id === showsFromShowCollection[j]._id) {
+  //           thisOwnerBooking.push(bookings[i]);
+  //           console.log(bookings[i], "boking");
+  //         } else {
+  //           thisOwnerBookings.push(0)
+  //         }
+  //       }
+  //     }
+  //     console.log(thisOwnerBookings);
+  //   });
+  // },
 
   forgotPasswordUpdateNewPassword: (email, password) => {
     return new Promise(async (resolve, reject) => {
@@ -477,20 +477,21 @@ module.exports = {
 
   changeToNowShowing: (id) => {
     return new Promise(async (resolve, reject) => {
-      var thisMovieData =await db.get().collection(collection.UPCOMING_MOVIE_COLLECTION).findOne({ _id: objectId(id) })
+      var thisMovieData = await db.get().collection(collection.UPCOMING_MOVIE_COLLECTION).findOne({ _id: objectId(id) })
       db.get().collection(collection.MOVIE_COLLECTION).insertOne(thisMovieData).then((firstresponse) => {
-        console.log(thisMovieData,"thismoviedata");
+        console.log(thisMovieData, "thismoviedata");
         db.get().collection(collection.UPCOMING_MOVIE_COLLECTION).removeOne({ _id: objectId(id) }).then((Response) => {
           resolve(Response)
         })
       })
     })
   },
-  getAnalytics:()=>{
-    return new Promise((resolve,reject)=>{
-      var Movies=db.get().collection(collection.MOVIE_COLLECTION).find().toArray()
-      var Upcoming=db.get().collection(collection.UPCOMING_MOVIE_COLLECTION).find().toArray()
-      var myBookings=db.get().collection()
+  getAnalytics: (id) => {
+    return new Promise(async (resolve, reject) => {
+      var Movies = await db.get().collection(collection.MOVIE_COLLECTION).find().toArray()
+      var Upcoming = await db.get().collection(collection.UPCOMING_MOVIE_COLLECTION).find().toArray()
+      var myBookings = await db.get().collection(collection.BOOKING_COLLECTION).find({ ownerId: id }).toArray()
+      resolve({ Movies, Upcoming, myBookings })
 
     })
   }
