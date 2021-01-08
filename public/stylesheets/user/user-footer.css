@@ -7,8 +7,7 @@ body{
 
 .footer {
   position: absolute;
-  bottom: 0;
-  margin-top: 200px;
+  bottom: -400px;
   z-index: 1;
   color: #fde2e2;
   background: #3d4158;

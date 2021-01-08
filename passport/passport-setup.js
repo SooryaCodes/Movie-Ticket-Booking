@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -15,6 +16,7 @@ var db = require("../config/connection");
 var collection = require("../config/collection");
 const flash = require("express-flash");
 const objectId = require("mongodb").ObjectID;
+const userHelpers = require("../helpers/user-helpers");
 
 module.exports.initializePassport = (passport) => {
   //google
@@ -88,18 +90,32 @@ module.exports.initializePassport = (passport) => {
           .findOne({ Email: profile.email })
           .then((user) => {
             if (user) {
-              return done(null, user);
+              db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(user._id) }, {
+                $set: {
+                  signup: false
+                }
+              }).then((anotherResponseResponse) => {
+                db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(user._id) }).then((originalUser) => {
+console.log(originalUser);
+                  return done(null, originalUser);
+                })
+              })
             } else {
               var userData = {};
               userData.Name = profile.displayName;
               userData.Email = profile.email;
               userData.role = "user";
+              userData.signup=true  
 
               db.get()
                 .collection(collection.USER_COLLECTION)
                 .insertOne(userData)
                 .then((response) => {
-                  return done(null, response.ops[0]);
+                  let token = jwt.sign(response.ops[0], process.env.USER_SECRET);
+                  response.ops[0].My_Referal = token
+                  userHelpers.insertToken(response.ops[0]._id, token).then((anotherResponse) => {
+                    return done(null, response.ops[0]);
+                  })
                 });
             }
           });

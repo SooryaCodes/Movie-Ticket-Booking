@@ -359,7 +359,6 @@ module.exports = {
     return new Promise((resolve, reject) => {
 
       db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(data._id) }).then((response) => {
-        console.log(response, 'respo infdk ');
         if (response.Latitude) {
           console.log('lattude und');
           resolve({ LocationExist: true })
@@ -412,6 +411,37 @@ module.exports = {
       })
     })
   },
+  insertToken: (id, referal) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(id) }, {
+        $set: {
+          My_Referal: referal
+        }
+      }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
+  insertRewardThisUser: (id, referal) => {
+    return new Promise((reolve, reject) => {
+      db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(id) }, {
+        $push: {
+          Wallet: 50
+        }
+      }).then((response) => {
+        db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(id) }, {
+
+          $set: {
+            Referal_Used: referal
+          }
+        }).then((anotherresponse) => {
+
+          resolve(response)
+
+        })
+      })
+    })
+  }
 
 };
 

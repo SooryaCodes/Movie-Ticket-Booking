@@ -1,11 +1,13 @@
 var express = require("express");
 var router = express.Router();
 require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
 var ErrMessage = {};
 const userHelpers = require("../helpers/user-helpers");
 var passport = require("passport");
 const { response } = require("express");
+const { cookie } = require("request");
 
 /* GET users listing. */
 var client = require("twilio")(
@@ -22,7 +24,6 @@ const verifyLogin = (req, res, next) => {
   }
 };
 router.get("/", verifyLogin, function (req, res, next) {
-  console.log(req.user, "hey");
 
   userHelpers.checkLocation(req.user).then((response) => {
 
@@ -32,6 +33,26 @@ router.get("/", verifyLogin, function (req, res, next) {
     } else {
       req.session.Location = false
     }
+
+
+    if (req.user.signup === true) {
+      if (req.cookies.ref) {
+        var token = req.cookies.ref
+        jwt.verify(token, process.env.USER_SECRET, async (err, decoded) => {
+          if (err) {
+            console.log("I don't know :)");
+
+          } else {
+            //insert reward to this user
+            var insert = await userHelpers.insertRewardThisUser(req.user._id, token)
+
+
+          }
+        });
+      }
+    }
+
+    res.clearCookie('ref')
     userHelpers.getMovies().then((Movie) => {
       var Horror = Movie.filter((value) => value.Category === "Horror");
       var Action = Movie.filter((value) => value.Category === "Action");
@@ -59,13 +80,16 @@ router.get("/", verifyLogin, function (req, res, next) {
 
 
 router.get("/login", (req, res) => {
+  if (req.query.ref) {
+    res.cookie("ref", req.query.ref, { path: '/' })
+  }
   if (req.isAuthenticated() && req.user.role === "user") {
     console.log(req.user);
     res.redirect("/");
   } else if (req.session.loggedIn) {
     res.redirect("/");
   } else {
-    res.render("user/login",);
+    res.render("user/login");
   }
 });
 router.post("/login", (req, res) => {
@@ -137,12 +161,18 @@ router.post("/verify-otp", (req, res) => {
 });
 
 router.post("/signup/:id", (req, res) => {
-  userHelpers.signup(req.params.id, req.body).then((response) => {
-    req.session.loggedIn = true;
-    const passport = { user: response };
 
-    req.session.passport = passport;
-    res.redirect("/");
+  userHelpers.signup(req.params.id, req.body).then((response) => {
+    response.signup = true
+    let token = jwt.sign(response, process.env.USER_SECRET);
+    response.My_Referal = token
+    userHelpers.insertToken(response._id, token).then((anotherResponse) => {
+      req.session.loggedIn = true;
+      const passport = { user: response };
+      req.session.passport = passport;
+      res.redirect("/");
+    })
+
   });
 });
 
@@ -187,6 +217,7 @@ router.get("/logout", (req, res) => {
   req.logout();
   res.redirect("/login");
 });
+
 
 router.get("/movie/:id", verifyLogin, (req, res) => {
   userHelpers.getMovieDetails(req.params.id).then((Movie) => {
@@ -405,15 +436,17 @@ router.post('/update-mobile', (req, res) => {
   })
 })
 router.post('/update-email', (req, res) => {
-  console.log(req.body,"hey");
+  console.log(req.body, "hey");
   if (req.body.Email === req.user.Email) {
     userHelpers.updateEmail(req.body.Email, req.user._id).then((response) => {
       res.json({ status: true })
     })
   } else {
     userHelpers.updateEmail(req.body.Email, req.user._id).then((anotherResponse) => {
-      res.json({Logout:true})
+      res.json({ Logout: true })
     })
   }
 })
+
+
 module.exports = router;
