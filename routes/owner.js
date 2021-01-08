@@ -55,7 +55,15 @@ const verifyLoginGoogle = (req, res, next) => {
 /* GET users listing. */
 router.get("/", verifyLogin, function (req, res, next) {
   adminHelper.getOwnerDetails().then((details) => {
-    res.render("owner/home", { owner: true, ownerDetails: req.user, ownerId: req.user._id });
+    adminHelper.getTodayShows().then((response) => {
+      var ZeroShows
+      if(response.length===0){
+        ZeroShows=true
+      }else{
+        ZeroShows=false
+      }
+      res.render("owner/home", { owner: true, ownerDetails: req.user, ownerId: req.user._id, Shows:response ,ZeroShows});
+    })
   });
 });
 

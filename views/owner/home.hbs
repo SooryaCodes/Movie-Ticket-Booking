@@ -114,19 +114,30 @@
                 Action
             </th>
         </tr>
+
+        {{#if ZeroShows}}
+        <tr>
+             <td class="empty" style="width: 100%; ">
+  <div id="empty" style="display: flex; align-items: center;">
+    <h1 style="font-size: 25px !important; font-weight: 600; color: rgb(116, 116, 116); margin-right: 20px;">Oops, There is No Show Today</h1>
+  </div>
+</td>
+        </tr>
+        {{else}}
+        {{#each Shows}}
         <tr>
             <td id="row">
-                1
+                
             </td>
             <td>
-                Joker
+                {{this.MovieName}}
                 <!-- <img src="/images/owner/profile/owner{{this._id}}.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" alt=""> {{this.Name}} -->
             </td>
             <td>
-                20-10-2020
+               {{this.Date}}
             </td>
             <td>
-                10:10 AM
+                {{this.Time}}
             </td>
             <td>
                 <a href="/admin/edit-owner/{{this._id}}">
@@ -137,6 +148,8 @@
                 </a>
             </td>
         </tr>
+        {{/each}}
+        {{/if}}
     </table>
 </div>
 

@@ -202,9 +202,18 @@
         success: (response) => {
           console.log(response)
           var boxes = document.querySelectorAll('.box-data')
+          var incomeArray = []
 
-          console.log(response.myBookings)
-          boxes[0].innerHTML = `₹ `
+          for (var i = 0; i < response.myBookings.length; i++) {
+            incomeArray[i] = response.myBookings[i].Amount
+          }
+
+          console.log(incomeArray)
+
+          var income = incomeArray.reduce((a, b) => a + b, 0)
+
+          console.log(income)
+          boxes[0].innerHTML = `₹ ${income} `
           boxes[1].innerHTML = `${response.Movies.length} `
           boxes[2].innerHTML = `${response.Upcoming.length} `
           boxes[3].innerHTML = `${response.myBookings.length} `

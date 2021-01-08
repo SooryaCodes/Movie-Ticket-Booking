@@ -470,7 +470,7 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       var Movies = await db.get().collection(collection.MOVIE_COLLECTION).find().toArray()
       var Upcoming = await db.get().collection(collection.UPCOMING_MOVIE_COLLECTION).find().toArray()
-      var myBookings = await db.get().collection(collection.BOOKING_COLLECTION).find({ ownerId: id }).toArray()
+      var myBookings = await db.get().collection(collection.BOOKING_COLLECTION).find({ ownerId: ""+id }).toArray()
       var Screen = await db.get().collection(collection.SCREEN_COLLECTION).find({ ownerId: objectId(id) }).toArray()
       resolve({ Movies, Upcoming, myBookings })
 
