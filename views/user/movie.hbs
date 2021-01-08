@@ -287,7 +287,7 @@
                     </div>
                     <div class="rating-bottom-section">
                         {{#if this.one}}
-                        <i class="fa fa-star start" aria-hidden="true"></i>
+                        <i class="fa fa-star star" aria-hidden="true"></i>
                         <i class="fa fa-star " aria-hidden="true"></i>
                         <i class="fa fa-star " aria-hidden="true"></i>
                         <i class="fa fa-star " aria-hidden="true"></i>
@@ -497,8 +497,16 @@
                     loader.classList.remove('active')
                     alert('Sorry , No Theaters Available!  :(')
                 } else {
-                    Theater.forEach(Details => {
-                        console.log(Details)
+                    var TheaterDetails = []
+                    var sample = {};
+                    Theater.forEach(el => {
+                        if (!sample[JSON.stringify(el)]) {
+                            sample[JSON.stringify(el)] = true;
+                            TheaterDetails.push(el);
+                        }
+                    });
+                    console.log(TheaterDetails, 'TheaterDetails')
+                    TheaterDetails.forEach(Details => {
                         sliderWrapperTheater.innerHTML += `
                     <div class="swiper-slide booking" >
 <input type="radio" name="Theater" onchange="" value="${Details._id}" id="date">
@@ -567,9 +575,18 @@
                 url: `/getScreenDetails/${movieId}/${checkedTheater.value}`,
                 method: 'post',
                 success: (screenDetails) => {
-                    console.log(screenDetails)
-                    screenDetails.forEach(Details => {
-                        console.log(Details)
+
+                    var ScreenData = []
+                    var sample = {};
+                    var newArray = [];
+                    screenDetails.forEach(el => {
+                        if (!sample[JSON.stringify(el)]) {
+                            sample[JSON.stringify(el)] = true;
+                            ScreenData.push(el);
+                        }
+                    });
+                    ScreenData.forEach(Details => {
+
                         sliderWrapperScreen.innerHTML += `
                     <div class="swiper-slide booking" >
 <input type="radio" name="Screen" onchange="" value="${Details._id}" id="date">

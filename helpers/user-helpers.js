@@ -480,7 +480,15 @@ module.exports = {
         }
       })
     })
+  },
+  getBookings:(id)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collection.BOOKING_COLLECTION).find({userId:objectId(id)}).toArray().then((Response)=>{
+        resolve(Response)
+      })
+    })
   }
-
 };
+
+
 

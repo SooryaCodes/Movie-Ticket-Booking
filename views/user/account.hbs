@@ -97,6 +97,45 @@
         </div>
     </div>
 </div>
+
+
+<!--table -->
+<div class="owner-table">
+
+    <table>
+
+        <tr>
+
+            <th>
+                Movie
+            </th>
+
+            <th>
+                Theater
+            </th>
+            <th>
+                Screen
+            </th>
+            <th>
+                Show
+
+            </th>
+            <th>
+                Seats
+            </th>
+            <th>
+                Payment
+            </th>
+        </tr>
+        <div class="seat-pop-wrapper">
+            <div class="seat-pop">
+                <p>A-2 , A-2 , A-2 , A-2 , A-2 , Vip-2 , A-2 , A-2 , A-2 , A-2 , A-2 , Vip-2, A-2 , A-2 , A-2 , A-2 , A-2 , Vip-2</p>
+            </div>
+        </div>
+
+
+    </table>
+</div>
 <script>
 
 
@@ -263,6 +302,14 @@
 
 
 
-
+window.addEventListener('load',()=>{
+    $.ajax({
+        url:'/getBookings',
+        method:'post',
+        success:(response)=>{
+            console.log(response)
+        }
+    })
+})
 
 </script>

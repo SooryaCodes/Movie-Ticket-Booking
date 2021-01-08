@@ -231,7 +231,6 @@ router.get("/movie/:id", verifyLogin, (req, res) => {
             Ratings[i].five = true;
           }
         }
-
         var AverageRatingCalculation =
           RatingAverage.reduce((a, b) => a + b, 0) / RatingAverage.length;
         console.log(AverageRatingCalculation);
@@ -459,5 +458,11 @@ router.post("/update-email", (req, res) => {
       });
   }
 });
+
+router.post('/getBookings',(req,res)=>{
+  userHelpers.getBookings(req.user._id).then((Response)=>{
+    res.json(Response)
+  })
+})
 
 module.exports = router;

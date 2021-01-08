@@ -82,8 +82,8 @@ button:focus {
   transition: 0.5s ease-in-out;
   width: 220px;
   height: 270px;
-  background: #2a2f36;
-  box-shadow: 0px 0px 20px #1d2127;
+  background: #303449;
+  box-shadow: 0px 0px 20px #2f364b;
   visibility: hidden;
   opacity: 0;
   display: flex;
@@ -91,7 +91,7 @@ button:focus {
   z-index: -10000000000;
 }
 .nothing {
-  background: #2a2f36;
+  background: #303449;
 
   position: absolute;
   top: -10px;
