@@ -552,4 +552,60 @@ module.exports = {
       resolve({ January, February, March, April, May, June, July, August, September, October, November, December });
     })
   },
+
+
+  addLocation: (id, data) => {
+    return new Promise((resolve, reject) => {
+
+      db.get().collection(collection.OWNER_COLLECTION).updateOne({ _id: objectId(id) }, {
+        $set: {
+          Latitude: data.Latitude,
+          Longitude: data.Longitude
+        }
+      }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
+  checkLocation: (data) => {
+    return new Promise((resolve, reject) => {
+
+      db.get().collection(collection.OWNER_COLLECTION).findOne({ _id: objectId(data._id) }).then((response) => {
+        if (response.Latitude) {
+          console.log('lattude und');
+          resolve({ LocationExist: true })
+        } else {
+          console.log('no laitude');
+          resolve({ LocationExist: false })
+        }
+      })
+    })
+  },
+  getTodayShows: () => {
+    return new Promise(async (resolve, reject) => {
+      db.get().collection(collection.SHOW_COLLECTION).find().toArray().then(async (Shows) => {
+        var TodayDate = new Date().toLocaleDateString()
+        var DateToday = TodayDate.split('/')
+        var DateOfToday = DateToday[0] + '-' + DateToday[1] + '-' + DateToday[2]
+        var TodayShows = await db.get().collection(collection.SHOW_COLLECTION).find({ Date: DateOfToday }).toArray()
+        //delete shows 
+        var todayDateForDelete = new Date().toLocaleDateString()
+        for (var i = 0; i < Shows.length; i++) {
+          Shows[i].dateForDelete = new Date(Shows[i].Date).toLocaleDateString()
+        }
+        var showsForDelete = []
+        for (var i = 0; i < Shows.length; i++) {
+          if (Shows[i].dateForDelete < todayDateForDelete) {
+            showsForDelete[i] = Shows[i]
+          }
+        }
+        var showsForDeleteEmptyRemoved = showsForDelete.filter(el => el != null)
+        console.log(showsForDeleteEmptyRemoved);
+        for (var i = 0; i < showsForDeleteEmptyRemoved.length; i++) {
+          var deleteShow = await db.get().collection(collection.SHOW_COLLECTION).removeOne({ _id: objectId(showsForDeleteEmptyRemoved[i]._id) })
+        }
+        resolve(TodayShows)
+      })
+    })
+  },
 }

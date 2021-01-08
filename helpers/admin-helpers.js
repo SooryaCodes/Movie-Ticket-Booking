@@ -274,38 +274,6 @@ module.exports = {
     })
   },
 
-  getTodayShows: () => {
-    return new Promise(async (resolve, reject) => {
-      db.get().collection(collection.SHOW_COLLECTION).find().toArray().then(async (Shows) => {
-        var TodayDate = new Date().toLocaleDateString()
-        var DateToday = TodayDate.split('/')
-        var DateOfToday = DateToday[0] + '-' + DateToday[1] + '-' + DateToday[2]
-
-        var TodayShows = await db.get().collection(collection.SHOW_COLLECTION).find({ Date: DateOfToday }).toArray()
-
-        //delete shows 
-
-        var todayDateForDelete = new Date().toLocaleDateString()
-        for (var i = 0; i < Shows.length; i++) {
-          Shows[i].dateForDelete = new Date(Shows[i].Date).toLocaleDateString()
-        }
-        var showsForDelete = []
-        for (var i = 0; i < Shows.length; i++) {
-          if (Shows[i].dateForDelete < todayDateForDelete) {
-            showsForDelete[i] = Shows[i]
-          }
-        }
 
 
-        var showsForDeleteEmptyRemoved = showsForDelete.filter(el => el != null)
-        console.log(showsForDeleteEmptyRemoved);
-        for (var i = 0; i < showsForDeleteEmptyRemoved.length; i++) {
-          var deleteShow = await db.get().collection(collection.SHOW_COLLECTION).removeOne({ _id: objectId(showsForDeleteEmptyRemoved[i]._id) })
-        }
-
-        resolve(TodayShows)
-
-      })
-    })
-  }
 };

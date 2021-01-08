@@ -1,3 +1,13 @@
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css" rel="stylesheet" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+
+
+
+<link rel="stylesheet"
+    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+    type="text/css" />
+
 <link rel="stylesheet" href="/stylesheets/owner/home.css" />
 
 <div class="over-view">
@@ -154,12 +164,130 @@
 </div>
 
 
+{{!-- Location --}}
 
+<input type="text" name="Latitude" id="Latitude" class="signupInput" hidden>
+<input type="text" name="Longitude" id="Longitude" class="signupInput" hidden>
+<div class="location-wrapper">
+    <div class="map-wrapper">
 
+        <div id="map">
+
+        </div>
+
+        <div class="map-btn">
+            <button class="mask waves-effect waves-light rgba-white-slight" onclick="cancelLocation()"
+                hidden>Cancel</button>
+            <button class="mask waves-effect waves-light rgba-white-slight ml-5" onclick="addLocation()">Submit</button>
+        </div>
+    </div>
+
+</div>
 
 
 <!-- ----tables--- -->
 
+
+
+<script>
+    var locationWrapper = document.querySelector('.location-wrapper')
+    const displayLocation = () => {
+        locationWrapper.classList.toggle('active')
+    }
+
+
+    const cancelLocation = () => {
+        locationWrapper.classList.remove('active')
+    }
+
+
+    mapboxgl.accessToken = 'pk.eyJ1Ijoic29vcnlhLWtyaXoiLCJhIjoiY2tqYTcydDN1NWc1bTJ5bjRuYXF3eHdpayJ9.mo48bziP80gkbrXL-1kETw';
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-74.5, 40], // starting position
+        zoom: 9 // starting zoom
+    });
+
+    map.on('click', function (e) {
+
+
+        var svgMarker = document.querySelector('svg')
+        console.log(svgMarker)
+        if (svgMarker) {
+            svgMarker.remove()
+            var marker = new mapboxgl.Marker()
+                .setLngLat([e.lngLat.lng, e.lngLat.lat])
+                .addTo(map);
+        } else {
+            var marker = new mapboxgl.Marker()
+                .setLngLat([e.lngLat.lng, e.lngLat.lat])
+                .addTo(map)
+        }
+
+        var latitude = document.getElementById('Latitude').value = e.lngLat.lat
+        var longitude = document.getElementById('Longitude').value = e.lngLat.lng
+    });
+
+    map.addControl(
+        new MapboxGeocoder({
+
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl,
+            marker: false
+        })
+
+
+    );
+
+
+
+
+
+
+
+
+
+    //get inputs value on submit 
+
+
+    const addLocation = () => {
+
+
+
+        var latitude = document.getElementById('Latitude').value
+        var longitude = document.getElementById('Longitude').value
+
+
+
+        var Details = {
+
+            Latitude: latitude,
+            Longitude: longitude
+        }
+
+
+        $.ajax({
+            url: '/owner/getLocation',
+            method: 'post',
+            data: Details,
+            success: () => {
+                location.href = '/owner'
+            }
+        })
+    }
+
+    var Location = '{{Location}}'
+console.log(Location,'Location')
+
+    if (Location === 'false') {
+        displayLocation()
+    } else if (Location === 'true') {
+        cancelLocation()
+    }
+
+
+</script>
 <script>
    
     const getLineChart = () => {

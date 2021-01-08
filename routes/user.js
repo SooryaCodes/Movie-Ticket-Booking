@@ -66,7 +66,6 @@ router.get("/", verifyLogin, function (req, res, next) {
         Drama,
         Romance,
         userDetails: req.user,
-        noLocation: req.session.noLocation,
         Location: req.session.Location,
         Rewarded: req.session.Reward
       });

@@ -54,17 +54,23 @@ const verifyLoginGoogle = (req, res, next) => {
 
 /* GET users listing. */
 router.get("/", verifyLogin, function (req, res, next) {
-  adminHelper.getOwnerDetails().then((details) => {
-    adminHelper.getTodayShows().then((response) => {
-      var ZeroShows
-      if(response.length===0){
-        ZeroShows=true
-      }else{
-        ZeroShows=false
+  ownerHelper.getTodayShows().then((response) => {
+    ownerHelper.checkLocation(req.user).then((LocationResponse) => {
+      if (LocationResponse.LocationExist) {
+        console.log("hey");
+        req.session.Location = true;
+      } else {
+        req.session.Location = false;
       }
-      res.render("owner/home", { owner: true, ownerDetails: req.user, ownerId: req.user._id, Shows:response ,ZeroShows});
+      var ZeroShows
+      if (response.length === 0) {
+        ZeroShows = true
+      } else {
+        ZeroShows = false
+      }
+      res.render("owner/home", { owner: true, ownerDetails: req.user, ownerId: req.user._id, Shows: response, ZeroShows, Location: req.session.Location, });
     })
-  });
+  })
 });
 
 router.get("/login", (req, res) => {
@@ -524,4 +530,13 @@ router.post('/getLineChartData', (req, res) => {
     res.json({ January, February, March, April, May, June, July, August, September, October, November, December })
   })
 })
+
+
+
+router.post("/getLocation", (req, res) => {
+  ownerHelper.addLocation(req.user._id, req.body).then((response) => {
+    res.json({ status: true });
+    console.log(response);
+  });
+});
 module.exports = router;
