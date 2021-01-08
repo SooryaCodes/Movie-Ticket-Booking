@@ -334,17 +334,17 @@ router.get("/seat-select/:id/:ownerId", verifyLogin, (req, res) => {
     var bookedSeats = data.show.Seats;
     console.log(bookedSeats);
 
-    var DetailsUser = await userHelpers.getWallet(req.user._id)
-    var TotalWallet
-    if (DetailsUser.status === false) {
-      console.log('nothing');
-    } else {
-      console.log(DetailsUser);
-      TotalWallet = DetailsUser.Wallet.reduce((a, b) => {
-        a + b, 0
-      })
-    }
-    console.log(TotalWallet);
+    // var DetailsUser = await userHelpers.getWallet(req.user._id)
+    // var TotalWallet
+    // if (DetailsUser.status === false) {
+    //   console.log('nothing');
+    // } else {
+    //   console.log(DetailsUser);
+    //   TotalWallet = DetailsUser.Wallet.reduce((a, b) => {
+    //     a + b, 0
+    //   })
+    // }
+    // console.log(TotalWallet);
 
     console.log(screen, "scrreeen cchekibb");
     res.render("user/screen", {
@@ -358,8 +358,8 @@ router.get("/seat-select/:id/:ownerId", verifyLogin, (req, res) => {
       bookedSeats,
       user: req.user.Name,
       ownerId: req.params.ownerId,
-      TotalWallet,
-      DetailsUser
+      // TotalWallet,
+      // DetailsUser
     });
   });
 });

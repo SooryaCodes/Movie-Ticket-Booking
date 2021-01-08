@@ -69,7 +69,7 @@ router.get("/", verifyLogin, function (req, res, next) {
         res.render("admin/homeOwnerdetailsDummy", {
           admin: true,
           ownersLength,
-          adminDetails: req.session.admin,
+          adminDetails: req.user,
           owner: details,
         });
       } else {
@@ -116,6 +116,7 @@ router.get('/google/callback', passport.authenticate('admin-google', { failureRe
 
 
 
+
 router.post(
   "/login",
   passport.authenticate("admin-local", {
@@ -155,7 +156,7 @@ router.get("/theater-details", verifyLogin, (req, res) => {
 
 router.get("/user-details", verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
-    console.log(req.session.admin);
+    console.log(req.user);
     res.render("admin/user-details", {
       admin: true,
       ownersLength,
@@ -171,7 +172,7 @@ router.get("/update-password", verifyLogin, (req, res) => {
     res.render("admin/update-password", {
       admin: true,
       ownersLength,
-      adminDetails: req.session.admin,
+      adminDetails: req.user,
       passErr: req.session.passErr,
     });
   });
@@ -183,7 +184,7 @@ router.post("/update-password", verifyLogin, (req, res) => {
   adminHelper.updatePassword(req.body).then((response) => {
     if (response.status) {
       adminHelper.getAdminDetails().then((data) => {
-        req.session.admin.adminPassword = data.adminPassword;
+        req.user.adminPassword = data.adminPassword;
         res.redirect("/admin");
       });
     } else {
@@ -200,7 +201,7 @@ router.get("/edit-profile", verifyLogin, (req, res) => {
     res.render("admin/edit-profile", {
       admin: true,
       ownersLength,
-      adminDetails: req.session.admin,
+      adminDetails: req.user,
     });
   });
 });
@@ -231,14 +232,14 @@ router.get("/owner-details", verifyLogin, (req, res) => {
       res.render("admin/homeOwnerdetailsDummy", {
         admin: true,
         ownersLength,
-        adminDetails: req.session.admin,
+        adminDetails: req.user,
         owner: details,
       });
     } else {
       res.render("admin/home", {
         admin: true,
         ownersLength,
-        adminDetails: req.session.admin,
+        adminDetails: req.user,
         ownerDetails: details,
       });
     }
@@ -252,7 +253,7 @@ router.get("/add-owner", verifyLogin, (req, res) => {
   res.render("admin/add-owner", {
     admin: true,
     ownersLength,
-    adminDetails: req.session.admin,
+    adminDetails: req.user,
   });
 });
 
@@ -285,7 +286,7 @@ router.post("/add-owner", async (req, res) => {
       res.render("admin/owner-image-upload", {
         id: response._id,
         admin: true,
-        adminDetails: req.session.admin,
+        adminDetails: req.user,
       });
     });
   });
@@ -302,7 +303,7 @@ router.get("/edit-owner/:id", verifyLogin, (req, res) => {
       admin: true,
       ownersLength,
       data,
-      adminDetails: req.session.admin,
+      adminDetails: req.user,
     });
   });
 });
@@ -340,7 +341,7 @@ router.post("/edit-owner/:id", verifyLogin, (req, res) => {
     .then((data) => {
       res.render("admin/edit-owner-image-upload", {
         id,
-        adminDetails: req.session.admin,
+        adminDetails: req.user,
         admin: true,
       });
     });
@@ -393,15 +394,7 @@ router.post("/owner-image-upload/:id", verifyLogin, (req, res) => {
   image.mv("./public/images/owner/profile/owner" + id + ".jpg");
   console.log(req.body);
 });
-//bookings
 
-router.get("/bookings", verifyLogin, (req, res) => {
-  res.render("admin/booking", {
-    admin: true,
-    ownersLength,
-    adminDetails: req.session.admin,
-  });
-});
 
 //movies
 
@@ -409,15 +402,35 @@ router.get("/movies", verifyLogin, (req, res) => {
   res.render("admin/movie", {
     admin: true,
     ownersLength,
-    adminDetails: req.session.admin,
+    adminDetails: req.user,
   });
 });
 
-// router.post('/search',(req,res)=>{
-//   adminHelper.getSearch(req.body).then((response)=>{
-//     console.log(response);
-//     console.log(response);
-//     res.render('admin/home',{ admin: true ,ownersLength, adminDetails: req.session.admin ,ownerDetails:response})
-//   })
-// })
+router.get('/get-bar-chart-data', (req, res) => {
+  adminHelper.getBarChartData(req.user._id).then((response) => {
+    // console.log(response);
+    res.json(response)
+  })
+})
+
+
+router.post('/getLineChartData', (req, res) => {
+  adminHelper.getLineChartData(req.user._id).then((response) => {
+    var January = response.January
+    var February = response.February
+    var March = response.March
+    var April = response.April
+    var May = response.May
+    var June = response.June
+    var July = response.July
+    var August = response.August
+    var September = response.September
+    var October = response.October
+    var November = response.November
+    var December = response.December
+    res.json({ January, February, March, April, May, June, July, August, September, October, November, December })
+  })
+})
+
+
 module.exports = router;

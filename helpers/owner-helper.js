@@ -435,10 +435,10 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       var Movies = await db.get().collection(collection.MOVIE_COLLECTION).find().toArray()
       var Upcomings = await db.get().collection(collection.UPCOMING_MOVIE_COLLECTION).find().toArray()
-      var MyBookings = await db.get().collection(collection.BOOKING_COLLECTION).find({ ownerId: id }).toArray()
+      var MyBookings = await db.get().collection(collection.BOOKING_COLLECTION).find({ ownerId: '' + id }).toArray()
       var Shows = await db.get().collection(collection.SHOW_COLLECTION).find({ ownerId: objectId(id) }).toArray()
       var Screens = await db.get().collection(collection.SCREEN_COLLECTION).find({ OwnerId: objectId(id) }).toArray()
-      resolve({ Movies,Upcomings,MyBookings,Shows,Screens})
+      resolve({ Movies, Upcomings, MyBookings, Shows, Screens })
     });
   },
 
@@ -475,5 +475,81 @@ module.exports = {
       resolve({ Movies, Upcoming, myBookings })
 
     })
-  }
-};
+  },
+
+
+  getLineChartData: (id) => {
+    return new Promise(async (resolve, reject) => {
+
+      var myBookings = await db.get().collection(collection.BOOKING_COLLECTION).find({ ownerId: '' + id }).toArray()
+      var JanuaryArray = []
+      var FebruaryArray = []
+      var MarchArray = []
+      var AprilArray = []
+      var MayArray = []
+      var JuneArray = []
+      var JulyArray = []
+      var AugustArray = []
+      var SeptemberArray = []
+      var OctoberArray = []
+      var NovemberArray = []
+      var DecemberArray = []
+      for (var i = 0; i < myBookings.length; i++) {
+        myBookings[i].MonthNum = myBookings[i].Date.getMonth() + 1
+      }
+      var January = 0
+      var February = 0
+      var March = 0
+      var April = 0
+      var May = 0
+      var June = 0
+      var July = 0
+      var August = 0
+      var September = 0
+      var October = 0
+      var November = 0
+      var December = 0
+      for (var i = 0; i < myBookings.length; i++) {
+        if (myBookings[i].MonthNum === 1) {
+          JanuaryArray.push(myBookings[i].Amount)
+          January = JanuaryArray.reduce((a, b) => a + b, 0)
+        } else if (myBookings[i].Amount.MonthNum === 2) {
+          FebruaryArray.push(myBookings[i].Amount)
+          February = FebruaryArray.reduce((a, b) => a + b, 0)
+        } else if (myBookings[i].Amount.MonthNum === 3) {
+          MarchArray.push(myBookings[i].Amount)
+          March = MarchArray.reduce((a, b) => a + b, 0)
+        } else if (myBookings[i].Amount.MonthNum === 4) {
+          AprilArray.push(myBookings[i].Amount)
+          April = AprilArray.reduce((a, b) => a + b, 0)
+        } else if (myBookings[i].Amount.MonthNum === 5) {
+          MayArray.push(myBookings[i].Amount)
+          May = MayArray.reduce((a, b) => a + b, 0)
+        } else if (myBookings[i].Amount.MonthNum === 6) {
+          JuneArray.push(myBookings[i].Amount)
+          June = JuneArray.reduce((a, b) => a + b, 0)
+        } else if (myBookings[i].Amount.MonthNum === 7) {
+          JulyArray.push(myBookings[i].Amount)
+          July = JulyArray.reduce((a, b) => a + b, 0)
+        } else if (myBookings[i].Amount.MonthNum === 8) {
+          AugustArray.push(myBookings[i].Amount)
+          August = AugustArray.reduce((a, b) => a + b, 0)
+        } else if (myBookings[i].Amount.MonthNum === 9) {
+          SeptemberArray.push(myBookings[i].Amount)
+          September = SeptemberArray.reduce((a, b) => a + b, 0)
+        } else if (myBookings[i].Amount.MonthNum === 10) {
+          OctoberArray.push(myBookings[i].Amount)
+          October = OctoberArray.reduce((a, b) => a + b, 0)
+        } else if (myBookings[i].Amount.MonthNum === 11) {
+          NovemberArray.push(myBookings[i].Amount)
+          November = NovemberArray.reduce((a, b) => a + b, 0)
+        } else if (myBookings[i].Amount.MonthNum === 12) {
+          DecemberArray.push(myBookings[i].Amount)
+          December = DecemberArray.reduce((a, b) => a + b, 0)
+        }
+      }
+      console.log({ January, February, March, April, May, June, July, August, September, October, November, December });
+      resolve({ January, February, March, April, May, June, July, August, September, October, November, December });
+    })
+  },
+}

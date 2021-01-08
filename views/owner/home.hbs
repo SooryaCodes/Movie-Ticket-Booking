@@ -146,59 +146,88 @@
 
 
 <!-- ----tables--- -->
+
 <script>
-    $(document).ready(function () {
-        $('#dtBasicExample').DataTable();
-        $('.dataTables_length').addClass('bs-select');
-    });
-</script>
-<script>
-    // Line
-    var ctxL = document.getElementById("lineChart").getContext('2d');
-    var gradientFill = ctxL.createLinearGradient(0, 0, 0, 290);
-    gradientFill.addColorStop(0, "rgba(255,108,70,100)");
-    gradientFill.addColorStop(1, "rgba(255,124,88,0.4)");
-    var myLineChart = new Chart(ctxL, {
-        type: 'line',
-        data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [
-                {
-                    label: "My First dataset",
-                    data: [0, 65, 45, 65, 35, 65, 0],
-                    backgroundColor: gradientFill,
+   
+    const getLineChart = () => {
+        $.ajax({
+            url: '/owner/getLineChartData',
+            method: 'post',
+            success: (response) => {
+                console.log(response, "response")
+                var January = response.January
+                var February = response.February
+                var March = response.March
+                var April = response.April
+                var May = response.May
+                var June = response.June
+                var July = response.July
+                var August = response.August
+                var September = response.September
+                var October = response.October
+                var November = response.November
+                var December = response.December
 
-                    borderWidth: 2,
-                    pointBorderColor: "#fff",
-                    pointBackgroundColor: "rgba(173, 53, 186, 0.1)",
-                }
-            ]
-        },
-        "options": {
-            legend: {
-                display: false,
+                lineChart(January, February, March, April, May, June, July, August, September, October, November, December)
+            }
+        })
+    }
+
+
+
+    window.addEventListener('load', () => {
+        getLineChart()
+    })
+
+ function lineChart(January, February, March, April, May, June, July, August, September, October, November, December) {
+
+        // Line
+        var ctxL = document.getElementById("lineChart").getContext('2d');
+        var gradientFill = ctxL.createLinearGradient(0, 0, 0, 290);
+        gradientFill.addColorStop(0, "rgba(255,108,70,100)");
+        gradientFill.addColorStop(1, "rgba(255,124,88,0.4)");
+
+        var myLineChart = new Chart(ctxL, {
+            type: 'line',
+            data: {
+                labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                datasets: [
+                    {
+                        label: "My First dataset",
+                        data: [January, February, March, April, May, June, July, August, September, October, November, December],
+                        backgroundColor: gradientFill,
+
+                        borderWidth: 2,
+                        pointBorderColor: "#fff",
+                        pointBackgroundColor: "rgba(173, 53, 186, 0.1)",
+                    }
+                ]
             },
-            "scales": {
-                "xAxes": [{
-                    "ticks": {
-                        "beginAtZero": true
-                    },
-                    gridLines: {
-                        display: false,
-                    },
-                }],
-                "yAxes": [{
-                    gridLines: {
-                        display: false,
-                    },
-                }]
-            },
-            responsive: true
+            "options": {
+                legend: {
+                    display: false,
+                },
+                "scales": {
+                    "xAxes": [{
+                        "ticks": {
+                            "beginAtZero": true
+                        },
+                        gridLines: {
+                            display: false,
+                        },
+                    }],
+                    "yAxes": [{
+                        gridLines: {
+                            display: false,
+                        },
+                    }]
+                },
+                responsive: true
 
-        }
-    });
+            }
+        });
 
-
+    }
 
 </script>
 
@@ -208,69 +237,87 @@
 
 
     // bar chart script
-    var bar_chart_data={}
+    var bar_chart_data = {}
     const getBarChartData = () => {
         $.ajax({
             url: '/owner/get-bar-chart-data',
             method: 'get',
             success: (data) => {
-                console.log(data)
+                console.log(data,"data")
                 bar_chart_data.Screens = data.Screens.length
                 bar_chart_data.Shows = data.Shows.length
                 bar_chart_data.Movies = data.Movies.length
                 bar_chart_data.Bookings = data.MyBookings.length
                 bar_chart_data.Upcomings = data.Upcomings.length
+
+                var Bookings = bar_chart_data.Bookings
+                var Screens = bar_chart_data.Screens
+                var Shows = bar_chart_data.Shows
+                var Movies = bar_chart_data.Movies
+                var Upcomings = bar_chart_data.Upcomings
+
+                barChart(Screens, Shows, Movies, Bookings, Upcomings)
             }
         })
     }
-    console.log(bar_chart_data)
     window.addEventListener('load', () => {
         getBarChartData()
     })
- var ctxL = document.getElementById("horizontalBar").getContext('2d');
-    var horzontalChart=new Chart(ctxL, {
-        "type": "horizontalBar",
-        "data": {
-            "labels": ["Screen", "Shows", "Movies",  "Bookings","Upcoming", "Income"],
-            "datasets": [{
-                "label": "Analytics",
-                "data": [10,20,20,30],
-                "fill": false,
-                "backgroundColor": [
-                    "#ff8978",
-                    "#ff8978",
-                    "#ff8978",
-                    "#ff8978",
-                    "#ff8978",
-                    "#ff8978",
-                    "#ff8978",
-                ],
 
-                "borderWidth": 1
-            }]
-        },
 
-        "options": {
-            legend: {
-                display: false,
-            },
-            "scales": {
-                "xAxes": [{
-                    "ticks": {
-                        "beginAtZero": true
-                    },
-                    gridLines: {
-                        display: false,
-                    },
-                }],
-                "yAxes": [{
-                    gridLines: {
-                        display: false,
-                    },
+
+    const barChart = (Screens, Shows, Movies, Bookings, Upcomings) => {
+        var ctxL = document.getElementById("horizontalBar").getContext('2d');
+        var horzontalChart = new Chart(ctxL, {
+            "type": "horizontalBar",
+            "data": {
+                "labels": ["Screen", "Shows", "Movies", "Bookings", "Upcoming"],
+                "datasets": [{
+                    "label": "Analytics",
+                    "data": [Screens, Shows, Movies, Bookings, Upcomings],
+                    "fill": false,
+                    "backgroundColor": [
+                        "#ff8978",
+                        "#ff8978",
+                        "#ff8978",
+                        "#ff8978",
+                        "#ff8978",
+                        "#ff8978",
+                        "#ff8978",
+                    ],
+                    "borderWidth": 1
                 }]
-            }
-        }
+            },
 
-    });
+            "options": {
+                legend: {
+                    display: false,
+                },
+                "scales": {
+                    "xAxes": [{
+                        "ticks": {
+                            "beginAtZero": true
+                        },
+                        gridLines: {
+                            display: false,
+                        },
+                    }],
+                    "yAxes": [{
+                        gridLines: {
+                            display: false,
+                        },
+                    }]
+                }
+            }
+
+        });
+    }
+
+
+
+
+
+
+
 
 </script>

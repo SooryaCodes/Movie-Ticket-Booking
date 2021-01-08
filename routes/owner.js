@@ -15,6 +15,7 @@ const { response } = require("express");
 const { route } = require("./admin");
 const jwt = require("jsonwebtoken");
 const JSONTransport = require("nodemailer/lib/json-transport");
+const userHelpers = require("../helpers/user-helpers");
 //nodemailer
 
 let mailer = nodemailer.createTransport({
@@ -475,7 +476,7 @@ router.post("/edit-profile/:id", verifyLogin, (req, res) => {
 
 router.get('/get-bar-chart-data', (req, res) => {
   ownerHelper.getBarChartData(req.user._id).then((response) => {
-    console.log(response);
+    // console.log(response);
     res.json(response)
   })
 })
@@ -493,8 +494,26 @@ router.post("/change-to-now-showing/:id", (req, res) => {
 
 router.post('/getAnalytics', (req, res) => {
   ownerHelper.getAnalytics(req.user._id).then((response) => {
-    console.log(response);
     res.json(response)
+  })
+})
+
+
+router.post('/getLineChartData', (req, res) => {
+  ownerHelper.getLineChartData(req.user._id).then((response) => {
+    var January = response.January
+    var February = response.February
+    var March = response.March
+    var April = response.April
+    var May = response.May
+    var June = response.June
+    var July = response.July
+    var August = response.August
+    var September = response.September
+    var October = response.October
+    var November = response.November
+    var December = response.December
+    res.json({ January, February, March, April, May, June, July, August, September, October, November, December })
   })
 })
 module.exports = router;

@@ -1,6 +1,33 @@
 <link rel="stylesheet" href="/stylesheets/admin/admin-header.css">
 
+<script>
+  window.addEventListener('load', () => {
+    $.ajax({
+      url: '/admin/get-bar-chart-data',
+      method: 'get',
+      success: (data) => {
+        console.log(data, "data")
+        var bar_chart_data = {}
 
+        bar_chart_data.Movies = data.Movies.length
+        bar_chart_data.Bookings = data.Bookings.length
+        bar_chart_data.Users = data.Users.length
+        bar_chart_data.Owners = data.Owners.length
+        console.log(bar_chart_data)
+        var Users = bar_chart_data.Users
+        var Owners = bar_chart_data.Owners
+        var Movies = bar_chart_data.Movies
+        var Bookings = bar_chart_data.Bookings
+        var Fields = document.querySelectorAll('.box-data')
+        Fields[0].innerHTML = Users
+        Fields[1].innerHTML = Owners
+        Fields[2].innerHTML = Movies
+        Fields[3].innerHTML = Bookings
+
+      }
+    })
+  })
+</script>
 <!--nav bar-->
 <div class="nav-bar">
   <div class="nav-left">
@@ -89,8 +116,7 @@
       Theaters</a>
     <a href="/admin/user-details" class="sidebar-items"><img src="/images/admin/users.svg" id="s-img" alt="" />
       User's</a>
-    <a href="/admin/bookings" class="sidebar-items"><img src="/images/admin/file.svg" id="s-img" alt="" />
-      Bookings</a>
+
     <a href="/admin/movies" class="sidebar-items"><img src="/images/admin/film.svg" id="s-img" alt="" />
       Movies</a>
     <a href="/admin/add-owner" class="sidebar-items"><img src="/images/admin/user-plus.svg" id="s-img" alt="" />
@@ -100,7 +126,6 @@
     <a href="/admin/update-password" class="sidebar-items"><img src="/images/admin/lock.svg" id="s-img" alt="" /> Update
       Password</a>
   </div>
-
 </div>
 
 
@@ -118,7 +143,7 @@
       sidebar[i].classList = "sidebar-items s-active";
     }
   }
-  </script>
+</script>
 
 
 <script>

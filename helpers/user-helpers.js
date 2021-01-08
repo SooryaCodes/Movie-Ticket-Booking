@@ -107,6 +107,9 @@ module.exports = {
       details.Payment = data.paymentMethod
       details.ownerId = data.ownerId
       details.Payment_Status = 'Pending'
+      details.Date = new Date()
+      details.PaymentStatus=false
+
       console.log(data.show, "shoe");
       console.log(details, "details");
       if (data.walletUsed === true) {
@@ -163,7 +166,9 @@ module.exports = {
       details.Show = data.show;
       details.Payment = data.paymentMethod
       details.ownerId = data.ownerId
+      details.Date = new Date()
       details.Payment_Status = 'Pending'
+      details.PaymentStatus=false
 
       if (data.walletUsed === true) {
         var deletWallet = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
@@ -198,7 +203,8 @@ module.exports = {
       if (hash === details["payment[razorpay_signature]"]) {
         db.get().collection(collection.BOOKING_COLLECTION).updateOne({ _id: objectId(details['order[receipt]']) }, {
           $set: {
-            Payment_Status: 'Paid'
+            Payment_Status: 'Paid',
+            PaymentStatus:true
           }
         }).then((response) => {
           console.log(response, 'response');
@@ -207,7 +213,8 @@ module.exports = {
       } else {
         db.get().collection(collection.BOOKING_COLLECTION).updateOne({ _id: objectId(details['order[receipt]']) }, {
           $set: {
-            Payment_Status: 'Pending'
+            Payment_Status: 'Pending',
+            PaymentStatus:false
           }
         }).then((anotherresponse) => {
           console.log(anotherresponse, 'anotherresponse')

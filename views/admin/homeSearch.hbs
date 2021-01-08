@@ -9,8 +9,8 @@
           <span>
             User's
           </span>
-          <p>
-            20
+          <p class="box-data ">
+
           </p>
         </div>
       </div>
@@ -32,11 +32,10 @@
     <div class="box-wrapper2">
       <div class="box">
         <div class="box-content">
-          <span>
-            Theater's
-          </span>
-          <p>
-            20
+          <span>Movie's</span>
+
+          <p class="box-data ">
+
           </p>
         </div>
       </div>
@@ -47,8 +46,8 @@
           <span>
             Bookings's
           </span>
-          <p>
-            20
+          <p class="box-data ">
+
           </p>
         </div>
       </div>
@@ -68,18 +67,19 @@
 
 <!--table -->
 <div class="admin-table">
-  
+
   <table>
     <tr>
-      <td><form action="/admin/search" method="POST">
-  <input type="text" name="search" id="">
-<input type="submit" name="" id="">
-</form>
-</td>
+      <td>
+        <form action="/admin/search" method="POST">
+          <input type="text" name="search" id="">
+          <input type="submit" name="" id="">
+        </form>
+      </td>
     </tr>
     <tr>
-      
-      <th >
+
+      <th>
         No
       </th>
       <th>
@@ -93,25 +93,27 @@
       </th>
     </tr>
     {{#each OwnerDetails}}
-      <tr>
-        <td id="row" >
-          
-        </td>
-        <td>
-         <img src="/images/owner/profile/owner{{this._id}}.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" alt=""> {{this.Name}}
-        </td>
-        <td>
-          {{this.Theater}}
-        </td>
-        <td>
-          <a href="/admin/edit-owner/{{this._id}}">
-            <img src="/images/admin/edit-2.svg" alt="" />
-          </a>
-          <a onclick="deleteOwner('{{this._id}}')">
-            <img src="/images/admin/trash (1).svg" alt="" />
-          </a>
-        </td>
-      </tr>
+    <tr>
+      <td id="row">
+
+      </td>
+      <td>
+        <img src="/images/owner/profile/owner{{this._id}}.jpg"
+          style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" alt="">
+        {{this.Name}}
+      </td>
+      <td>
+        {{this.Theater}}
+      </td>
+      <td>
+        <a href="/admin/edit-owner/{{this._id}}">
+          <img src="/images/admin/edit-2.svg" alt="" />
+        </a>
+        <a onclick="deleteOwner('{{this._id}}')">
+          <img src="/images/admin/trash (1).svg" alt="" />
+        </a>
+      </td>
+    </tr>
     {{/each}}
   </table>
 </div>
@@ -127,14 +129,14 @@
 
           console.log(response.status)
           if (response.status) {
-swal({
-  title: "Deleted",
-  text: "Successfully",
-  icon: "success",
-  button:false
-});        setTimeout(function(){
+            swal({
+              title: "Deleted",
+              text: "Successfully",
+              icon: "success",
+              button: false
+            }); setTimeout(function () {
               location.reload()
-            },2000)
+            }, 2000)
 
 
           }
