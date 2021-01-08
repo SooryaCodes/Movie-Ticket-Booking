@@ -25,7 +25,7 @@
             <div class="boxes">
                 <div class="text">
                     <p>
-                        Income
+                        Movies
                     </p>
                     <span class="box-data ">
                         $.200
@@ -41,7 +41,7 @@
             <div class="boxes">
                 <div class="text">
                     <p>
-                        Income
+                        Upcoming
                     </p>
                     <span class="box-data">
                         $.200
@@ -55,7 +55,7 @@
             <div class="boxes">
                 <div class="text">
                     <p>
-                        Income
+                        Bookings
                     </p>
                     <span class="box-data">
                         $.200
@@ -144,6 +144,7 @@
 
 
 
+
 <!-- ----tables--- -->
 <script>
     $(document).ready(function () {
@@ -197,15 +198,43 @@
         }
     });
 
-    // bar chart script
 
-    new Chart(document.getElementById("horizontalBar"), {
+
+</script>
+
+<script>
+
+
+
+
+    // bar chart script
+    var bar_chart_data={}
+    const getBarChartData = () => {
+        $.ajax({
+            url: '/owner/get-bar-chart-data',
+            method: 'get',
+            success: (data) => {
+                console.log(data)
+                bar_chart_data.Screens = data.Screens.length
+                bar_chart_data.Shows = data.Shows.length
+                bar_chart_data.Movies = data.Movies.length
+                bar_chart_data.Bookings = data.MyBookings.length
+                bar_chart_data.Upcomings = data.Upcomings.length
+            }
+        })
+    }
+    console.log(bar_chart_data)
+    window.addEventListener('load', () => {
+        getBarChartData()
+    })
+ var ctxL = document.getElementById("horizontalBar").getContext('2d');
+    var horzontalChart=new Chart(ctxL, {
         "type": "horizontalBar",
         "data": {
-            "labels": ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Grey"],
+            "labels": ["Screen", "Shows", "Movies",  "Bookings","Upcoming", "Income"],
             "datasets": [{
-                "label": "My First Dataset",
-                "data": [22, 33, 55, 12, 86, 23, 14],
+                "label": "Analytics",
+                "data": [10,20,20,30],
                 "fill": false,
                 "backgroundColor": [
                     "#ff8978",
@@ -241,18 +270,7 @@
                 }]
             }
         }
+
     });
-</script>
 
-
-<script>
-    window.addEventListener('load', () => {
-        $.ajax({
-            url: '/owner/get-box-data',
-            method: 'get',
-            success: (data) => {
-                console.log(data)
-            }
-        })
-    })
 </script>

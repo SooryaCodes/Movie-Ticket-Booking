@@ -1,8 +1,13 @@
 
 /*---footer---*/
 /* --footer-- */
+body{
+  position: relative;
+}
 
 .footer {
+  position: absolute;
+  bottom: 0;
   margin-top: 200px;
   z-index: 1;
   color: #fde2e2;
@@ -16,6 +21,7 @@
 
 .f-content {
   display: flex;
+  color: #cccd !important;
   flex-direction: column;
 }
 .f-content h4 {
@@ -51,6 +57,7 @@
 }
 .f-content .social2 i {
   cursor: pointer;
+  color: #cccd;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,6 +73,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #cccd;
   background: #383c53;
   transition: .5s ease-in-out;
 

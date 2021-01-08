@@ -369,6 +369,49 @@ module.exports = {
         }
       })
     })
-  }
+  },
+
+  getUserData: (id) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(id) }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
+
+  updateName: (Name, id) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(id) }, {
+        $set: {
+          Name: Name
+        }
+      }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
+  updateMobile: (Mobile, id) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(id) }, {
+        $set: {
+          Mobile: Mobile
+        }
+      }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
+  updateEmail: (Email, id) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(id) }, {
+        $set: {
+          Email: Email
+        }
+      }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
+
 };
 

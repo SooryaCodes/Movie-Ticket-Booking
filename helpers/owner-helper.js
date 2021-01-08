@@ -431,36 +431,16 @@ module.exports = {
         });
     });
   },
-  // getBoxData: (id) => {
-  //   return new Promise(async (resolve, reject) => {
-  //     var showsFromShowCollection = await db
-  //       .get()
-  //       .collection(collection.SHOW_COLLECTION)
-  //       .find({ ownerId: objectId(id) })
-  //       .toArray();
-
-  //     var bookings = await db
-  //       .get()
-  //       .collection(collection.BOOKING_COLLECTION)
-  //       .find()
-  //       .toArray();
-  //     console.log(showsFromShowCollection);
-
-  //     var thisOwnerBookings = [];
-
-  //     for (var i = 0; i < bookings.length; i++) {
-  //       for (var j = 0; j < showsFromShowCollection.length; j++) {
-  //         if (bookings[i].Show._id === showsFromShowCollection[j]._id) {
-  //           thisOwnerBooking.push(bookings[i]);
-  //           console.log(bookings[i], "boking");
-  //         } else {
-  //           thisOwnerBookings.push(0)
-  //         }
-  //       }
-  //     }
-  //     console.log(thisOwnerBookings);
-  //   });
-  // },
+  getBarChartData: (id) => {
+    return new Promise(async (resolve, reject) => {
+      var Movies = await db.get().collection(collection.MOVIE_COLLECTION).find().toArray()
+      var Upcomings = await db.get().collection(collection.UPCOMING_MOVIE_COLLECTION).find().toArray()
+      var MyBookings = await db.get().collection(collection.BOOKING_COLLECTION).find({ ownerId: id }).toArray()
+      var Shows = await db.get().collection(collection.SHOW_COLLECTION).find({ ownerId: objectId(id) }).toArray()
+      var Screens = await db.get().collection(collection.SCREEN_COLLECTION).find({ OwnerId: objectId(id) }).toArray()
+      resolve({ Movies,Upcomings,MyBookings,Shows,Screens})
+    });
+  },
 
   forgotPasswordUpdateNewPassword: (email, password) => {
     return new Promise(async (resolve, reject) => {
@@ -491,6 +471,7 @@ module.exports = {
       var Movies = await db.get().collection(collection.MOVIE_COLLECTION).find().toArray()
       var Upcoming = await db.get().collection(collection.UPCOMING_MOVIE_COLLECTION).find().toArray()
       var myBookings = await db.get().collection(collection.BOOKING_COLLECTION).find({ ownerId: id }).toArray()
+      var Screen = await db.get().collection(collection.SCREEN_COLLECTION).find({ ownerId: objectId(id) }).toArray()
       resolve({ Movies, Upcoming, myBookings })
 
     })

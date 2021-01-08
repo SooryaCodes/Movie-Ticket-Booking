@@ -5,6 +5,7 @@ require("dotenv").config();
 var ErrMessage = {};
 const userHelpers = require("../helpers/user-helpers");
 var passport = require("passport");
+const { response } = require("express");
 
 /* GET users listing. */
 var client = require("twilio")(
@@ -64,7 +65,7 @@ router.get("/login", (req, res) => {
   } else if (req.session.loggedIn) {
     res.redirect("/");
   } else {
-    res.render("user/login");
+    res.render("user/login",);
   }
 });
 router.post("/login", (req, res) => {
@@ -376,5 +377,43 @@ router.post('/getLocation', (req, res) => {
 
 router.get('/search', (req, res) => {
   res.render('user/search', { user: true, userDetails: req.user })
+})
+
+
+router.get('/account', verifyLogin, (req, res) => {
+  res.render('user/account', { userDetails: req.user, user: true })
+})
+
+router.post('/getUserDetails', (req, res) => {
+  userHelpers.getUserData(req.user._id).then((response) => {
+    console.log(response);
+    res.json(response)
+  })
+})
+
+
+router.post('/update-name', (req, res) => {
+  console.log(req.body);
+  userHelpers.updateName(req.body.Name, req.user._id).then((response) => {
+    res.json({ status: true })
+  })
+})
+router.post('/update-mobile', (req, res) => {
+  console.log(req.body);
+  userHelpers.updateMobile(req.body.Mobile, req.user._id).then((response) => {
+    res.json({ status: true })
+  })
+})
+router.post('/update-email', (req, res) => {
+  console.log(req.body,"hey");
+  if (req.body.Email === req.user.Email) {
+    userHelpers.updateEmail(req.body.Email, req.user._id).then((response) => {
+      res.json({ status: true })
+    })
+  } else {
+    userHelpers.updateEmail(req.body.Email, req.user._id).then((anotherResponse) => {
+      res.json({Logout:true})
+    })
+  }
 })
 module.exports = router;
