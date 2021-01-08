@@ -240,7 +240,7 @@
  .seat-show-wrapper{
       transition: transform .5s ease-in-out;
       position: fixed;
-      align-items: center;justify-content;
+      align-items: center;
       display: flex;
       z-index: 2000;
       transform: translateY(100%);
@@ -268,8 +268,9 @@ color: rgb(233, 233, 233);      background:  rgb(58, 59, 87);
   }
 
   .checkout{
-position: absolute;
-right: 20px;
+    position: absolute;
+/* margin-right: 15px; */
+right: 10px;
 width: 150px;
 height: 100%;
 color: white;
@@ -292,6 +293,11 @@ flex-direction: column;
 
 
 
+@media screen and (max-width:1304px){
+  .seat-show-wrapper{
+    overflow: scroll;
+  }
+}
 @media screen and (max-width:1507px){
   
 
@@ -329,8 +335,8 @@ color: rgb(233, 233, 233);      background:  rgb(58, 59, 87);
 }
 
 .checkout{
-position: absolute;
-right: 20px;
+  margin-left: 20px;
+margin-right: 20px;
 width: 130px;
 height: 100%;
 color: white;
@@ -341,7 +347,9 @@ flex-direction: column;
 }
 
 .checkout button{
-font-size: 13px;
+  width: 100px;
+  height: 30px;
+font-size: 10px;
 }
 
 
@@ -352,7 +360,7 @@ font-size: 13px;
 
 .payment-popup{
   transform: translate(100%);
-  z-index: 1000;
+  z-index: 100000000000000000000;
   width: 300px;
   background: rgb(44, 47, 66);
   box-shadow: 0px 0px 20px rgb(37, 40, 54);

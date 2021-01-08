@@ -106,8 +106,16 @@ module.exports = {
       details.Show = data.show;
       details.Payment = data.paymentMethod
       details.ownerId = data.ownerId
+      details.Payment_Status = 'Pending'
       console.log(data.show, "shoe");
       console.log(details, "details");
+      if (data.walletUsed === true) {
+        var deletWallet = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
+          $pull: {
+            Wallet
+          }
+        })
+      }
       var showCollection = await db
         .get()
         .collection(collection.SHOW_COLLECTION)
@@ -134,7 +142,7 @@ module.exports = {
       console.log(options);
       instance.orders.create(options, function (err, order) {
         if (err) {
-          console.log(err);
+          throw err
         } else {
           console.log(order);
           resolve(order);
@@ -155,7 +163,15 @@ module.exports = {
       details.Show = data.show;
       details.Payment = data.paymentMethod
       details.ownerId = data.ownerId
+      details.Payment_Status = 'Pending'
 
+      if (data.walletUsed === true) {
+        var deletWallet = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
+          $pull: {
+            Wallet: 0
+          }
+        })
+      }
 
       console.log(details, "details");
 
@@ -425,7 +441,7 @@ module.exports = {
   insertRewardThisUser: (id, referal) => {
     return new Promise((reolve, reject) => {
       db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(id) }, {
-        $push: {
+        $inc: {
           Wallet: 50
         }
       }).then((response) => {
@@ -435,10 +451,26 @@ module.exports = {
             Referal_Used: referal
           }
         }).then((anotherresponse) => {
-
-          resolve(response)
+          db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(id) }, {
+            $push: {
+              Rewards: 50
+            }
+          }).then((anotherresponseresponse) => {
+            resolve(response)
+          })
 
         })
+      })
+    })
+  },
+  getWallet: (id) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(id) }).then((data) => {
+        if (data.Wallet) {
+          resolve(data)
+        } else {
+          resolve({ status: false })
+        }
       })
     })
   }

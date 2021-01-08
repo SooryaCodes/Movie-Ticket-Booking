@@ -7,12 +7,23 @@ var ExcecutiveSeat = document.getElementById("ExcecutiveSeat").value;
 var PremiumRow = document.getElementById("PremiumRow").value;
 var PremiumSeat = document.getElementById("PremiumSeat").value;
 var bookedSeats = document.getElementById("BookedSeats").value;
-
+var TotalNumberOfSeat = parseInt(TotalNumberOfSeat)
 var socket = io()
 
 console.log(bookedSeats);
 var Reserved = bookedSeats.split(",");
+window.addEventListener('load', () => {
+  if (Reserved.length === TotalNumberOfSeat) {
+    alert('HouseFul')
+    console.log('Houseful');
+  }
+})
 
+// window.addEventListener('load',()=>{
+//   var walletWrapper=document.querySelector('.wallet')
+
+//   if()
+// })
 window.addEventListener("load", function () {
   for (var i = 0; i < Reserved.length; i++) {
     document.getElementById(Reserved[i]).parentNode.classList.add("Reserved-Seat");
@@ -157,6 +168,19 @@ function myfun(hi) {
     paymentPopup.classList.toggle("active");
   });
 }
+
+function wallet(val) {
+  var walletInput = document.getElementById('Wallet');
+  var total = parseInt(document.getElementById("totalPriceForPayment").innerText)
+  var val = parseInt(val)
+  if (walletInput.checked === true) {
+    document.getElementById("totalPriceForPayment").innerHTML = total - val;
+  } else {
+
+    document.getElementById("totalPriceForPayment").innerHTML = total + val;
+  }
+
+}
 function payment(paymentMethod) {
   var checkedSeat = document.querySelectorAll('input[name="seat"]:checked');
   var seat = [];
@@ -167,7 +191,16 @@ function payment(paymentMethod) {
   var total = parseInt(
     document.getElementById("totalPriceForPayment").innerText
   );
-  console.log(show);
+
+
+  var walletUsed;  var walletUsed;
+
+  var walletInput = document.getElementById('Wallet');
+  if (walletInput.checked === true) {
+    walletUsed = true
+  } else {
+    walletUsed = false
+  }
 
   $.ajax({
     url: "/ticket-booking",
@@ -181,6 +214,7 @@ function payment(paymentMethod) {
       seat,
       ownerId: ownerId,
       show,
+      walletUsed
     }),
     success: (response) => {
       if (response.status === false) {
@@ -217,9 +251,9 @@ const razorpayPayment = (data) => {
       verifyPayment(response, data);
     },
     prefill: {
-      name: "Soorya Krishna",
-      email: "sooryakriz111@gmail.com",
-      contact: "8943713703",
+      name: `${userName}`,
+      email: `${userEmail}`,
+      contact: `${userMobile}`
     },
     notes: {
       address: "Razorpay Corporate Office",

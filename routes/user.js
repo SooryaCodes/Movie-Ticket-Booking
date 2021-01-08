@@ -8,6 +8,7 @@ const userHelpers = require("../helpers/user-helpers");
 var passport = require("passport");
 const { response } = require("express");
 const { cookie } = require("request");
+const { Db } = require("mongodb");
 
 /* GET users listing. */
 var client = require("twilio")(
@@ -24,35 +25,33 @@ const verifyLogin = (req, res, next) => {
   }
 };
 router.get("/", verifyLogin, function (req, res, next) {
-
   userHelpers.checkLocation(req.user).then((response) => {
-
     if (response.LocationExist) {
-      console.log('hey');
-      req.session.Location = true
+      console.log("hey");
+      req.session.Location = true;
     } else {
-      req.session.Location = false
+      req.session.Location = false;
     }
-
 
     if (req.user.signup === true) {
       if (req.cookies.ref) {
-        var token = req.cookies.ref
+        var token = req.cookies.ref;
         jwt.verify(token, process.env.USER_SECRET, async (err, decoded) => {
           if (err) {
             console.log("I don't know :)");
-
           } else {
+            req.session.Reward = true
             //insert reward to this user
-            var insert = await userHelpers.insertRewardThisUser(req.user._id, token)
-
-
+            var insert = await userHelpers.insertRewardThisUser(
+              req.user._id,
+              token
+            );
           }
         });
       }
     }
 
-    res.clearCookie('ref')
+    res.clearCookie("ref");
     userHelpers.getMovies().then((Movie) => {
       var Horror = Movie.filter((value) => value.Category === "Horror");
       var Action = Movie.filter((value) => value.Category === "Action");
@@ -67,21 +66,17 @@ router.get("/", verifyLogin, function (req, res, next) {
         Drama,
         Romance,
         userDetails: req.user,
-        noLocation: req.session.noLocation
-        , Location: req.session.Location
+        noLocation: req.session.noLocation,
+        Location: req.session.Location,
+        Rewarded: req.session.Reward
       });
     });
-
-
-
-  })
+  });
 });
-
-
 
 router.get("/login", (req, res) => {
   if (req.query.ref) {
-    res.cookie("ref", req.query.ref, { path: '/' })
+    res.cookie("ref", req.query.ref, { path: "/" });
   }
   if (req.isAuthenticated() && req.user.role === "user") {
     console.log(req.user);
@@ -161,18 +156,16 @@ router.post("/verify-otp", (req, res) => {
 });
 
 router.post("/signup/:id", (req, res) => {
-
   userHelpers.signup(req.params.id, req.body).then((response) => {
-    response.signup = true
+    response.signup = true;
     let token = jwt.sign(response, process.env.USER_SECRET);
-    response.My_Referal = token
+    response.My_Referal = token;
     userHelpers.insertToken(response._id, token).then((anotherResponse) => {
       req.session.loggedIn = true;
       const passport = { user: response };
       req.session.passport = passport;
       res.redirect("/");
-    })
-
+    });
   });
 });
 
@@ -218,66 +211,74 @@ router.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
-
 router.get("/movie/:id", verifyLogin, (req, res) => {
   userHelpers.getMovieDetails(req.params.id).then((Movie) => {
     userHelpers.getAllMovies().then((TopMovies) => {
       userHelpers.getRatings(req.params.id).then((Ratings) => {
         console.log(Ratings);
-        var RatingAverage = []
+        var RatingAverage = [];
         for (var i = 0; i < Ratings.length; i++) {
-          RatingAverage[i] = Ratings[i].Rating
+          RatingAverage[i] = Ratings[i].Rating;
 
           if (Ratings[i].Rating === 1) {
-            Ratings[i].one = true
+            Ratings[i].one = true;
           } else if (Ratings[i].Rating === 2) {
-            Ratings[i].two = true
+            Ratings[i].two = true;
           } else if (Ratings[i].Rating === 3) {
-            Ratings[i].three = true
+            Ratings[i].three = true;
           } else if (Ratings[i].Rating === 4) {
-            Ratings[i].four = true
+            Ratings[i].four = true;
           } else if (Ratings[i].Rating === 5) {
-            Ratings[i].five = true
+            Ratings[i].five = true;
           }
         }
 
-
-
-
-
-
-        var AverageRatingCalculation = (RatingAverage.reduce((a, b) => a + b, 0)) / (RatingAverage.length)
+        var AverageRatingCalculation =
+          RatingAverage.reduce((a, b) => a + b, 0) / RatingAverage.length;
         console.log(AverageRatingCalculation);
 
-        var RatingAverageOne = false
-        var RatingAverageTwo = false
-        var RatingAverageThree = false
-        var RatingAverageFour = false
-        var RatingAverageFive = false
+        var RatingAverageOne = false;
+        var RatingAverageTwo = false;
+        var RatingAverageThree = false;
+        var RatingAverageFour = false;
+        var RatingAverageFive = false;
         if (AverageRatingCalculation >= 1 && AverageRatingCalculation < 2) {
-          RatingAverageOne = true
-        } else if (AverageRatingCalculation >= 2 && AverageRatingCalculation < 3) {
-          RatingAverageTwo = true
-        } else if (AverageRatingCalculation >= 3 && AverageRatingCalculation < 4) {
-          RatingAverageThree = true
-        } else if (AverageRatingCalculation >= 4 && AverageRatingCalculation < 5) {
-          RatingAverageFour = true
-        } else if (AverageRatingCalculation >= 5 && AverageRatingCalculation < 6) {
-          RatingAverageFive = true
+          RatingAverageOne = true;
+        } else if (
+          AverageRatingCalculation >= 2 &&
+          AverageRatingCalculation < 3
+        ) {
+          RatingAverageTwo = true;
+        } else if (
+          AverageRatingCalculation >= 3 &&
+          AverageRatingCalculation < 4
+        ) {
+          RatingAverageThree = true;
+        } else if (
+          AverageRatingCalculation >= 4 &&
+          AverageRatingCalculation < 5
+        ) {
+          RatingAverageFour = true;
+        } else if (
+          AverageRatingCalculation >= 5 &&
+          AverageRatingCalculation < 6
+        ) {
+          RatingAverageFive = true;
         }
 
-
-
-
         res.render("user/movie", {
-          user: true, Movie, TopMovies, Ratings, userDetails: req.user,
+          user: true,
+          Movie,
+          TopMovies,
+          Ratings,
+          userDetails: req.user,
           RatingAverageOne,
           RatingAverageTwo,
           RatingAverageThree,
           RatingAverageFour,
           RatingAverageFive,
         });
-      })
+      });
     });
   });
 });
@@ -323,7 +324,7 @@ router.post("/show-submit", (req, res) => {
 });
 
 router.get("/seat-select/:id/:ownerId", verifyLogin, (req, res) => {
-  userHelpers.getShowScreen(req.params.id).then((data) => {
+  userHelpers.getShowScreen(req.params.id).then(async (data) => {
     console.log(data, "data");
     var Vip = data.Vip;
     var Excecutive = data.Excecutive;
@@ -332,6 +333,19 @@ router.get("/seat-select/:id/:ownerId", verifyLogin, (req, res) => {
     var screen = data.screen;
     var bookedSeats = data.show.Seats;
     console.log(bookedSeats);
+
+    var DetailsUser = await userHelpers.getWallet(req.user._id)
+    var TotalWallet
+    if (DetailsUser.status === false) {
+      console.log('nothing');
+    } else {
+      console.log(DetailsUser);
+      TotalWallet = DetailsUser.Wallet.reduce((a, b) => {
+        a + b, 0
+      })
+    }
+    console.log(TotalWallet);
+
     console.log(screen, "scrreeen cchekibb");
     res.render("user/screen", {
       user: true,
@@ -343,7 +357,9 @@ router.get("/seat-select/:id/:ownerId", verifyLogin, (req, res) => {
       data,
       bookedSeats,
       user: req.user.Name,
-      ownerId: req.params.ownerId
+      ownerId: req.params.ownerId,
+      TotalWallet,
+      DetailsUser
     });
   });
 });
@@ -386,67 +402,63 @@ router.get("/failure", (req, res) => {
   res.send("failure");
 });
 
+router.post("/rating/:movieId", (req, res) => {
+  userHelpers
+    .rateMovie(req.params.movieId, req.user, req.body)
+    .then((response) => {
+      res.json({ status: true });
+    });
+});
 
-
-
-router.post('/rating/:movieId', (req, res) => {
-  userHelpers.rateMovie(req.params.movieId, req.user, req.body).then((response) => {
-    res.json({ status: true })
-  })
-})
-
-
-
-router.post('/getLocation', (req, res) => {
+router.post("/getLocation", (req, res) => {
   userHelpers.addLocation(req.user._id, req.body).then((response) => {
-    res.json({ status: true })
+    res.json({ status: true });
     console.log(response);
-  })
-})
+  });
+});
 
-//search 
+//search
 
-router.get('/search', (req, res) => {
-  res.render('user/search', { user: true, userDetails: req.user })
-})
+router.get("/search", (req, res) => {
+  res.render("user/search", { user: true, userDetails: req.user });
+});
 
+router.get("/account", verifyLogin, (req, res) => {
+  res.render("user/account", { userDetails: req.user, user: true });
+});
 
-router.get('/account', verifyLogin, (req, res) => {
-  res.render('user/account', { userDetails: req.user, user: true })
-})
-
-router.post('/getUserDetails', (req, res) => {
+router.post("/getUserDetails", (req, res) => {
   userHelpers.getUserData(req.user._id).then((response) => {
     console.log(response);
-    res.json(response)
-  })
-})
+    res.json(response);
+  });
+});
 
-
-router.post('/update-name', (req, res) => {
+router.post("/update-name", (req, res) => {
   console.log(req.body);
   userHelpers.updateName(req.body.Name, req.user._id).then((response) => {
-    res.json({ status: true })
-  })
-})
-router.post('/update-mobile', (req, res) => {
+    res.json({ status: true });
+  });
+});
+router.post("/update-mobile", (req, res) => {
   console.log(req.body);
   userHelpers.updateMobile(req.body.Mobile, req.user._id).then((response) => {
-    res.json({ status: true })
-  })
-})
-router.post('/update-email', (req, res) => {
+    res.json({ status: true });
+  });
+});
+router.post("/update-email", (req, res) => {
   console.log(req.body, "hey");
   if (req.body.Email === req.user.Email) {
     userHelpers.updateEmail(req.body.Email, req.user._id).then((response) => {
-      res.json({ status: true })
-    })
+      res.json({ status: true });
+    });
   } else {
-    userHelpers.updateEmail(req.body.Email, req.user._id).then((anotherResponse) => {
-      res.json({ Logout: true })
-    })
+    userHelpers
+      .updateEmail(req.body.Email, req.user._id)
+      .then((anotherResponse) => {
+        res.json({ Logout: true });
+      });
   }
-})
-
+});
 
 module.exports = router;

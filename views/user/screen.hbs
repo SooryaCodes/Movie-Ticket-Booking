@@ -43,8 +43,7 @@
 </div>
 
 
-<div class=" seat-show-wrapper">
-
+<div class="seat-show-wrapper">
 
     <div class="checkout">
         <p id="total"></p>
@@ -67,7 +66,17 @@
             <p>Screen :</p>
             <p id="screenName">Audi 1</p>
         </div>
+                    <div class="wallet" style="display: flex;align-items: center;justify-content: space-between; width: 100%; height: 50px;padding-left:40px ;padding-right: 40px;">
+                <div style="display: flex;align-items: center;justify-content: flex-start; ">
+                    <input type="checkbox" value="{{TotalWallet}}" onchange="wallet(value)"  name="Wallet" id="Wallet" style="height: 20px;width: 20px; margin-right: 10px;">
+                <p style="margin: 0;">Use My Wallet</p>
+                </div>
+
+                <span>{{TotalWallet}}</span>
+            </div>
         <div class="content ">
+            
+
             <span>Total :</span>
             <span id="totalAmount"></span>
         </div>
@@ -121,7 +130,7 @@
 
 
 <script>
-    var TotalNumberOfSeat='{{screen.Seat}}'
+    var TotalNumberOfSeat = '{{screen.Seat}}'
     console.log(TotalNumberOfSeat)
     var show = {}
     show.Vip = parseInt('{{data.show.Vip}}')
@@ -132,6 +141,11 @@
     show.Movie = '{{data.show.Movie}}'
     show.screenName = '{{screen.Name}}'
     var ownerId = '{{ownerId}}'
-
+    var TotalWallet='{{TotalWallet}}'
+    var userName='{{DetailsUser.Name}}'
+    var userEmail='{{DetailsUser.Email}}'
+    var userMobile='{{DetailsUser.Mobile}}'
+    var ReferalUsed='{{DetailsUser.Referal_Used}}'
+    console.log(ReferalUsed)
 </script>
 <script src="/javascripts/admin/user/screen.js"></script>
