@@ -19,10 +19,10 @@ window.addEventListener('load', () => {
   }
 })
 
-window.addEventListener('load',()=>{
-  var walletWrapper=document.querySelector('.wallet')
+window.addEventListener('load', () => {
+  var walletWrapper = document.querySelector('.wallet')
 
-  if(Wallet<=0){
+  if (Wallet <= 0) {
     walletWrapper.remove()
   }
 })
@@ -175,7 +175,7 @@ function wallet(val) {
   var walletInput = document.getElementById('Wallet');
   var total = parseInt(document.getElementById("totalPriceForPayment").innerText)
   var val = parseInt(val)
-  console.log(val,total);
+  console.log(val, total);
   if (walletInput.checked === true) {
     document.getElementById("totalPriceForPayment").innerHTML = total - val;
   } else {
@@ -196,13 +196,13 @@ function payment(paymentMethod) {
   );
 
 
-  var walletUsed;  
+  var walletUsed;
 
   var walletInput = document.getElementById('Wallet');
- if(walletInput){
+  if (walletInput) {
 
-   if (walletInput.checked === true) {
-     walletUsed = true
+    if (walletInput.checked === true) {
+      walletUsed = true
     } else {
       walletUsed = false
     }
@@ -287,8 +287,8 @@ const razorpayPayment = (data) => {
   }
 };
 function verifyPayment(payment, order) {
-  console.log(payment,'payment');
-  console.log(order,'order');
+  console.log(payment, 'payment');
+  console.log(order, 'order');
   $.ajax({
     url: "/verify-payment",
     method: "post",
@@ -298,18 +298,18 @@ function verifyPayment(payment, order) {
     },
     success: (response) => {
       // bookSuccess();
-      
-      if(response.status===true){
+
+      if (response.status === true) {
 
         var bookingDetails = {
           message: 'New Booking Confirmed',
           ownerId: ownerId
         }
         socket.emit('booking', bookingDetails)
-        location.href = "/booking-success?id="+order.receipt;
-      }else{
-        
-        location.href = "/booking-failure?id="+order.receipt;
+        location.href = "/booking-success?id=" + order.receipt;
+      } else {
+
+        location.href = "/booking-failure?id=" + order.receipt;
       }
     },
   });

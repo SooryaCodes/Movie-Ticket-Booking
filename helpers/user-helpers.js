@@ -158,6 +158,34 @@ module.exports = {
     });
   },
 
+
+
+  generateRazorpayAnother: (id) => {
+    return new Promise(async (resolve, reject) => {
+
+      var booking = await db
+        .get()
+        .collection(collection.BOOKING_COLLECTION)
+        .findOne({ _id: objectId(id) });
+
+
+      var options = {
+        amount: booking.Amount * 100, // amount in the smallest currency unit
+        currency: "INR",
+        receipt: "" + booking._id,
+      };
+      console.log(options);
+      instance.orders.create(options, function (err, order) {
+        if (err) {
+          throw err
+        } else {
+          console.log(order);
+          resolve({ Razorpay: true, order });
+        }
+      });
+    });
+  },
+
   insertBooking: (data, userId) => {
     return new Promise(async (resolve, reject) => {
       console.log(data, userId);
@@ -295,6 +323,70 @@ module.exports = {
           console.log("Create Payment Response");
           // console.log(payment);
           resolve(payment);
+        }
+      });
+    });
+  },
+
+
+  generatePaypalAnother: (id) => {
+    return new Promise(async(resolve, reject) => {
+var order=await db.get().collection(collection.BOOKING_COLLECTION).findOne({_id:objectId(id)})
+      var average =
+        order.Show.Vip +
+        order.Show.Excecutive +
+        order.Show.Premium +
+        order.Show.Normal;
+      console.log(average / 4 * order.Seat.length);
+      // console.log(average);
+      var paypal = require("paypal-rest-sdk");
+      paypal.configure({
+        mode: "sandbox", //sandbox or live
+        client_id: process.env.PAYPAL_CLIENT_ID,
+        client_secret: process.env.PAYPAL_SECRET,
+      });
+      console.log(order.Amount);
+      var create_payment_json = {
+        intent: "sale",
+        payer: {
+          payment_method: "paypal",
+        },
+        redirect_urls: {
+          return_url: "http://localhost:3000/booking-success?id=" + id,
+          cancel_url: "http://localhost:3000/booking-failure?id=" + id,
+        },
+        transactions: [
+          {
+            item_list: {
+              items: [
+                {
+                  name: "Movie Ticket",
+                  sku: id,
+                  price: order.Amount,
+                  currency: "INR",
+                  quantity: 1,
+                },
+              ],
+            },
+            amount: {
+              currency: "INR",
+              total: order.Amount
+            },
+
+            description: "This is the payment description.",
+          },
+        ],
+
+      };
+
+      paypal.payment.create(create_payment_json, function (error, payment) {
+        if (error) {
+          console.log(error);
+          throw error;
+        } else {
+          console.log("Create Payment Response");
+          // console.log(payment);
+          resolve({Paypal:true,payment});
         }
       });
     });
@@ -498,10 +590,20 @@ module.exports = {
   getBookings: (id) => {
     console.log(typeof (id));
     console.log(id);
-    return new Promise((resolve, reject) => {
-      db.get().collection(collection.BOOKING_COLLECTION).find({ userId: objectId(id) }).toArray().then((Response) => {
-        resolve(Response)
-      })
+    return new Promise(async (resolve, reject) => {
+      var bookingsDetails = await db.get().collection(collection.BOOKING_COLLECTION).find({ userId: objectId(id) }).toArray()
+
+      for (var i = 0; i < bookingsDetails.length; i++) {
+        var show = await db.get().collection(collection.SHOW_COLLECTION).findOne({ _id: objectId(bookingsDetails[i].Show._id) })
+        bookingsDetails[i].ShowsDetails = show
+
+        var theater = await db.get().collection(collection.OWNER_COLLECTION).findOne({ _id: objectId(bookingsDetails[i].ShowsDetails.ownerId) })
+
+        bookingsDetails[i].Theater = theater
+      }
+
+      console.log(bookingsDetails);
+      resolve(bookingsDetails)
     })
   },
 

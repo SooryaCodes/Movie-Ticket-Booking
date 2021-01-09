@@ -102,7 +102,7 @@
 <!--table -->
 <div class="owner-table">
 
-    <table>
+    <table id="table">
 
         <tr>
 
@@ -127,15 +127,13 @@
                 Payment
             </th>
         </tr>
-        <div class="seat-pop-wrapper">
-            <div class="seat-pop">
-                <p>A-2 , A-2 , A-2 , A-2 , A-2 , Vip-2 , A-2 , A-2 , A-2 , A-2 , A-2 , Vip-2, A-2 , A-2 , A-2 , A-2 , A-2 , Vip-2</p>
-            </div>
-        </div>
+
 
 
     </table>
 </div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <script>
 
 
@@ -152,7 +150,7 @@
                     document.querySelector('#wallet').innerHTML = `0`
 
                 } else {
-                
+
                     document.querySelector('#wallet').innerHTML = `${Wallet}`
 
                 }
@@ -299,14 +297,160 @@
 
 
 
-window.addEventListener('load',()=>{
-    $.ajax({
-        url:'/getBookings',
-        method:'post',
-        success:(response)=>{
-            console.log(response)
-        }
+    window.addEventListener('load', () => {
+        $.ajax({
+            url: '/getBookings',
+            method: 'post',
+            success: (response) => {
+
+                for (var i = 0; i < response.length; i++) {
+
+                    if (response[i].Payment_Status === 'Paid') {
+                        var table = document.getElementById('table').innerHTML += ` <tr>
+            <td>${response[i].ShowsDetails.MovieName}</td>
+            <td>${response[i].Theater.Theater}</td>
+            <td>${response[i].Show.screenName}</td>
+            <td>${response[i].ShowsDetails.Date} | ${response[i].ShowsDetails.Time} </td>
+            <td><button class="show-btn" onclick="showSeat('${response[i]._id}','${response[i].Seat}')">Show</button></td>
+            <td>
+                <div class="status-a"></div>
+                Paid
+            </td>
+            <div class="seat-pop-wrapper " id="${response[i]._id}">
+                <div class="seat-pop " id="${response[i]._id + response[i]._id}">
+                    <p></p>
+                </div>
+            </div>
+
+        </tr>`
+
+                    } else {
+
+                        var table = document.getElementById('table').innerHTML += ` <tr>
+            <td>${response[i].ShowsDetails.MovieName}</td>
+            <td>${response[i].Theater.Theater}</td>
+            <td>${response[i].Show.screenName}</td>
+            <td>${response[i].ShowsDetails.Date} | ${response[i].ShowsDetails.Time} </td>
+            <td><button class="show-btn" onclick="showSeat('${response[i]._id}','${response[i].Seat}')">Show</button></td>
+            <td>
+                <button id="pay" onclick="payment('${response[i].Payment}','${response[i]._id}')">Pay Now</button>
+            </td>
+            <div class="seat-pop-wrapper " id="${response[i]._id}">
+                <div class="seat-pop " id="${response[i]._id + response[i]._id}">
+                    <p></p>
+                </div>
+            </div>
+
+        </tr>`
+
+                    }
+                }
+            }
+        })
     })
-})
+
+
+    const showSeat = (id, array) => {
+        var wrapper = document.getElementById(`${id}`)
+        var pop = document.getElementById(`${id + id}`).innerHTML = `<p>${array}</p>`
+        wrapper.classList.toggle('active')
+        wrapper.addEventListener('click', () => {
+            wrapper.classList.remove('active')
+        })
+    }
+</script>
+
+
+<script>
+    const payment = (method, id) => {
+        $.ajax({
+            url: '/another-payment/' + method + '/' + id,
+            method: 'post',
+            success: (response) => {
+                console.log(response)
+                if (response.Razorpay === true) {
+                    console.log(response, 'response')
+                    razorpayPayment(response.order)
+                } else if (response.Paypal === true) {
+                    location.href = response.payment.links[1].href
+                }
+            }
+        })
+    }
+
+
+    const razorpayPayment = (data) => {
+        console.log(data, "data in razorpay");
+        var options = {
+            key: "rzp_test_kX6azReFALaRXo", // Enter the Key ID generated from the Dashboard
+            amount: data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            currency: "INR",
+            name: "Movie Cafe",
+            description: "Ticket Booking",
+            image: "",
+            order_id: data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            handler: function (response) {
+
+                verifyPayment(response, data);
+            },
+            prefill: {
+                name: '',
+                email: '',
+                contact: '',
+            },
+            notes: {
+                address: "Razorpay Corporate Office",
+            },
+            theme: {
+                color: "#4B6591",
+            },
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on("payment.failed", function (response) {
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+        });
+        setTimeout(function () {
+            razorpayUp();
+        }, 1000);
+
+        function razorpayUp() {
+            rzp1.open();
+        }
+    };
+
+
+
+
+    function verifyPayment(payment, order) {
+        console.log(payment, 'payment');
+        console.log(order, 'order');
+        $.ajax({
+            url: "/verify-payment",
+            method: "post",
+            data: {
+                payment,
+                order,
+            },
+            success: (response) => {
+                // bookSuccess();
+
+                if (response.status === true) {
+
+
+                    location.href = "/booking-success?id=" + order.receipt;
+                } else {
+
+                    location.href = "/booking-failure?id=" + order.receipt;
+                }
+            },
+        });
+    }
+
 
 </script>

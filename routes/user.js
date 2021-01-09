@@ -367,9 +367,8 @@ router.post("/ticket-booking", (req, res) => {
     });
   } else if (req.body.paymentMethod === "Paypal") {
     userHelpers.insertBooking(req.body, req.user._id).then((data) => {
-      userHelpers.generatePaypal(data.details,data.bookingId).then((response) => {
-        console.log(response.transactions[0].item_list, "paypal");
-        console.log(response.transactions[0].item_list.items, "paypal");
+      userHelpers.generatePaypal(data.details, data.bookingId).then((response) => {
+
         res.json(response.links[1].href);
       });
     });
@@ -389,8 +388,25 @@ router.post("/verify-payment", (req, res) => {
   });
 });
 
+router.post('/another-payment/:method/:id', (req, res) => {
+  if (req.params.method === 'Razorpay') {
+
+    userHelpers.generateRazorpayAnother(req.params.id).then((response) => {
+      res.json(response)
+    })
+  } else if (req.params.method === 'Paypal') {
+    userHelpers.generatePaypalAnother(req.params.id).then((response) => {
+      
+      res.json(response)
+    })
+
+  }
+})
+
+
+
 router.get('/booking-success', (req, res) => {
-  userHelpers.changeStatus(req.query.id,req.user._id).then((Response) => {
+  userHelpers.changeStatus(req.query.id, req.user._id).then((Response) => {
 
     res.render('user/success', { userDetails: req.user, user: true })
   })

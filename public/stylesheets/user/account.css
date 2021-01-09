@@ -11,7 +11,7 @@ body {
   background: #303449;
   width: 100%;
 
-  height: 100vh;
+  height: 100%;
 }
 ::selection {
   background: rgba(116, 160, 255, 0.308);
@@ -523,7 +523,7 @@ body {
   height: 13px;
   border-radius: 50%;
   background: rgb(0, 255, 21);
-  box-shadow: 0px 0px 10px rgb(200, 255, 205);
+  box-shadow: 0px 0px 10px rgb(95, 255, 108);
   margin-right: 7px;
 }
 .status-h {
@@ -531,7 +531,7 @@ body {
   height: 13px;
   border-radius: 50%;
   background: rgb(255, 0, 0);
-  box-shadow: 0px 0px 10px rgb(255, 194, 194);
+  box-shadow: 0px 0px 10px rgb(240, 77, 77);
   margin-right: 7px;
 }
 
@@ -612,7 +612,8 @@ td a {
   top: 0;
   z-index: 10000000000000000000000;
   position: fixed;
-  height: 100vh;
+  height: 100%;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -656,9 +657,13 @@ td a {
     padding-right: 20px;
     line-height: 20px;
   }
+  .show-btn,#pay{
+    font-size: 9px !important;
+    height: 30px !important;
+  }
 }
 
-.show-btn {
+.show-btn,#pay {
   width: 90px;
   font-size: 14px;
   color: #cccd;
