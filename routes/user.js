@@ -9,6 +9,7 @@ var passport = require("passport");
 const { response } = require("express");
 const { cookie } = require("request");
 const { Db } = require("mongodb");
+const mailHelper = require("../helpers/mail-helper");
 
 /* GET users listing. */
 var client = require("twilio")(
@@ -396,7 +397,7 @@ router.post('/another-payment/:method/:id', (req, res) => {
     })
   } else if (req.params.method === 'Paypal') {
     userHelpers.generatePaypalAnother(req.params.id).then((response) => {
-      
+
       res.json(response)
     })
 
@@ -407,13 +408,19 @@ router.post('/another-payment/:method/:id', (req, res) => {
 
 router.get('/booking-success', (req, res) => {
   userHelpers.changeStatus(req.query.id, req.user._id).then((Response) => {
-
+    var dynamic_template_data={
+      Link:'http://localhost:3000'
+    }
+    mailHelper.sendPayment(req.user.Email,process.env.MY_EMAIL,'d-e697e803620148f2bdf3529366c5eb22',dynamic_template_data)
     res.render('user/success', { userDetails: req.user, user: true })
   })
 })
 router.get('/booking-failure', (req, res) => {
   userHelpers.changeStatusToPending(req.query.id).then((Response) => {
-
+    var dynamic_template_data={
+      Link:'http://localhost:3000'
+    }
+    mailHelper.sendPayment(req.user.Email,process.env.MY_EMAIL,'d-1e27f2359bf7426489777d0b4f3f67fe',dynamic_template_data)
     res.render('user/failure', { userDetails: req.user, user: true })
   })
 })

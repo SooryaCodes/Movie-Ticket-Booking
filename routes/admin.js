@@ -4,14 +4,13 @@ var express = require("express");
 var router = express.Router();
 const adminHelper = require("../helpers/admin-helpers");
 require("dotenv").config();
-const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const { response } = require("express");
 const Swal = require("sweetalert2");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-
+const mailHelper = require('../helpers/mail-helper')
 
 const verifyLogin = (req, res, next) => {
   if (req.isAuthenticated() && req.user.role === "admin") {
@@ -37,24 +36,7 @@ var ownersLength = {
 };
 //nodemailer
 
-let mailer = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.MY_EMAIL, // generated ethereal user
-    pass: process.env.MY_PASSWORD, // generated ethereal password
-  },
-});
 
-var options = {
-  viewEngine: {
-    extname: ".hbs",
-    layoutsDir: "views/email/",
-    defaultLayout: "layout",
-  },
-  viewPath: "views/email/",
-};
-
-mailer.use("compile", hbs(options));
 
 /* GET home page. */
 router.get("/", verifyLogin, function (req, res, next) {
@@ -263,25 +245,13 @@ router.post("/add-owner", async (req, res) => {
   console.log("hi");
 
   adminHelper.getPassword(req.body.Name).then((Password) => {
-    const mailOptions = {
-      from: process.env.MY_EMAIL, // sender address
-      to: req.body.Email, // list of receivers
-      subject: "Congradulation", // Subject line
-      text: `hi there`,
-      template: "index",
-      context: {
-        name: req.body.Name,
-        password: Password,
-        theater: req.body.Theater,
-      },
-    };
-    mailer.sendMail(mailOptions, function (err, response) {
-      if (err) {
-        console.log(":( bad email", err, response);
-      } else {
-        console.log(":) good email");
-      }
-    });
+    var dynamic_template_data = {
+      Username: req.body.Name,
+      Password: Password,
+      Theater: req.body.Theater,
+      Link: 'http://localhost:3000/owner/login'
+    }
+    mailHelper.sendOwnerData(req.body.Email, process.env.MY_EMAIL, 'd-862cd711d1264f75a8e550d679c54fcd', dynamic_template_data)
     adminHelper.addOwner(req.body, Password).then((response) => {
       res.render("admin/owner-image-upload", {
         id: response._id,
@@ -315,36 +285,29 @@ router.post("/edit-owner/:id", verifyLogin, (req, res) => {
   var OwnerPasswordNew = "";
 
   adminHelper.getPassword(req.body.Name).then((Password) => {
+    var dynamic_template_data = {
+      Username: req.body.Name,
+      Password: Password,
+      Link: 'http://localhost:3000/owner/login'
+    }
+    mailHelper.sendOwnerData(req.body.Email, process.env.MY_EMAIL, 'd-5d863e5b8623410a978fddbbdf2fa135', dynamic_template_data)
     OwnerPasswordNew = Password;
-    const mailOptions = {
-      from: process.env.MY_EMAIL, // sender address
-      to: req.body.Email, // list of receivers
-      subject: "Login Credentials Updated", // Subject line
-      template: "index-update",
-      context: {
-        name: req.body.Name,
-        password: Password,
-        theater: req.body.Theater,
-      },
-    };
-    mailer.sendMail(mailOptions, function (err, response) {
-      if (err) {
-        console.log(":( bad email", err, response);
-      } else {
-        console.log(":) good email");
-      }
-    });
+
+
+
+    adminHelper
+      .editOwner(req.params.id, req.body, OwnerPasswordNew)
+      .then((data) => {
+        res.render("admin/edit-owner-image-upload", {
+          id,
+          adminDetails: req.user,
+          admin: true,
+        });
+      });
+
   });
 
-  adminHelper
-    .editOwner(req.params.id, req.body, OwnerPasswordNew)
-    .then((data) => {
-      res.render("admin/edit-owner-image-upload", {
-        id,
-        adminDetails: req.user,
-        admin: true,
-      });
-    });
+
 });
 // edit owner image upload
 router.post("/edit-owner-image-upload/:id", verifyLogin, (req, res) => {
@@ -362,23 +325,8 @@ router.post("/delete-owner/:id", verifyLogin, (req, res) => {
   adminHelper.getOwner(req.params.id).then((response) => {
     adminHelper.deleteOwner(req.params.id).then(() => {
       console.log(response);
-      const mailOptions = {
-        from: process.env.MY_EMAIL, // sender address
-        to: response.Email, // list of receivers
-        subject: "Account Deleted", // Subject line
-        template: "index-delete",
-        context: {
-          name: response.Name,
-          theater: response.Theater,
-        },
-      };
-      mailer.sendMail(mailOptions, function (err, response) {
-        if (err) {
-          console.log(":( bad email", err, response);
-        } else {
-          console.log(":) good email");
-        }
-      });
+
+      mailHelper.sendOwnerData(response.Email, process.env.MY_EMAIL, 'd-8af10cdec85946fe92727748c72566e0')
     });
 
     res.json({ status: true });

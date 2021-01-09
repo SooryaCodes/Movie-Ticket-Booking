@@ -302,11 +302,15 @@
             url: '/getBookings',
             method: 'post',
             success: (response) => {
+                if (response.length === 0) {
+                            var table = document.getElementById('table').innerHTML += ` <tr> <td style="width:100%;font-size:20px;font-weight:600;">Sorry, You Have No Bookings.</td></tr>`
 
-                for (var i = 0; i < response.length; i++) {
+                } else {
 
-                    if (response[i].Payment_Status === 'Paid') {
-                        var table = document.getElementById('table').innerHTML += ` <tr>
+                    for (var i = 0; i < response.length; i++) {
+
+                        if (response[i].Payment_Status === 'Paid') {
+                            var table = document.getElementById('table').innerHTML += ` <tr>
             <td>${response[i].ShowsDetails.MovieName}</td>
             <td>${response[i].Theater.Theater}</td>
             <td>${response[i].Show.screenName}</td>
@@ -324,9 +328,9 @@
 
         </tr>`
 
-                    } else {
+                        } else {
 
-                        var table = document.getElementById('table').innerHTML += ` <tr>
+                            var table = document.getElementById('table').innerHTML += ` <tr>
             <td>${response[i].ShowsDetails.MovieName}</td>
             <td>${response[i].Theater.Theater}</td>
             <td>${response[i].Show.screenName}</td>
@@ -343,8 +347,10 @@
 
         </tr>`
 
+                        }
                     }
                 }
+
             }
         })
     })

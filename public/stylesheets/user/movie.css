@@ -2,19 +2,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap"); /* ---universal--- */
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap");
 
-* {
-  margin: 0;
-  bottom: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 
 /* ---body--- */
 body {
-  width: 100%;
-  height: 100%;
+
   background: #303449;
-  position: relative;
 }
 
 /* ---common--- */
@@ -1444,3 +1437,84 @@ background: #fff;
 i.star{
   color: rgb(255, 208, 0);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.location-wrapper {
+  width: 100%;
+  visibility: hidden;
+  opacity: 0;
+  height: 100vh;
+  z-index: 10000000;
+  transition:opacity .5s ease-in-out;
+  position: fixed;
+  top: 0;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.288);
+  justify-content: center;
+}
+.location-wrapper.active{
+  visibility: visible;
+  opacity: 1;
+}
+.map-wrapper {
+  width: 700px;
+  height: 800px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  background: #fff;
+}
+#map {
+  margin-top: 30px;
+  width: 90%;
+  height: 80%;
+  border: none;
+  outline: none;
+}
+
+.map-btn {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.map-btn button {
+  width: 120px;
+  color: white;
+  border: 2px solid #5390df;
+  height: 45px;
+  outline: none;
+  margin-right: 20px;
+  color: #5390df;
+}
+
+.map-btn button:nth-child(2) {
+  color: white;
+  background: #5390df;
+}
+
+
+

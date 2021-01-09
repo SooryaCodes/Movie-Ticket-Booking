@@ -1,7 +1,42 @@
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet"
+    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+    type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
 <link rel="stylesheet" href="/stylesheets/user/movie.css">
 
 
+<style>
+    .marker {
+  background-image: url('https://img.pngio.com/clip-art-free-stock-movie-theater-building-clipart-technology-film-buildings-cinema-theater-building-png-512_512.png');
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
 
+ #instructions {
+            position: absolute;
+            margin: 20px;
+            width: 35%;
+            left: 5px;
+            top: 10px;
+            bottom: 20%;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.336) ;
+            overflow-y: scroll;
+            font-family: sans-serif;
+            font-size: 1em;
+            line-height: 2em;
+            color: white;
+
+ }
+</style>
 
 <div class="movie-view">
     <div class="left-section">
@@ -118,7 +153,8 @@
 
             <div class="select-btns">
 
-                <button class="mask waves-effect waves-light rgba-white-slight " id="tl-btn">Location</button>
+                <button class="mask waves-effect waves-light rgba-white-slight " id="tl-btn"
+                    onclick="displayLocation()">Location</button>
                 <button class="mask waves-effect waves-light rgba-white-slight " onclick="getScreen('{{Movie._id}}')"
                     id="tbtn">Next</button>
             </div>
@@ -374,6 +410,256 @@
     </div>
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="location-wrapper">
+    <div class="map-wrapper">
+
+        <div id="map">
+
+        </div>
+        <div id="instructions">
+
+        </div>
+
+        <div class="map-btn">
+            <button class="mask waves-effect waves-light rgba-white-slight" onclick="cancelLocation()"
+                hidden>Cancel</button>
+            <button class="mask waves-effect waves-light rgba-white-slight ml-5" onclick="cancelLocation()">Close</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var locationWrapper = document.querySelector('.location-wrapper')
+    const displayLocation = () => {
+
+
+        locationWrapper.classList.toggle('active')
+    }
+
+
+    const cancelLocation = () => {
+        locationWrapper.classList.remove('active')
+    }
+
+
+    const giveMarkers = (Theaters) => {
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic29vcnlhLWtyaXoiLCJhIjoiY2tqYTcydDN1NWc1bTJ5bjRuYXF3eHdpayJ9.mo48bziP80gkbrXL-1kETw';
+
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [76.271080, 10.850516], // starting position
+            zoom: 7
+        });
+
+        map.addControl(
+            new MapboxGeocoder({
+
+                accessToken: mapboxgl.accessToken,
+                mapboxgl: mapboxgl,
+                marker: false,
+
+            })
+
+
+        );
+
+
+
+        Theaters.forEach(value => {
+            // create a HTML element for each feature
+            var el = document.createElement('div');
+            el.className = 'marker';
+
+            // make a marker for each feature and add to the map
+            new mapboxgl.Marker(el)
+                .setLngLat([value.Longitude,value.Latitude])
+                .addTo(map);
+
+        })
+        // initialize the map canvas to interact with later
+        var canvas = map.getCanvasContainer();
+
+        // an arbitrary start will always be the same
+        // only the end or destination will change
+        var start = [76.271080, 10.850516];
+
+        // this is where the code for the next step will go
+
+
+
+
+
+        // create a function to make a directions request
+        function getRoute(end) {
+            // make a directions request using cycling profile
+            // an arbitrary start will always be the same
+            // only the end or destination will change
+            var start = [76.271080, 10.850516];
+            var url = 'https://api.mapbox.com/directions/v5/mapbox/driving/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
+
+            // make an XHR request https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
+            var req = new XMLHttpRequest();
+            req.open('GET', url, true);
+            req.onload = function () {
+                var json = JSON.parse(req.response);
+                var data = json.routes[0];
+
+                var route = data.geometry.coordinates;
+                var geojson = {
+                    type: 'Feature',
+                    properties: {},
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: route
+                    }
+                };
+
+                console.log(data);
+                // get the sidebar and add the instructions
+                var instructions = document.getElementById('instructions');
+                var steps = data.legs[0].steps;
+
+                var tripInstructions = [];
+                for (var i = 0; i < steps.length; i++) {
+                    tripInstructions.push('<br><li>' + steps[i].maneuver.instruction) + '</li>';
+                    instructions.innerHTML = '<br><span class="duration">Trip Distance: ' + Math.floor(data.distance / 1000) + ' Km 🚘 </span><br><span class="duration">Trip Duration : ' + Math.floor(data.duration / 60) + ' min 🚘 </span>' + tripInstructions;
+                }
+                // if the route already exists on the map, reset it using setData
+                if (map.getSource('route')) {
+                    map.getSource('route').setData(geojson);
+                } else { // otherwise, make a new request
+                    map.addLayer({
+                        id: 'route',
+                        type: 'line',
+                        source: {
+                            type: 'geojson',
+                            data: {
+                                type: 'Feature',
+                                properties: {},
+                                geometry: {
+                                    type: 'LineString',
+                                    coordinates: geojson
+                                }
+                            }
+                        },
+                        layout: {
+                            'line-join': 'round',
+                            'line-cap': 'round'
+                        },
+                        paint: {
+                            'line-color': '#3887be',
+                            'line-width': 5,
+                            'line-opacity': 0.75
+                        }
+                    });
+                }
+                // add turn instructions here at the end
+            };
+            req.send();
+        }
+        map.on('load', function () {
+            // make an initial directions request that
+            // starts and ends at the same location
+            getRoute(start);
+
+            // Add starting point to the map
+            map.addLayer({
+                id: 'point',
+                type: 'circle',
+                source: {
+                    type: 'geojson',
+                    data: {
+                        type: 'FeatureCollection',
+                        features: [{
+                            type: 'Feature',
+                            properties: {},
+                            geometry: {
+                                type: 'Point',
+                                coordinates: start
+                            }
+                        }
+                        ]
+                    }
+                },
+                paint: {
+                    'circle-radius': 10,
+                    'circle-color': '#3887be'
+                }
+            });
+            // this is where the code from the next step will go
+        });
+
+
+
+
+        map.on('click', function (e) {
+            var coordsObj = e.lngLat;
+            canvas.style.cursor = '';
+            var coords = Object.keys(coordsObj).map(function (key) {
+                return coordsObj[key];
+            });
+            var end = {
+                type: 'FeatureCollection',
+                features: [{
+                    type: 'Feature',
+                    properties: {},
+                    geometry: {
+                        type: 'Point',
+                        coordinates: coords
+                    }
+                }
+                ]
+            };
+            if (map.getLayer('end')) {
+                map.getSource('end').setData(end);
+            } else {
+                map.addLayer({
+                    id: 'end',
+                    type: 'circle',
+                    source: {
+                        type: 'geojson',
+                        data: {
+                            type: 'FeatureCollection',
+                            features: [{
+                                type: 'Feature',
+                                properties: {},
+                                geometry: {
+                                    type: 'Point',
+                                    coordinates: coords
+                                }
+                            }]
+                        }
+                    },
+                    paint: {
+                        'circle-radius': 10,
+                        'circle-color': '#f30'
+                    }
+                });
+            }
+
+
+            getRoute(coords);
+
+        });
+
+
+    }
+
+</script>
 <script>
     function ratePopUp() {
         var wrapper = document.querySelector('.rate-pop-up-wrapper')
@@ -506,6 +792,7 @@
                         }
                     });
                     console.log(TheaterDetails, 'TheaterDetails')
+                    giveMarkers(TheaterDetails)
                     TheaterDetails.forEach(Details => {
                         sliderWrapperTheater.innerHTML += `
                     <div class="swiper-slide booking" >
