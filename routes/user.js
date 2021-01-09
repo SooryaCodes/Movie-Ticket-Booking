@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const Fuse = require('fuse.js')
 
 var ErrMessage = {};
 const userHelpers = require("../helpers/user-helpers");
@@ -446,6 +447,7 @@ router.get("/search", (req, res) => {
   res.render("user/search", { user: true, userDetails: req.user });
 });
 
+
 router.get("/account", verifyLogin, (req, res) => {
   res.render("user/account", { userDetails: req.user, user: true });
 });
@@ -489,5 +491,8 @@ router.post('/getBookings', (req, res) => {
     res.json(Response)
   })
 })
+
+
+
 
 module.exports = router;

@@ -126,11 +126,15 @@ router.get("/logout", verifyLogin, (req, res) => {
 
 router.get("/theater-details", verifyLogin, (req, res) => {
   adminHelper.getAdminDetails().then((adminDetails) => {
-    res.render("admin/theater-details", {
-      admin: true,
-      ownersLength,
-      adminDetails,
-    });
+    adminHelper.getTheaterDetails().then((response)=>{
+
+      res.render("admin/theater-details", {
+        admin: true,
+        ownersLength,
+        adminDetails,
+        Theater:response
+      });
+    })
   });
 });
 

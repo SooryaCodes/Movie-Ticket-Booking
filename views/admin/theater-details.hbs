@@ -64,52 +64,19 @@
       <th>Date</th>
       <th>Status</th>
     </tr>
+    {{#eacah Theater}}
     <tr>
       <td id="row"></td>
-      <td>John Doe</td>
-      <td>Sivadham</td>
-      <td>220</td>
-      <td>10-2-2020</td>
-      <td>
-        <div class="status-h"></div>
-        On Hold
-      </td>
-    </tr>
-    <tr>
-      <td id="row"></td>
-      <td>John Doe</td>
-      <td>Sivadham</td>
+      <td>{{this.Theater}}</td>
+      <td>{{this.Name}}</td>
       <td>220</td>
       <td>10-2-2020</td>
       <td>
         <div class="status-a"></div>
         Active
       </td>
-
     </tr>
-    <tr>
-      <td id="row"></td>
-      <td>John Doe</td>
-      <td>Sivadham</td>
-      <td>220</td>
-      <td>10-2-2020</td>
-      <td>
-        <div class="status-h"></div>
-        On Hold
-      </td>
-    </tr>
-    <tr>
-      <td id="row"></td>
-      <td>John Doe</td>
-      <td>Sivadham</td>
-      <td>220</td>
-      <td>10-2-2020</td>
-      <td>
-        <div class="status-a"></div>
-        Active
-      </td>
-
-    </tr>
+   {{/each}}
   </table>
 </div>
 

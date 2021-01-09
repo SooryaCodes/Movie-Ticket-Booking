@@ -273,7 +273,13 @@ module.exports = {
       })
     })
   },
-
+  getTheaterDetails: () => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.OWNER_COLLECTION).find().toArray().then((response) => {
+        resolve(response)
+      })
+    })
+  }
 
 
 };

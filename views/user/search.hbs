@@ -1,27 +1,34 @@
 <link rel="stylesheet" href="/stylesheets/user/search.css">
 <main>
+    <div class="search-wrapper">
+        <div class="search">
+            <input type="search" name="search" id="search" onkeyup="getMovie(value)">
+        </div>
+    </div>
+</main>
 
 
-<div class="search-wrapper">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 "
-                style="padding: 0; display: flex; align-items: center; justify-content: space-around;">
-                <div class="products" data-aos="fade-up" data-aos-duration="1800">
-                    <div class="p-img">
-                        <img src="/images/owner/movie/5fed8e4afd652945e1bf6ada.jpg" alt="">
-                    </div>
+
+{{!-- data:searchKey, --}}
+
+{{!--
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 "
+            style="padding: 0; display: flex; align-items: center; justify-content: space-around;">
+            <div class="products" data-aos="fade-up" data-aos-duration="1800">
+                <div class="p-img">
+                    <img src="/images/owner/movie/5fed8e4afd652945e1bf6ada.jpg" alt="">
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 "
-                style="padding: 0; display: flex; align-items: center; justify-content: space-around;">
-                <div class="products" data-aos="fade-up" data-aos-duration="1800">
-                    <div class="p-img">
-                        <img src="/images/owner/movie/5fed8e4afd652945e1bf6ada.jpg" alt="">
-                    </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 "
+            style="padding: 0; display: flex; align-items: center; justify-content: space-around;">
+            <div class="products" data-aos="fade-up" data-aos-duration="1800">
+                <div class="p-img">
+                    <img src="/images/owner/movie/5fed8e4afd652945e1bf6ada.jpg" alt="">
                 </div>
             </div>
         </div>
     </div>
-</div>
-</main>
+</div> --}}

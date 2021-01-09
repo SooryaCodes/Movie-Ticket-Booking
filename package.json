@@ -19,6 +19,7 @@
     "express-generator": "^4.16.1",
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
+    "fuse.js": "^6.4.6",
     "hbs": "^4.1.1",
     "helmet": "^4.2.0",
     "http-error": "0.0.6",

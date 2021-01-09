@@ -139,38 +139,6 @@
 
   }
 </script>
-<script>
-  // ---chart script---
-
-  var ctxL = document.getElementById("barChart").getContext("2d");
-  var gradientFill = ctxL.createLinearGradient(0, 0, 0, 290);
-  gradientFill.addColorStop(0, "#5e97ff");
-  gradientFill.addColorStop(1, "rgba(0,146,255,0.1)");
-  var myLineChart = new Chart(ctxL, {
-    type: "bar",
-    data: {
-      labels: ["March", "March", "April", "May", "June", "July"],
-      datasets: [
-        {
-          label: "My First dataset",
-          data: [30, 65, 45, 65, 35, 65, 0],
-          backgroundColor: gradientFill,
-          borderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-    },
-  });
-
-
-
-
-
-
-
-</script>
 
 
 
@@ -308,7 +276,7 @@
             label: "My First dataset",
             data: [Screens, Shows, Movies, Bookings, Users],
             backgroundColor: gradientFill,
-            borderWidth: 2,
+            borderWidth: 0,
           },
         ],
       },

@@ -28,7 +28,6 @@ app.engine(
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json({ limit: '50mb' })); app.use(express.urlencoded({ limit: '50mb' }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(fileUpload());
@@ -46,7 +45,8 @@ app.use(
     }),
   })
 );
-var initializePassport = require('./passport/passport-setup').initializePassport
+var initializePassport = require('./passport/passport-setup').initializePassport;
+const router = require("./routes/admin");
 initializePassport(passport)
 app.use(passport.initialize())
 app.use(passport.session())
@@ -61,9 +61,28 @@ app.use("/", userRouter);
 app.use("/admin", adminRouter);
 app.use("/owner", ownerRouter);
 
+
+// 404 route
+
+app.get("/404", (req, res) => {
+  res.status(404).render("404", {
+    title: "Page Not Found"
+  });
+});
+
+// 500 route
+
+app.get("/500", (req, res) => {
+  res.status(500).render("500", {
+    title: "Internal Server Error"
+  });
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+  res.status(404).render("404", {
+    title: "Page Not Found"
+  })
 });
 
 // error handler
@@ -74,7 +93,10 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.render("500", {
+    title: "Internal Server Error"
+  });
 });
+
 
 module.exports = app;
