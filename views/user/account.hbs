@@ -66,7 +66,7 @@
                 <i class="fas fa-clipboard-list    "></i>
                 <div class="a-content">
                     <p>Booking</p>
-                    <span>20</span>
+                    <span id="Booking">20</span>
                 </div>
             </div>
 
@@ -74,7 +74,7 @@
                 <i class="fas fa-money-bill-wave  " style="color: rgb(255, 128, 128);"></i>
                 <div class="a-content">
                     <p>Payments</p>
-                    <span style="color: rgb(255, 128, 128);">20</span>
+                    <span style="color: rgb(255, 128, 128);" id="Payments">20</span>
                 </div>
             </div>
 
@@ -82,7 +82,7 @@
                 <i class="fas fa-info-circle    " style="color: #aefcff;"></i>
                 <div class="a-content">
                     <p>Pendings</p>
-                    <span style="color: #aefcff;">20</span>
+                    <span style="color: #aefcff;" id="Pendings">20</span>
                 </div>
             </div>
 
@@ -90,7 +90,7 @@
                 <i class="fas fa-coins    " style="color: #fffd80;"></i>
                 <div class="a-content">
                     <p>Rewards</p>
-                    <span style="color: #fffd80;">20</span>
+                    <span style="color: #fffd80;" id="Rewards">20</span>
                 </div>
             </div>
 
@@ -155,6 +155,8 @@
 
                 }
 
+                var Rewards = response.Rewards
+                document.getElementById('Rewards').innerHTML = Rewards.length
 
             }
         })
@@ -302,8 +304,12 @@
             url: '/getBookings',
             method: 'post',
             success: (response) => {
+                var Pendings = []
+                document.getElementById('Booking').innerHTML = response.length
+                document.getElementById('Payments').innerHTML = response.length
+                document.getElementById('Pendings').innerHTML = Pendings.length
                 if (response.length === 0) {
-                            var table = document.getElementById('table').innerHTML += ` <tr> <td style="width:100%;font-size:20px;font-weight:600;">Sorry, You Have No Bookings.</td></tr>`
+                    var table = document.getElementById('table').innerHTML += ` <tr> <td style="width:100%;font-size:20px;font-weight:600;">Sorry, You Have No Bookings.</td></tr>`
 
                 } else {
 
@@ -329,7 +335,7 @@
         </tr>`
 
                         } else {
-
+                            Pendings[i] = response[i]
                             var table = document.getElementById('table').innerHTML += ` <tr>
             <td>${response[i].ShowsDetails.MovieName}</td>
             <td>${response[i].Theater.Theater}</td>

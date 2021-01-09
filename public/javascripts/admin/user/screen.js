@@ -9,13 +9,33 @@ var PremiumSeat = document.getElementById("PremiumSeat").value;
 var bookedSeats = document.getElementById("BookedSeats").value;
 var TotalNumberOfSeat = parseInt(TotalNumberOfSeat)
 var socket = io()
+window.addEventListener('load', () => {
+  var name = document.getElementById("username").value;
 
+  document.querySelector(
+    ".alerts"
+  ).innerHTML += `<div class="alert style="position:fixed;" alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
+  <strong>Hi ${name}.</strong> Seat Selection Will Time Out In 5 minutes.
+</div>`;
+})
+
+
+setTimeout(() => {
+  location.href = '/'
+}, 300000)
 console.log(bookedSeats);
 var Reserved = bookedSeats.split(",");
 window.addEventListener('load', () => {
   if (Reserved.length === TotalNumberOfSeat) {
-    alert('HouseFul')
-    console.log('Houseful');
+
+    var name = document.getElementById("username").value;
+
+    document.querySelector(
+      ".alerts"
+    ).innerHTML += `<div class="alert style="position:fixed;" alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
+  <strong>Hi ${name}.</strong> Sorry All Seat's Have Been Selected. Try Looking Other Shows.
+</div>`;
+
   }
 })
 
