@@ -152,11 +152,8 @@
                     document.querySelector('#wallet').innerHTML = `0`
 
                 } else {
-                    var WalletTotal = Wallet.reduce((a, b) => {
-                        a + b, 0
-                    })
-                    console.log(WalletTotal)
-                    document.querySelector('#wallet').innerHTML = `${WalletTotal}`
+                
+                    document.querySelector('#wallet').innerHTML = `${Wallet}`
 
                 }
 

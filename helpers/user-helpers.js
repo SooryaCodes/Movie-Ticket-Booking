@@ -2,16 +2,20 @@ var db = require("../config/connection");
 var collection = require("../config/collection");
 const bcrypt = require("bcrypt");
 const { response } = require("express");
-const { search } = require("../routes/admin");
+const { search, use } = require("../routes/admin");
 const objectId = require("mongodb").ObjectID;
 require("dotenv").config();
 var Razorpay = require("razorpay");
 const { readlink } = require("fs");
 const { resolve } = require("path");
+const { BOOKING_COLLECTION } = require("../config/collection");
 var instance = new Razorpay({
   key_id: process.env.RAZORPAY_ID,
   key_secret: process.env.RAZORPAY_SECRET,
 });
+const jwt = require("jsonwebtoken");
+const { decode } = require("punycode");
+
 module.exports = {
   checkLogin: (mobile) => {
     return new Promise(async (resolve, reject) => {
@@ -108,14 +112,14 @@ module.exports = {
       details.ownerId = data.ownerId
       details.Payment_Status = 'Pending'
       details.Date = new Date()
-      details.PaymentStatus=false
-
+      details.PaymentStatus = false
       console.log(data.show, "shoe");
       console.log(details, "details");
+      details.walletUsed = data.walletUsed
       if (data.walletUsed === true) {
-        var deletWallet = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
-          $pull: {
-            Wallet
+        var deleteWallet = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
+          $set: {
+            Wallet: 0
           }
         })
       }
@@ -168,16 +172,26 @@ module.exports = {
       details.ownerId = data.ownerId
       details.Date = new Date()
       details.Payment_Status = 'Pending'
-      details.PaymentStatus=false
-
+      details.PaymentStatus = false
+      details.walletUsed = data.walletUsed
       if (data.walletUsed === true) {
-        var deletWallet = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
-          $pull: {
+        var deleteWallet = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
+          $set: {
             Wallet: 0
           }
         })
       }
-
+      var showCollection = await db
+        .get()
+        .collection(collection.SHOW_COLLECTION)
+        .updateOne(
+          { _id: objectId(data.show._id) },
+          {
+            $push: {
+              Seats: details.Seat,
+            },
+          }
+        );
       console.log(details, "details");
 
       var booking = await db
@@ -186,7 +200,7 @@ module.exports = {
         .insertOne(details);
 
       var bookingId = booking.ops[0]._id;
-      resolve(details, bookingId);
+      resolve({ details, bookingId });
     });
   },
   verifyPayment: (details) => {
@@ -204,7 +218,7 @@ module.exports = {
         db.get().collection(collection.BOOKING_COLLECTION).updateOne({ _id: objectId(details['order[receipt]']) }, {
           $set: {
             Payment_Status: 'Paid',
-            PaymentStatus:true
+            PaymentStatus: true
           }
         }).then((response) => {
           console.log(response, 'response');
@@ -214,7 +228,7 @@ module.exports = {
         db.get().collection(collection.BOOKING_COLLECTION).updateOne({ _id: objectId(details['order[receipt]']) }, {
           $set: {
             Payment_Status: 'Pending',
-            PaymentStatus:false
+            PaymentStatus: false
           }
         }).then((anotherresponse) => {
           console.log(anotherresponse, 'anotherresponse')
@@ -246,8 +260,8 @@ module.exports = {
           payment_method: "paypal",
         },
         redirect_urls: {
-          return_url: "http://localhost:3000",
-          cancel_url: "http://localhost:3000/failure",
+          return_url: "http://localhost:3000/booking-success?id=" + id,
+          cancel_url: "http://localhost:3000/booking-failure?id=" + id,
         },
         transactions: [
           {
@@ -481,10 +495,61 @@ module.exports = {
       })
     })
   },
-  getBookings:(id)=>{
-    return new Promise((resolve,reject)=>{
-      db.get().collection(collection.BOOKING_COLLECTION).find({userId:objectId(id)}).toArray().then((Response)=>{
+  getBookings: (id) => {
+    console.log(typeof (id));
+    console.log(id);
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.BOOKING_COLLECTION).find({ userId: objectId(id) }).toArray().then((Response) => {
         resolve(Response)
+      })
+    })
+  },
+
+  changeStatus: (id, userId) => {
+
+    return new Promise(async (resolve, reject) => {
+      var userData = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(userId) })
+      var thisUserBookings = await db.get().collection(collection.BOOKING_COLLECTION).find({ userId: objectId(userId) }).toArray()
+      if (thisUserBookings.length === 1) {
+        jwt.verify(userData.Referal_Used, process.env.USER_SECRET, async (err, decoded) => {
+          if (err) {
+            console.log("I don't know :)");
+          } else {
+            var insertWallet = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(decoded._id) }, {
+              $inc: {
+                Wallet: 100
+              }
+            })
+            var insertReward = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(decoded._id) }, {
+              $push: {
+                Rewards: 100
+              }
+            })
+
+
+          }
+        });
+
+      }
+      db.get().collection(collection.BOOKING_COLLECTION).updateOne({ _id: objectId(id) }, {
+        $set: {
+          Payment_Status: 'Paid',
+          PaymentStatus: true
+        }
+      }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
+  changeStatusToPending: (id) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.BOOKING_COLLECTION).updateOne({ _id: objectId(id) }, {
+        $set: {
+          Payment_Status: 'Pending',
+          PaymentStatus: false
+        }
+      }).then((response) => {
+        resolve(response)
       })
     })
   }

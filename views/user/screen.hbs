@@ -68,11 +68,11 @@
         </div>
                     <div class="wallet" style="display: flex;align-items: center;justify-content: space-between; width: 100%; height: 50px;padding-left:40px ;padding-right: 40px;">
                 <div style="display: flex;align-items: center;justify-content: flex-start; ">
-                    <input type="checkbox" value="{{TotalWallet}}" onchange="wallet(value)"  name="Wallet" id="Wallet" style="height: 20px;width: 20px; margin-right: 10px;">
+                    <input type="checkbox" value="{{Wallet}}" onchange="wallet('{{Wallet}}')"  name="Wallet" id="Wallet" style="height: 20px;width: 20px; margin-right: 10px;">
                 <p style="margin: 0;">Use My Wallet</p>
                 </div>
 
-                <span>{{TotalWallet}}</span>
+                <span>{{Wallet}}</span>
             </div>
         <div class="content ">
             
@@ -146,6 +146,7 @@
     var userEmail='{{DetailsUser.Email}}'
     var userMobile='{{DetailsUser.Mobile}}'
     var ReferalUsed='{{DetailsUser.Referal_Used}}'
-    console.log(ReferalUsed)
+    var Wallet='{{DetailsUser.Wallet}}'
+    var Rewards='{{DetailsUser.Rewards}}'
 </script>
 <script src="/javascripts/admin/user/screen.js"></script>

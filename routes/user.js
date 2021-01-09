@@ -332,18 +332,9 @@ router.get("/seat-select/:id/:ownerId", verifyLogin, (req, res) => {
     var bookedSeats = data.show.Seats;
     console.log(bookedSeats);
 
-    // var DetailsUser = await userHelpers.getWallet(req.user._id)
-    // var TotalWallet
-    // if (DetailsUser.status === false) {
-    //   console.log('nothing');
-    // } else {
-    //   console.log(DetailsUser);
-    //   TotalWallet = DetailsUser.Wallet.reduce((a, b) => {
-    //     a + b, 0
-    //   })
-    // }
-    // console.log(TotalWallet);
-
+    var DetailsUser = await userHelpers.getWallet(req.user._id)
+    console.log(DetailsUser.Wallet);
+    console.log(DetailsUser.Rewards);
     console.log(screen, "scrreeen cchekibb");
     res.render("user/screen", {
       user: true,
@@ -357,7 +348,9 @@ router.get("/seat-select/:id/:ownerId", verifyLogin, (req, res) => {
       user: req.user.Name,
       ownerId: req.params.ownerId,
       // TotalWallet,
-      // DetailsUser
+      Wallet: DetailsUser.Wallet,
+      Rewards: DetailsUser.Rewards,
+      DetailsUser
     });
   });
 });
@@ -374,7 +367,7 @@ router.post("/ticket-booking", (req, res) => {
     });
   } else if (req.body.paymentMethod === "Paypal") {
     userHelpers.insertBooking(req.body, req.user._id).then((data) => {
-      userHelpers.generatePaypal(data).then((response) => {
+      userHelpers.generatePaypal(data.details,data.bookingId).then((response) => {
         console.log(response.transactions[0].item_list, "paypal");
         console.log(response.transactions[0].item_list.items, "paypal");
         res.json(response.links[1].href);
@@ -396,9 +389,18 @@ router.post("/verify-payment", (req, res) => {
   });
 });
 
-router.get("/failure", (req, res) => {
-  res.send("failure");
-});
+router.get('/booking-success', (req, res) => {
+  userHelpers.changeStatus(req.query.id,req.user._id).then((Response) => {
+
+    res.render('user/success', { userDetails: req.user, user: true })
+  })
+})
+router.get('/booking-failure', (req, res) => {
+  userHelpers.changeStatusToPending(req.query.id).then((Response) => {
+
+    res.render('user/failure', { userDetails: req.user, user: true })
+  })
+})
 
 router.post("/rating/:movieId", (req, res) => {
   userHelpers
@@ -459,8 +461,8 @@ router.post("/update-email", (req, res) => {
   }
 });
 
-router.post('/getBookings',(req,res)=>{
-  userHelpers.getBookings(req.user._id).then((Response)=>{
+router.post('/getBookings', (req, res) => {
+  userHelpers.getBookings(req.user._id).then((Response) => {
     res.json(Response)
   })
 })
