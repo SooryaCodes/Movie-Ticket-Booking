@@ -7,7 +7,7 @@
     <div class="user-dash">
         <div class="profile-section">
             <div class="img-section" title="Edit Image">
-                <input type="file" name="" id="imageInput" title="Edit Profile Image"  onchange="imageUpdate(event)">
+                <input type="file" name="" id="imageInput" title="Edit Profile Image" onchange="imageUpdate(event)">
                 <img id="profile-pic" src="/images/user/profile/{{userDetails._id}}.jpg" onerror="errorInImg()" alt="">
             </div>
             <div class="profile-details">
@@ -98,38 +98,24 @@
     </div>
 </div>
 
-
-<!--table -->
-<div class="owner-table">
-
-    <table id="table">
-
-        <tr>
-
-            <th>
-                Movie
-            </th>
-
-            <th>
-                Theater
-            </th>
-            <th>
-                Screen
-            </th>
-            <th>
-                Show
-
-            </th>
-            <th>
-                Seats
-            </th>
-            <th>
-                Payment
-            </th>
-        </tr>
+<div class="table-responsive   "
+    style="width: 96%; padding-left: 10px;padding-right: 10px;margin-right: 10px;border-radius: 7px;">
+    <table class="table"  >
+        <thead>
+            <tr align="center">
+                <th>#</th>
+                <th scope="col">Movie</th>
+                <th scope="col">Theater</th>
+                <th scope="col">Screen</th>
+                <th scope="col">Show</th>
+                <th scope="col">Seats</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody id="body-table">
 
 
-
+        </tbody>
     </table>
 </div>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -236,7 +222,7 @@
             processData: false,
             contentType: false,
             success: function () {
-             location.reload()
+                location.reload()
             }
 
         });
@@ -340,7 +326,9 @@
                     for (var i = 0; i < response.length; i++) {
 
                         if (response[i].Payment_Status === 'Paid') {
-                            var table = document.getElementById('table').innerHTML += ` <tr>
+                            var table = document.getElementById('body-table').innerHTML += ` 
+            <tr align="center">
+                                <th id="row"></th>
             <td>${response[i].ShowsDetails.MovieName}</td>
             <td>${response[i].Theater.Theater}</td>
             <td>${response[i].Show.screenName}</td>
@@ -360,7 +348,11 @@
 
                         } else {
                             Pendings[i] = response[i]
-                            var table = document.getElementById('table').innerHTML += ` <tr>
+                            var table = document.getElementById('body-table').innerHTML += ` 
+                                        <tr align="center">
+
+                                            <th id="row"></th>
+
             <td>${response[i].ShowsDetails.MovieName}</td>
             <td>${response[i].Theater.Theater}</td>
             <td>${response[i].Show.screenName}</td>
