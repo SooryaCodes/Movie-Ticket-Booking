@@ -288,8 +288,8 @@ module.exports = {
           payment_method: "paypal",
         },
         redirect_urls: {
-          return_url: "http://localhost:3000/booking-success?id=" + id,
-          cancel_url: "http://localhost:3000/booking-failure?id=" + id,
+          return_url: "https://moviecafe.sooryakriz.com/booking-success?id=" + id,
+          cancel_url: "https://moviecafe.sooryakriz.com/booking-failure?id=" + id,
         },
         transactions: [
           {
