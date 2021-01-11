@@ -52,7 +52,7 @@
         </div>
     </div>
     <div class="checkout p-4">
-        <button id="checkout">Checkout <span id="total"></span></button>
+        <button id="checkout" onclick="checkoutBtn()">Checkout ₹ <span id="total"> </span></button>
     </div>
 </div>
 
@@ -73,14 +73,14 @@
         <div class="wallet"
             style="display: flex;align-items: center;justify-content: space-between; width: 100%; height: 50px;padding-left:40px ;padding-right: 40px;">
             <div style="display: flex;align-items: center;justify-content: flex-start; ">
-                <input type="checkbox" value="{{Wallet}}" onchange="wallet('{{Wallet}}')" name="Wallet" id="Wallet"
+                <input type="checkbox" id="WalletInput" value="{{Wallet}}" onchange="wallet('{{Wallet}}')" name="Wallet" id="Wallet"
                     style="height: 20px;width: 20px; margin-right: 10px;">
-                <p style="margin: 0;">Use My Wallet</p>
+                <p style="margin: 0;" class="walletP">Use My Wallet</p>
             </div>
 
-            <span>{{Wallet}}</span>
+            <span id="WalletPrice">{{Wallet}}</span>
         </div>
-        <div class="content ">
+        <div class="content totalAmount">
 
 
             <span>Total :</span>

@@ -459,3 +459,53 @@ body {
 #x{
  width: 30px; 
 }
+
+@media (max-width:700px){
+  .payment-popup{
+    width: 230px;
+  }
+  
+  .details img{
+  margin-top: 30px;  
+    width: 150px;
+    height: 200px;
+  }
+  .content {
+    padding-left: 30px;
+    padding-right: 30px;
+font-size: 14px;
+  }
+
+  .pay input {
+    border: none;
+    width: 150px;
+    height: 35px;
+    font-size: 12px;
+    border-radius: 20px;
+  }
+  .walletP{
+    font-size: 11px !important;
+  }
+  #WalletInput{
+    width: 15px !important;
+    height: 15px !important;
+  }
+  #WalletPrice{
+    font-size: 14px;
+  }
+  .totalAmount span{
+    font-size: 16px !important;
+  }
+  .pay{
+    margin-top: 20px;
+  }
+  .pay p{
+    margin: 3px !important;
+  }
+  .x{
+    width: 30px;height: 30px;
+  }
+  #x{
+    width: 20px;
+  }
+}

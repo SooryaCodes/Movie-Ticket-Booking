@@ -191,26 +191,32 @@ function myfun(hi) {
 
   console.log(TotalPrice);
 
-  document.getElementById("total").innerText = `₹ ${TotalPrice}`;
+  document.getElementById("total").innerText = ` ${TotalPrice}`;
 
-  var btn = document.getElementById("checkout");
-  btn.addEventListener("click", function () {
-    var seatNumber = checkedSeat.length;
-    var paymentPopupWrapper = document.querySelector(".payment-popup-wrapper");
-    var paymentPopup = document.querySelector(".payment-popup");
-    var totalAmount = (document.getElementById(
-      "totalAmount"
-    ).innerHTML = `₹<span id="totalPriceForPayment">${TotalPrice}</span> `);
-    var screenName = (document.getElementById(
-      "screenName"
-    ).innerText = `${show.screenName}`);
-    var seatNo = (document.getElementById(
-      "seatNo"
-    ).innerText = `${seatNumber}`);
-    paymentPopupWrapper.classList.toggle('active')
-    paymentPopup.classList.toggle("active");
-  });
+
 }
+
+
+
+
+ function checkoutBtn() {
+  var checkedSeat = document.querySelectorAll('input[name="seat"]:checked');
+var TotalPrice=parseInt(document.getElementById('total').innerHTML)
+  var seatNumber = checkedSeat.length;
+  var paymentPopupWrapper = document.querySelector(".payment-popup-wrapper");
+  var paymentPopup = document.querySelector(".payment-popup");
+  var totalAmount = (document.getElementById(
+    "totalAmount"
+  ).innerHTML = `₹<span id="totalPriceForPayment">${TotalPrice}</span> `);
+  var screenName = (document.getElementById(
+    "screenName"
+  ).innerText = `${show.screenName}`);
+  var seatNo = (document.getElementById(
+    "seatNo"
+  ).innerText = `${seatNumber}`);
+  paymentPopupWrapper.classList.toggle('active')
+  paymentPopup.classList.toggle("active");
+};
 document.querySelector('.x').addEventListener('click',()=>{
   var paymentPopupWrapper = document.querySelector(".payment-popup-wrapper");
   var paymentPopup = document.querySelector(".payment-popup");
