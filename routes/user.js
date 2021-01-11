@@ -416,11 +416,11 @@ router.post('/profile-image', (req, res) => {
 
 
 router.get('/booking-success', (req, res) => {
-  userHelpers.changeStatus(req.query.id, req.user._id).then((Response) => {
+  userHelpers.changeStatus(req.query.id, req.user._id).then(async(Response) => {
     var dynamic_template_data = {
       Link: 'https://moviecafe.sooryakriz.com/account'
     }
-    mailHelper.sendPayment(req.user.Email, process.env.MY_EMAIL, 'd-e697e803620148f2bdf3529366c5eb22', dynamic_template_data)
+    var paymentMail=await mailHelper.sendPayment(req.user.Email, process.env.MY_EMAIL, 'd-e697e803620148f2bdf3529366c5eb22', dynamic_template_data)
 
     userHelpers.getBookingDetail(req.query.id).then((templateData) => {
 
