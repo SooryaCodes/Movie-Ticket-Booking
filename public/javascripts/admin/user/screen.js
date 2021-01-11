@@ -21,16 +21,20 @@ window.addEventListener('load', () => {
   <strong>Hi ${name}.</strong> Seat Selection Will Time Out In 5 minutes.
 </div>`;
 
+disableCorona()
 
+
+})
+
+function disableCorona(){
   var AllSeatsForDisabling = document.querySelectorAll('input[name="seat"]');
   for (var i = 0; i < AllSeatsForDisabling.length; i++) {
     if (i % 2 === 0) {
       AllSeatsForDisabling[i].disabled = true
-      AllSeatsForDisabling[i].classList.toggle('corona')
+      AllSeatsForDisabling[i].classList.add('corona')
     }
   }
-
-})
+}
 
 
 setTimeout(() => {
@@ -109,6 +113,7 @@ function myfun(hi) {
   if (checkedSeat.length > 10) {
     input.checked = false;
     unselected.forEach((value) => (value.disabled = true));
+    disableCorona()
     var name = document.getElementById("username").value;
     console.log(name);
     document.querySelector(
@@ -118,7 +123,7 @@ function myfun(hi) {
   </div>`;
   } else if (checkedSeat.length <= 10) {
     unselected.forEach((value) => (value.disabled = false));
-
+    disableCorona()
     var wrapper = document.querySelector(".seat-selected-wrapper");
     var SeatShow = document.querySelector(".seat-selected-container");
     if (input.checked === true) {
@@ -137,9 +142,6 @@ function myfun(hi) {
     console.log(wrapper.childElementCount);
     if (SeatShow.childElementCount >= 1) {
       wrapper.classList.add("active");
-    }else if(SeatShow.childElementCount===6){
-      wrapper.classList.remove('active')
-      wrapper.classList.add('six')
     }else {
       wrapper.classList.remove("active");
       console.log("hi there is nothing");

@@ -486,7 +486,7 @@ font-size: 14px;
   .walletP{
     font-size: 11px !important;
   }
-  #WalletInput{
+  #=.WalletInput{
     width: 15px !important;
     height: 15px !important;
   }
