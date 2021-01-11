@@ -406,12 +406,19 @@ router.post('/another-payment/:method/:id', (req, res) => {
   }
 })
 
+router.post('/profile-image',(req,res)=>{
+  console.log('success');
+  console.log(req.files.image);
+
+  req.files.image.mv(`./public/images/user/profile/${req.user._id}.jpg`)
+  res.json({status:true})
+})
 
 
 router.get('/booking-success', (req, res) => {
   userHelpers.changeStatus(req.query.id, req.user._id).then((Response) => {
     var dynamic_template_data={
-      Link:'http://localhost:3000'
+      Link:'https://moviecafe.sooryakriz.com/account'
     }
     mailHelper.sendPayment(req.user.Email,process.env.MY_EMAIL,'d-e697e803620148f2bdf3529366c5eb22',dynamic_template_data)
     res.render('user/success', { userDetails: req.user, user: true,userDetails:req.user, })
@@ -420,7 +427,7 @@ router.get('/booking-success', (req, res) => {
 router.get('/booking-failure', (req, res) => {
   userHelpers.changeStatusToPending(req.query.id).then((Response) => {
     var dynamic_template_data={
-      Link:'http://localhost:3000'
+      Link:'https://moviecafe.sooryakriz.com/account'
     }
     mailHelper.sendPayment(req.user.Email,process.env.MY_EMAIL,'d-1e27f2359bf7426489777d0b4f3f67fe',dynamic_template_data)
     res.render('user/failure', { userDetails: req.user, user: true })
@@ -492,7 +499,6 @@ router.post('/getBookings', (req, res) => {
     res.json(Response)
   })
 })
-
 
 
 

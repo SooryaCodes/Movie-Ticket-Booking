@@ -253,7 +253,7 @@ router.post("/add-owner", async (req, res) => {
       Username: req.body.Name,
       Password: Password,
       Theater: req.body.Theater,
-      Link: 'http://localhost:3000/owner/login'
+      Link: 'https://moviecafe.sooryakriz.com/owner/login'
     }
     mailHelper.sendOwnerData(req.body.Email, process.env.MY_EMAIL, 'd-862cd711d1264f75a8e550d679c54fcd', dynamic_template_data)
     adminHelper.addOwner(req.body, Password).then((response) => {
@@ -292,7 +292,7 @@ router.post("/edit-owner/:id", verifyLogin, (req, res) => {
     var dynamic_template_data = {
       Username: req.body.Name,
       Password: Password,
-      Link: 'http://localhost:3000/owner/login'
+      Link: 'https://moviecafe.sooryakriz.com/owner/login'
     }
     mailHelper.sendOwnerData(req.body.Email, process.env.MY_EMAIL, 'd-5d863e5b8623410a978fddbbdf2fa135', dynamic_template_data)
     OwnerPasswordNew = Password;

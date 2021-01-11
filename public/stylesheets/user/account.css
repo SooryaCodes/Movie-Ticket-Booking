@@ -43,6 +43,7 @@ body {
 }
 
 .user-dash .profile-section .img-section {
+  position: relative;
   width: 160px;
   cursor: pointer;
   height: 160px;
@@ -53,6 +54,14 @@ body {
   margin-top: 35px;
   background: #303449;
   box-shadow: 5px 5px 10px #282b3d, -5px -5px 10px #32374b;
+}
+.user-dash .profile-section .img-section input{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  cursor: pointer;
+  height: 100%;
+  opacity: 0;
 }
 
 .user-dash .profile-section .img-section img {
