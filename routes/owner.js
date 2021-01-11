@@ -314,6 +314,9 @@ router.post("/delete-upcoming-movie/:id", (req, res) => {
 });
 
 router.get("/popup", (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    req.session.messages = { error: 'Invalid Account' }
+  }
   res.render("owner/auth-popup-callback", { layout: false });
 });
 

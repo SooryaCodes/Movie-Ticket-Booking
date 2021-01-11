@@ -506,6 +506,7 @@
 
         // create a function to make a directions request
         function getRoute(end) {
+
             // make a directions request using cycling profile
             // an arbitrary start will always be the same
             // only the end or destination will change
@@ -540,7 +541,6 @@
                     instructions.innerHTML = '<br><span class="duration">Trip Distance: ' + Math.floor(data.distance / 1000) + ' Km 🚘 </span><br><span class="duration">Trip Duration : ' + Math.floor(data.duration / 60) + ' min 🚘 </span>' + tripInstructions;
                 }
 
-                return data
                 // if the route already exists on the map, reset it using setData
                 if (map.getSource('route')) {
                     map.getSource('route').setData(geojson);
@@ -666,7 +666,9 @@
 
 
     // create a function to make a directions request
-    function getDistance(end,id) {
+    function getDistance(end, id) {
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic29vcnlhLWtyaXoiLCJhIjoiY2tqYTcydDN1NWc1bTJ5bjRuYXF3eHdpayJ9.mo48bziP80gkbrXL-1kETw';
+
         // make a directions request using cycling profile
         // an arbitrary start will always be the same
         // only the end or destination will change
@@ -690,7 +692,7 @@
                 }
             };
 
-            var distancePElemnt=document.getElementById(id).innerHTML=`Distance ${Math.floor(data.distance / 1000)} Km`
+            var distancePElemnt = document.getElementById(id).innerHTML = `Distance ${Math.floor(data.distance / 1000)} Km`
 
             console.log(data);
 
@@ -700,7 +702,7 @@
         };
         req.send();
 
-    }
+    }   
 </script>
 <script>
     function ratePopUp() {
@@ -849,7 +851,7 @@
     </label>
 </div>
 `
-                        var MapDetails = getDistance(location,Details._id)
+                        var MapDetails = getDistance(location, Details._id)
                     })
                 }
 

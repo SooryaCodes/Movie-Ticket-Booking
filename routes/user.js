@@ -189,7 +189,7 @@ router.get(
 );
 
 router.get("/popup", (req, res, next) => {
-  console.log("hey");
+
   res.render("user/auth-popup-callback", { layout: false });
 });
 
