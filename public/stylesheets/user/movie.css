@@ -613,7 +613,7 @@ iframe {
   padding: 20px;
   position: relative;
   cursor: pointer;
-  max-width: 140px;
+  max-width: 180px;
   min-height: 60px;
   color: #ffffff;
   background: rgb(56, 59, 77);
@@ -889,7 +889,7 @@ iframe {
   }
   .date{
     padding: 10px;
-    max-width: 120px;
+    min-width: 120px;
   }
   .date p{
     font-size: 14px !important;
@@ -913,7 +913,7 @@ iframe {
   }
   .date{
     padding: 10px;
-    max-width: 120px;
+    min-width: 120px;
     min-height: 50px ;
   }
   .date p{
@@ -946,7 +946,7 @@ iframe {
   }
   .date{
     padding: 10px;
-    max-width: 100px;
+    min-width: 100px;
     min-height: 50px ;
   }
   .date p{
@@ -968,7 +968,7 @@ iframe {
   }
   .date{
     padding: 10px;
-    max-width: 100px;
+    min-width: 100px;
     min-height: 50px ;
   }
   .date p{
@@ -995,12 +995,12 @@ iframe {
     height: 220px;
   }
   .date{
-    padding: 10px;
-    max-width: 90px;
+    padding: 5px;
+    max-width: 100px;
     min-height: 50px ;
   }
   .date p{
-    font-size: 10px !important;
+    font-size: 9px !important;
     font-weight: 500;
   }
   .theaters .heading {
