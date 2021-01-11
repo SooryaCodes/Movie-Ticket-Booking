@@ -669,7 +669,7 @@ module.exports = {
         Screen: bookDetails.Show.screenName,
         ShowDate: show.Date,
         ShowTime: show.Time,
-        Theater: owner.Name,
+        Theater: owner.Theater,
         Link:'https://moviecafe.sooryakriz.com/account',
         MovieLink:`https://moviecafe.sooryakriz.com/images/owner/movie/${bookDetails.Show.Movie}.jpg`
       }

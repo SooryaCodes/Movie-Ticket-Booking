@@ -9,6 +9,9 @@ var PremiumSeat = document.getElementById("PremiumSeat").value;
 var bookedSeats = document.getElementById("BookedSeats").value;
 var TotalNumberOfSeat = parseInt(TotalNumberOfSeat)
 var socket = io()
+
+
+
 window.addEventListener('load', () => {
   var name = document.getElementById("username").value;
 
@@ -17,6 +20,16 @@ window.addEventListener('load', () => {
   ).innerHTML += `<div class="alert style="position:fixed;" alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
   <strong>Hi ${name}.</strong> Seat Selection Will Time Out In 5 minutes.
 </div>`;
+
+
+  var AllSeatsForDisabling = document.querySelectorAll('input[name="seat"]');
+  for (var i = 0; i < AllSeatsForDisabling.length; i++) {
+    if (i % 2 === 0) {
+      AllSeatsForDisabling[i].disabled = true
+      AllSeatsForDisabling[i].classList.toggle('corona')
+    }
+  }
+
 })
 
 
@@ -106,12 +119,15 @@ function myfun(hi) {
   } else if (checkedSeat.length <= 10) {
     unselected.forEach((value) => (value.disabled = false));
 
-    var wrapper = document.querySelector(".seat-show-wrapper");
+    var wrapper = document.querySelector(".seat-selected-wrapper");
+    var SeatShow = document.querySelector(".seat-selected-container");
     if (input.checked === true) {
-      wrapper.innerHTML += `
-    <div class="seat-show ${hi + hi}" >
-    ${hi}
-    </div>
+      SeatShow.innerHTML += `
+      <div class="col-4 col-sm-3 col-md-2 col-lg-1 p-4 extra ${hi + hi}">
+                <div class="seat-selected ">
+                ${hi}
+                </div>
+            </div>
 `;
     } else {
       var removeAlert = document.querySelector(`.${hi + hi}`);
@@ -119,9 +135,12 @@ function myfun(hi) {
     }
 
     console.log(wrapper.childElementCount);
-    if (wrapper.childElementCount > 1) {
+    if (SeatShow.childElementCount >= 1) {
       wrapper.classList.add("active");
-    } else {
+    }else if(SeatShow.childElementCount===6){
+      wrapper.classList.remove('active')
+      wrapper.classList.add('six')
+    }else {
       wrapper.classList.remove("active");
       console.log("hi there is nothing");
     }
@@ -172,11 +191,12 @@ function myfun(hi) {
 
   console.log(TotalPrice);
 
-  document.getElementById("total").innerText = `Total : ₹ ${TotalPrice}`;
+  document.getElementById("total").innerText = `₹ ${TotalPrice}`;
 
   var btn = document.getElementById("checkout");
   btn.addEventListener("click", function () {
     var seatNumber = checkedSeat.length;
+    var paymentPopupWrapper = document.querySelector(".payment-popup-wrapper");
     var paymentPopup = document.querySelector(".payment-popup");
     var totalAmount = (document.getElementById(
       "totalAmount"
@@ -187,9 +207,16 @@ function myfun(hi) {
     var seatNo = (document.getElementById(
       "seatNo"
     ).innerText = `${seatNumber}`);
+    paymentPopupWrapper.classList.toggle('active')
     paymentPopup.classList.toggle("active");
   });
 }
+document.querySelector('.x').addEventListener('click',()=>{
+  var paymentPopupWrapper = document.querySelector(".payment-popup-wrapper");
+  var paymentPopup = document.querySelector(".payment-popup");
+  paymentPopupWrapper.classList.remove('active')
+  paymentPopup.classList.remove("active");
+})
 
 function wallet(val) {
   var walletInput = document.getElementById('Wallet');
