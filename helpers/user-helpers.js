@@ -670,7 +670,8 @@ module.exports = {
         ShowDate: show.Date,
         ShowTime: show.Time,
         Theater: owner.Name,
-        Link:'https://moviecafe.sooryakriz.com/account'
+        Link:'https://moviecafe.sooryakriz.com/account',
+        MovieLink:`https://moviecafe.sooryakriz.com/images/owner/movie/${bookDetails.Show.Movie}.jpg`
       }
       console.log(Data);
       resolve(Data)
