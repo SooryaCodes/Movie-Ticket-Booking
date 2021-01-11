@@ -103,7 +103,6 @@
                 var id=document.getElementById('id').value
             console.log('hi')
             cropper.getCroppedCanvas().toBlob(function (blob) {
-                console.log('hey man')
             var formData = new FormData();
             formData.append('croppedImage', blob);
 

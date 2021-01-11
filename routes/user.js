@@ -339,6 +339,7 @@ router.get("/seat-select/:id/:ownerId", verifyLogin, (req, res) => {
     console.log(DetailsUser.Rewards);
     console.log(screen, "scrreeen cchekibb");
     res.render("user/screen", {
+      userDetails:req.user,
       user: true,
       screen,
       Vip,
@@ -413,7 +414,7 @@ router.get('/booking-success', (req, res) => {
       Link:'http://localhost:3000'
     }
     mailHelper.sendPayment(req.user.Email,process.env.MY_EMAIL,'d-e697e803620148f2bdf3529366c5eb22',dynamic_template_data)
-    res.render('user/success', { userDetails: req.user, user: true })
+    res.render('user/success', { userDetails: req.user, user: true,userDetails:req.user, })
   })
 })
 router.get('/booking-failure', (req, res) => {
