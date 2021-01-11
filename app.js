@@ -38,7 +38,7 @@ app.use(fileUpload());
 app.use(
   session({
     secret: "Key",
-    cookie: { maxAge: 6000000 },
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 },
     store: new MongoDBStore({
       mongoConnection: db.connection,
       databaseName: "Movie"
