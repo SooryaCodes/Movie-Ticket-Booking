@@ -330,8 +330,8 @@ module.exports = {
 
 
   generatePaypalAnother: (id) => {
-    return new Promise(async(resolve, reject) => {
-var order=await db.get().collection(collection.BOOKING_COLLECTION).findOne({_id:objectId(id)})
+    return new Promise(async (resolve, reject) => {
+      var order = await db.get().collection(collection.BOOKING_COLLECTION).findOne({ _id: objectId(id) })
       var average =
         order.Show.Vip +
         order.Show.Excecutive +
@@ -386,7 +386,7 @@ var order=await db.get().collection(collection.BOOKING_COLLECTION).findOne({_id:
         } else {
           console.log("Create Payment Response");
           // console.log(payment);
-          resolve({Paypal:true,payment});
+          resolve({ Paypal: true, payment });
         }
       });
     });
@@ -653,6 +653,27 @@ var order=await db.get().collection(collection.BOOKING_COLLECTION).findOne({_id:
       }).then((response) => {
         resolve(response)
       })
+    })
+  },
+  getBookingDetail: (id) => {
+    return new Promise(async (resolve, reject) => {
+      var bookDetails = await db.get().collection(collection.BOOKING_COLLECTION).findOne({ _id: objectId(id) })
+      var show = await db.get().collection(collection.SHOW_COLLECTION).findOne({ _id: objectId(bookDetails.Show._id) })
+      var owner = await db.get().collection(collection.OWNER_COLLECTION).findOne({ _id: objectId(bookDetails.ownerId) })
+      var Data = {
+        Amount: bookDetails.Amount,
+        Seats: bookDetails.Seat.toString(),
+        Payment: bookDetails.Payment,
+        Payment_Status: bookDetails.Payment_Status,
+        Movie: show.MovieName,
+        Screen: bookDetails.Show.screenName,
+        ShowDate: show.Date,
+        ShowTime: show.Time,
+        Theater: owner.Name,
+        Link:'https://moviecafe.sooryakriz.com/account'
+      }
+      console.log(Data);
+      resolve(Data)
     })
   }
 };

@@ -72,6 +72,26 @@ module.exports={
                 console.error('send-grid-error: ', error.toString());
             });
     },
+    sendBooking :(to, from, templateId, dynamic_template_data) => {
+        const msg = {
+            to,
+            from: { name: 'Movie Cafe', email: from },
+            templateId,
+            dynamic_template_data
+        };
+        console.log(msg)
+        sgMail.send(msg)
+            .then((response) => {
+                console.log('mail-sent-successfully', { templateId, dynamic_template_data });
+                console.log('response', response);
+                /* assume success */
+    
+            })
+            .catch((error) => {
+                /* log friendly error */
+                console.error('send-grid-error: ', error.toString());
+            });
+    },
 
 
     
