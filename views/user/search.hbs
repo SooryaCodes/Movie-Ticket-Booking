@@ -34,11 +34,13 @@
                 Movies.forEach(element => {
                     document.querySelector('.row').innerHTML += `  <div class="col-12 col-sm-6 col-md-4 col-lg-3 "
             style="padding: 0; display: flex; align-items: center; justify-content: space-around;">
+            <a href="/movie/${element._id}">
             <div class="products" data-aos="fade-up" data-aos-duration="1800">
                 <div class="p-img">
                     <img src="/images/owner/movie/${element._id}.jpg" alt="">
                 </div>
             </div>
+            </a>
         </div>`
                 })
 
@@ -63,11 +65,13 @@
                     response.forEach(element => {
                         document.querySelector('.row').innerHTML += `  <div class="col-12 col-sm-6 col-md-4 col-lg-3 "
             style="padding: 0; display: flex; align-items: center; justify-content: space-around;">
+            <a href="/movie/${element.item._id}">
             <div class="products" data-aos="fade-up" data-aos-duration="1800">
                 <div class="p-img">
                     <img src="/images/owner/movie/${element.item._id}.jpg" alt="">
                 </div>
             </div>
+            </a>
         </div>`
                     })
 
