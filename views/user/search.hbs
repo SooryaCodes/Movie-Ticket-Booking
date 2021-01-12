@@ -1,8 +1,9 @@
 <link rel="stylesheet" href="/stylesheets/user/search.css">
 <main>
-    <div class="search-wrapper">
-        <div class="search">
-            <input type="search" name="search" id="search" onkeyup="getMovie(value)">
+    <div class="search-search-wrapper">
+        <div class="search-search-container">
+            <img src="/images/user/search (1).svg" alt="">
+            <input type="search" name="search" id="search" placeholder="Search..." onkeyup="getMovie(value)">
         </div>
     </div>
 </main>
@@ -11,28 +12,69 @@
 
 {{!-- data:searchKey, --}}
 
-{{!--
+
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 "
-            style="padding: 0; display: flex; align-items: center; justify-content: space-around;">
-            <div class="products" data-aos="fade-up" data-aos-duration="1800">
-                <div class="p-img">
-                    <img src="/images/owner/movie/5fed8e4afd652945e1bf6ada.jpg" alt="">
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 "
-            style="padding: 0; display: flex; align-items: center; justify-content: space-around;">
-            <div class="products" data-aos="fade-up" data-aos-duration="1800">
-                <div class="p-img">
-                    <img src="/images/owner/movie/5fed8e4afd652945e1bf6ada.jpg" alt="">
-                </div>
-            </div>
-        </div>
+
     </div>
-</div> --}}
+</div>
+
+
+
+
+
+
 
 <script>
-    
+    const getAllMovies = () => {
+        $.ajax({
+            url: '/getAllMovies',
+            method: 'post',
+            success: (Movies) => {
+                Movies.forEach(element => {
+                    document.querySelector('.row').innerHTML += `  <div class="col-12 col-sm-6 col-md-4 col-lg-3 "
+            style="padding: 0; display: flex; align-items: center; justify-content: space-around;">
+            <div class="products" data-aos="fade-up" data-aos-duration="1800">
+                <div class="p-img">
+                    <img src="/images/owner/movie/${element._id}.jpg" alt="">
+                </div>
+            </div>
+        </div>`
+                })
+
+            }
+        })
+    }
+    var SearchInput = document.getElementById('search')
+    if (SearchInput.value.length === 0) {
+        getAllMovies()
+    }
+    const getMovie = (searchKey) => {
+        document.querySelector('.row').innerHTML = null
+        if (SearchInput.value.length === 0) {
+            getAllMovies()
+        } else {
+
+            $.ajax({
+                url: `/MovieSearch/${searchKey}`,
+                method: 'post',
+                success: (response) => {
+
+                    response.forEach(element => {
+                        document.querySelector('.row').innerHTML += `  <div class="col-12 col-sm-6 col-md-4 col-lg-3 "
+            style="padding: 0; display: flex; align-items: center; justify-content: space-around;">
+            <div class="products" data-aos="fade-up" data-aos-duration="1800">
+                <div class="p-img">
+                    <img src="/images/owner/movie/${element.item._id}.jpg" alt="">
+                </div>
+            </div>
+        </div>`
+                    })
+
+
+
+                }
+            })
+        }
+    }    
 </script>

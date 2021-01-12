@@ -518,5 +518,26 @@ router.post('/cancel-booking-failed/:id',(req,res)=>{
   })
 })
 
+router.post('/MovieSearch/:SearchWord',async(req,res)=>{
+  var Movies=await userHelpers.getAllMovies()
+  const options = {
+    includeScore: true,
+    keys: ["Title"]
+  }
+  
+  // Create a new instance of Fuse
+  const fuse = new Fuse(Movies, options)
+  
+  // Now search for 'Man'
+  const result = fuse.search(req.params.SearchWord)
+  console.log(result);
+  res.json(result)
+})
+
+router.post('/getAllMovies',(req,res)=>{
+  userHelpers.getAllMovies().then((response)=>{
+    res.json(response)
+  })
+})
 
 module.exports = router;

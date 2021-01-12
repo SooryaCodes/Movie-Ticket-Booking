@@ -5,14 +5,14 @@
             <a href="/" class="logo">Movie Cafe</a>
         </div>
         <div class="right-section">
-            <a href="" class="search mask waves-effect waves-light rgba-white-slight"><img src="/images/user/search.svg" alt=""></a>
+            <a href="/search" class="search mask waves-effect waves-light rgba-white-slight"><img src="/images/user/search.svg" alt=""></a>
             <button onclick="profilePopUp()" class="profile"><img src="/images/user/profile/{{userDetails._id}}.jpg" id="profile" onerror="errorInImgHeader()" alt="">{{userDetails.Name}} <img
                     class="down" src="/images/user/chevron-down.svg" alt=""></button>
         </div>
         <div class="profile-pop-up">
             <div class="nothing"></div>
             <a href="/" class="mask waves-effect waves-light rgba-white-slight" href="">Home</a>
-            <a class="mask waves-effect waves-light rgba-white-slight" href="">Categories</a>
+            <a href="/search" class="mask waves-effect waves-light rgba-white-slight" href="">Search</a>
             <a class="mask waves-effect waves-light rgba-white-slight" href="">Trending</a>
             <a class="mask waves-effect waves-light rgba-white-slight" href="">Upcoming</a>
             <a href="/account" class="mask waves-effect waves-light rgba-white-slight" href="">Account</a>
