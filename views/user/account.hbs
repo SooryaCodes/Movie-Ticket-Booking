@@ -415,6 +415,7 @@
             method: 'post',
             success: () => {
                 addBooking()
+                getUserDetails()
                 document.querySelector('.alerts').innerHTML += `<div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
   <strong>Hi ${Name}.</strong> Booking Canceled . Refuned To Your Wallet.
 <button type="button" class="close" onclick="this.parentNode.remove()" aria-label="Close">
