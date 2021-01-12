@@ -83,25 +83,31 @@
         No
       </th>
       <th>
-        Name
+        Movie
       </th>
       <th>
-        Relsease Date
+        Screen
       </th>
       <th>
-        Run Time
+        Show
       </th>
       <th>
-        Action
+        Payment 
+      </th>
+      <th>
+        Payment Status
+      </th>
+      <th>
+        Amount
       </th>
     </tr>
+    {{#each Bookings}}
     <tr>
       <td id="row">
 
       </td>
       <td>
-        Joker
-        <!-- <img src="/images/owner/profile/owner{{this._id}}.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" alt=""> {{this.Name}} -->
+      {{!-- {{this.Show.}} --}}
       </td>
       <td>
         20-10-2020
@@ -109,15 +115,9 @@
       <td>
         2H 20M
       </td>
-      <td>
-        <a href="/admin/edit-owner/{{this._id}}">
-          <img src="/images/admin/edit-2.svg" alt="" />
-        </a>
-        <a onclick="deleteOwner('{{this._id}}')">
-          <img src="/images/admin/trash (1).svg" alt="" />
-        </a>
-      </td>
+
     </tr>
+{{/each}}
   </table>
 </div>
 

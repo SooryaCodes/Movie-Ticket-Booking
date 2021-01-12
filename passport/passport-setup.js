@@ -96,7 +96,7 @@ module.exports.initializePassport = (passport) => {
                 }
               }).then((anotherResponseResponse) => {
                 db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(user._id) }).then((originalUser) => {
-console.log(originalUser);
+                  console.log(originalUser);
                   return done(null, originalUser);
                 })
               })
@@ -105,7 +105,8 @@ console.log(originalUser);
               userData.Name = profile.displayName;
               userData.Email = profile.email;
               userData.role = "user";
-              userData.signup=true  
+              userData.signup = true
+              userData.Date=new Date()
 
               db.get()
                 .collection(collection.USER_COLLECTION)

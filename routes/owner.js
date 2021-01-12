@@ -116,7 +116,8 @@ router.get("/logout", (req, res) => {
   res.redirect("/owner/login");
 });
 
-router.get("/user-details", verifyLogin, (req, res) => {
+router.get("/user-details", verifyLogin, async(req, res) => {
+  var UserDetails=await ownerHelper.getUserDetails(req.user._id)
   res.render("owner/user", { owner: true, ownerDetails: req.user });
 });
 
@@ -169,8 +170,9 @@ router.post("/delete-screen/:id", (req, res) => {
     res.json({ status: true });
   });
 });
-router.get("/bookings", verifyLogin, (req, res) => {
-  res.render("owner/bookings", { owner: true, ownerDetails: req.user });
+router.get("/bookings", verifyLogin, async(req, res) => {
+  var Bookings=await ownerHelper.getBookDetails(req.user._id)
+  res.render("owner/bookings", {Bookings:Bookings, owner: true, ownerDetails: req.user });
 });
 
 router.get("/movies", verifyLogin, (req, res) => {

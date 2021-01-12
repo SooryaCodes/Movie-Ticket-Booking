@@ -33,6 +33,7 @@ module.exports = {
   signup: (mobile, data) => {
     return new Promise((reolve, reject) => {
       data.Mobile = mobile;
+      data.Date=new Date()
       data.role = "user";
       db.get()
         .collection(collection.USER_COLLECTION)
