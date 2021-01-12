@@ -300,3 +300,47 @@ input:focus {
 
 
 
+
+
+
+
+
+@media (max-width:1000px){
+  .map-wrapper{
+    width: 500px !important;
+    height: 600px !important;
+  }
+  #map{
+    width: 93%;
+    height: 83%;
+  }
+  .map-btn button{
+    width: 100px;
+    height: 40px;
+    font-size: 14px;
+  }
+}
+
+
+@media (max-width:550px){
+  .mapboxgl-ctrl-geocoder--input{
+    width: 70px !important;
+    height: 36px !important ;
+  }
+  .mapboxgl-ctrl-geocoder--icon.mapboxgl-ctrl-geocoder--icon-search{
+    top: 8px;
+  }
+  .map-wrapper{
+    width: 90% !important;
+    height: 80% !important;
+  }
+  #map{
+    width: 95%;
+    height: 95%;
+  }
+  .map-btn button{
+    width: 100px;
+    height: 40px;
+    font-size: 14px;
+  }
+}
