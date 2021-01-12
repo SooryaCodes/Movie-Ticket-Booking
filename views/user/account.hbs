@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/stylesheets/user/account.css">
-<div class="alerts " style="position: fixed; top: 100px; display: flex;align-items: center;justify-content: center;width: 100%;z-index: 100000000;">
+<div class="alerts "
+    style="position: fixed; top: 100px; display: flex;align-items: center;justify-content: center;width: 100%;z-index: 100000000;">
 
 </div>
 <div class="big-wrapper">
@@ -157,45 +158,62 @@
         getUserDetails()
     })
     const updateName = (Name) => {
-        var data = {
-            Name: Name
+        if (Name.length === 0) {
+            getUserDetails()
         }
-        $.ajax({
-            url: '/update-name',
-            method: 'post',
-            data: data,
-            success: () => {
-
-                getUserDetails()
+        else {
+            var data = {
+                Name: Name
             }
-        })
+            $.ajax({
+                url: '/update-name',
+                method: 'post',
+                data: data,
+                success: () => {
+
+                    getUserDetails()
+                }
+            })
+
+        }
+
     }
     const updateMobile = (Mobile) => {
-        var data = {
-            Mobile: Mobile
+        if (Mobile.length === 0) {
+            getUserDetails()
         }
-        $.ajax({
-            url: '/update-mobile',
-            method: 'post',
-            data: data,
-            success: () => {
-                getUserDetails()
+        else {
+            var data = {
+                Mobile: Mobile
             }
-        })
+            $.ajax({
+                url: '/update-mobile',
+                method: 'post',
+                data: data,
+                success: () => {
+                    getUserDetails()
+                }
+            })
+        }
     }
     const updateEmail = (Email) => {
-        var data = {
-            Email: Email
-        }
-        $.ajax({
-            url: '/update-email',
-            method: 'post',
-            data: data,
-            success: (response) => {
-                if (response.Logout === true) {
-                    var name = document.querySelector('input[name="name"]').value
 
-                  document.querySelector('.alerts').innerHTML += `<div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
+        if (Email.length === 0) {
+            getUserDetails()
+        }
+        else {
+            var data = {
+                Email: Email
+            }
+            $.ajax({
+                url: '/update-email',
+                method: 'post',
+                data: data,
+                success: (response) => {
+                    if (response.Logout === true) {
+                        var name = document.querySelector('input[name="name"]').value
+
+                        document.querySelector('.alerts').innerHTML += `<div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
   <strong>Hi ${Name}.</strong> You Have Changed Your Email So Login Again.
 <button type="button" class="close" onclick="this.parentNode.remove()" aria-label="Close">
   <span aria-hidden="true">×</span>
@@ -204,18 +222,20 @@
 `
 
 
-                    getUserDetails()
+                        getUserDetails()
 
-                    setTimeout(function () {
-                        location.href = '/logout'
-                    }, 7000)
+                        setTimeout(function () {
+                            location.href = '/logout'
+                        }, 7000)
 
-                } else {
+                    } else {
 
-                    getUserDetails()
+                        getUserDetails()
+                    }
                 }
-            }
-        })
+            })
+
+        }
     }
 
     const imageUpdate = (event) => {
