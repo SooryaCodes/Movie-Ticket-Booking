@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="/stylesheets/user/account.css">
-<div class="alerts">
+<div class="alerts " style="position: fixed; top: 100px; display: flex;align-items: center;justify-content: center;width: 100%;z-index: 100000000;">
 
 </div>
 <div class="big-wrapper">
@@ -100,7 +100,7 @@
 
 <div class="table-responsive   "
     style="width: 96%; padding-left: 10px;padding-right: 10px;margin-right: 10px;border-radius: 7px;">
-    <table class="table"  >
+    <table class="table">
         <thead>
             <tr align="center">
                 <th>#</th>
@@ -121,6 +121,9 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
+
+
+
     const errorInImg = () => {
         document.getElementById('profile-pic').src = '/images/admin/profile.svg'
     }
@@ -191,9 +194,14 @@
             success: (response) => {
                 if (response.Logout === true) {
                     var name = document.querySelector('input[name="name"]').value
-                    document.querySelector('.alerts').innerHTML = `    <div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75;position: fixed;top: 70px; color:white;box-shadow:0px 0px 20px #222538">
-    <strong>Hi ${name}.</strong> You Have Changed Your Email So Login Again.
-  </div>`
+
+                  document.querySelector('.alerts').innerHTML += `<div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
+  <strong>Hi ${Name}.</strong> You Have Changed Your Email So Login Again.
+<button type="button" class="close" onclick="this.parentNode.remove()" aria-label="Close">
+  <span aria-hidden="true">×</span>
+</button>
+</div>
+`
 
 
                     getUserDetails()
@@ -306,10 +314,7 @@
     }
 
 
-
-
-
-    window.addEventListener('load', () => {
+    function addBooking() {
         $.ajax({
             url: '/getBookings',
             method: 'post',
@@ -319,7 +324,7 @@
                 document.getElementById('Payments').innerHTML = response.length
                 document.getElementById('Pendings').innerHTML = Pendings.length
                 if (response.length === 0) {
-                    var table = document.getElementById('table').innerHTML += ` <tr> <td style="width:100%;font-size:20px;font-weight:600;">Sorry, You Have No Bookings.</td></tr>`
+                    var table = document.querySelector('.table').innerHTML = ` <tr> <td style="display:flex;align-items:center;justify-content:center;width:100% !important;font-size:20px;font-weight:600;">Sorry, You Have No Bookings.<td></tr>`
 
                 } else {
 
@@ -335,8 +340,7 @@
             <td>${response[i].ShowsDetails.Date} | ${response[i].ShowsDetails.Time} </td>
             <td><button class="show-btn" onclick="showSeat('${response[i]._id}','${response[i].Seat}')">Show</button></td>
             <td>
-                <div class="status-a"></div>
-                Paid
+                <button id="pay" onclick="cancelBooking('${response[i]._id}')">Cancel</button>
             </td>
             <div class="seat-pop-wrapper " id="${response[i]._id}">
                 <div class="seat-pop " id="${response[i]._id + response[i]._id}">
@@ -375,7 +379,33 @@
 
             }
         })
+    }
+
+
+    window.addEventListener('load', () => {
+        addBooking()
     })
+
+
+    const cancelBooking = (id) => {
+        var Name = '{{userDetails.Name}}'
+        $.ajax({
+            url: `/cancel-booking/${id
+                }`,
+            method: 'post',
+            success: () => {
+                addBooking()
+                document.querySelector('.alerts').innerHTML += `<div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
+  <strong>Hi ${Name}.</strong> Booking Canceled . Refuned To Your Wallet.
+<button type="button" class="close" onclick="this.parentNode.remove()" aria-label="Close">
+  <span aria-hidden="true">×</span>
+</button>
+</div>
+`
+
+            }
+        })
+    }
 
 
     const showSeat = (id, array) => {

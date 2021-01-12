@@ -61,14 +61,16 @@ button:focus {
   display: flex;
   font-family: "Poppins", sans-serif;
 
-  width: 100px;
+  width: 180px;
   cursor: pointer;
   align-items: center;
   justify-content: space-around;
 }
 
 .nav-bar .right-section .profile #profile {
-  width: 35px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
   margin-right: 10px;
 }
 
@@ -149,7 +151,7 @@ button:focus {
   }
   .nav-bar .right-section .profile {
     font-size: 13px;
-    width: 90px;
+    width: 100px;
   }
   .nav-bar .right-section {
     width: 60%;

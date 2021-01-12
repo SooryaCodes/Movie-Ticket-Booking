@@ -670,11 +670,41 @@ module.exports = {
         ShowDate: show.Date,
         ShowTime: show.Time,
         Theater: owner.Theater,
-        Link:'https://moviecafe.sooryakriz.com/account',
-        MovieLink:`https://moviecafe.sooryakriz.com/images/owner/movie/${bookDetails.Show.Movie}.jpg`
+        Link: 'https://moviecafe.sooryakriz.com/account',
+        MovieLink: `https://moviecafe.sooryakriz.com/images/owner/movie/${bookDetails.Show.Movie}.jpg`
       }
       console.log(Data);
       resolve(Data)
+    })
+  },
+  cancelBooking: (id,userId) => {
+    return new Promise(async (resolve, reject) => {
+
+      var bookDetails = await db.get().collection(collection.BOOKING_COLLECTION).findOne({ _id: objectId(id) })
+
+
+      var deleteSeatsShow = await db.get().collection(collection.SHOW_COLLECTION).updateOne({ _id: objectId(bookDetails.Show._id) },{
+        $pull:{
+          Seats:bookDetails.Seat
+        }
+      })
+
+      var Amount =parseInt(bookDetails.Amount)
+
+
+      var addWallet=await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
+        $inc: {
+          Wallet: Amount
+        }
+      })
+
+      var addREward=await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
+        $push: {
+          Rewards: Amount
+        }
+      }) 
+      var deleteBooking = await db.get().collection(collection.BOOKING_COLLECTION).removeOne({ _id: objectId(id) })
+      resolve({ status: true })
     })
   }
 };
