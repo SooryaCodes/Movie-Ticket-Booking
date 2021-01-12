@@ -455,7 +455,11 @@
         locationWrapper.classList.remove('active')
     }
 
-
+var UserLongitue='{{userDetails.Longitude}}'
+var UserLatitude='{{userDetails.Latitude}}'
+var UserLocation=[
+UserLongitue,UserLatitude
+]
     const giveMarkers = (Theaters) => {
         mapboxgl.accessToken = 'pk.eyJ1Ijoic29vcnlhLWtyaXoiLCJhIjoiY2tqYTcydDN1NWc1bTJ5bjRuYXF3eHdpayJ9.mo48bziP80gkbrXL-1kETw';
 
@@ -496,7 +500,7 @@
 
         // an arbitrary start will always be the same
         // only the end or destination will change
-        var start = [76.271080, 10.850516];
+        var start = UserLocation
 
         // this is where the code for the next step will go
 
@@ -510,7 +514,7 @@
             // make a directions request using cycling profile
             // an arbitrary start will always be the same
             // only the end or destination will change
-            var start = [76.271080, 10.850516];
+            var start = UserLocation
             var url = 'https://api.mapbox.com/directions/v5/mapbox/driving/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
 
             // make an XHR request https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
@@ -672,7 +676,7 @@
         // make a directions request using cycling profile
         // an arbitrary start will always be the same
         // only the end or destination will change
-        var start = [76.271080, 10.850516];
+        var start = UserLocation
         var url = 'https://api.mapbox.com/directions/v5/mapbox/driving/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
 
         // make an XHR request https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
