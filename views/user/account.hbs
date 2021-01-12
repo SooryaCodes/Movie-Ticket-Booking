@@ -111,6 +111,7 @@
                 <th scope="col">Show</th>
                 <th scope="col">Seats</th>
                 <th scope="col">Status</th>
+                <th scope="col">Options</th>
             </tr>
         </thead>
         <tbody id="body-table">
@@ -359,6 +360,7 @@
             <td>${response[i].Show.screenName}</td>
             <td>${response[i].ShowsDetails.Date} | ${response[i].ShowsDetails.Time} </td>
             <td><button class="show-btn" onclick="showSeat('${response[i]._id}','${response[i].Seat}')">Show</button></td>
+            <td>${response[i].Payment_Status}</td>
             <td>
                 <button id="pay" onclick="cancelBooking('${response[i]._id}')">Cancel</button>
             </td>
@@ -384,6 +386,9 @@
             <td><button class="show-btn" onclick="showSeat('${response[i]._id}','${response[i].Seat}')">Show</button></td>
             <td>
                 <button id="pay" onclick="payment('${response[i].Payment}','${response[i]._id}')">Pay Now</button>
+            </td>
+             <td>
+                <button id="pay" onclick="cancelBookingFailed('${response[i]._id}')">Cancel</button>
             </td>
             <div class="seat-pop-wrapper " id="${response[i]._id}">
                 <div class="seat-pop " id="${response[i]._id + response[i]._id}">
@@ -418,6 +423,26 @@
                 getUserDetails()
                 document.querySelector('.alerts').innerHTML += `<div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
   <strong>Hi ${Name}.</strong> Booking Canceled . Refuned To Your Wallet.
+<button type="button" class="close" onclick="this.parentNode.remove()" aria-label="Close">
+  <span aria-hidden="true">×</span>
+</button>
+</div>
+`
+
+            }
+        })
+    }
+
+    const cancelBookingFailed = (id) => {
+        var Name = '{{userDetails.Name}}'
+        $.ajax({
+            url: `/cancel-booking-failed/${id}`,
+            method: 'post',
+            success: () => {
+                addBooking()
+                getUserDetails()
+                document.querySelector('.alerts').innerHTML += `<div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
+  <strong>Hi ${Name}.</strong> Booking Canceled .
 <button type="button" class="close" onclick="this.parentNode.remove()" aria-label="Close">
   <span aria-hidden="true">×</span>
 </button>
@@ -486,13 +511,7 @@
         };
         var rzp1 = new Razorpay(options);
         rzp1.on("payment.failed", function (response) {
-            alert(response.error.code);
-            alert(response.error.description);
-            alert(response.error.source);
-            alert(response.error.step);
-            alert(response.error.reason);
-            alert(response.error.metadata.order_id);
-            alert(response.error.metadata.payment_id);
+           
         });
         setTimeout(function () {
             razorpayUp();

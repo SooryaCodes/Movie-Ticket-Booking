@@ -706,7 +706,26 @@ module.exports = {
       var deleteBooking = await db.get().collection(collection.BOOKING_COLLECTION).removeOne({ _id: objectId(id) })
       resolve({ status: true })
     })
-  }
+  },
+  cancelBookingFailed: (id,userId) => {
+    return new Promise(async (resolve, reject) => {
+
+      var bookDetails = await db.get().collection(collection.BOOKING_COLLECTION).findOne({ _id: objectId(id) })
+
+
+      var deleteSeatsShow = await db.get().collection(collection.SHOW_COLLECTION).updateOne({ _id: objectId(bookDetails.Show._id) },{
+        $pull:{
+          Seats:bookDetails.Seat
+        }
+      })
+
+
+      var deleteBooking = await db.get().collection(collection.BOOKING_COLLECTION).removeOne({ _id: objectId(id) })
+      resolve({ status: true })
+    })
+  },
+
+
 };
 
 

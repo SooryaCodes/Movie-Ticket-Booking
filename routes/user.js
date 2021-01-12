@@ -512,6 +512,11 @@ router.post('/cancel-booking/:id',(req,res)=>{
     res.json({status:true})
   })
 })
+router.post('/cancel-booking-failed/:id',(req,res)=>{
+  userHelpers.cancelBookingFailed(req.params.id,req.user._id).then((response)=>{
+    res.json({status:true})
+  })
+})
 
 
 module.exports = router;
