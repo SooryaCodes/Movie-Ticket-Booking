@@ -125,52 +125,59 @@ router.get("/logout", verifyLogin, (req, res) => {
 //get theater details
 
 router.get("/theater-details", verifyLogin, (req, res) => {
-  adminHelper.getAdminDetails().then((adminDetails) => {
-    adminHelper.getTheaterDetails().then((response)=>{
-
-      res.render("admin/theater-details", {
+  adminHelper.getTheaterDetails().then((response) => {
+    console.log(response);
+    if(response.length<1){
+      res.render("admin/theater-details-dummy", {
         admin: true,
         ownersLength,
-        adminDetails,
-        Theater:response
-      });
-    })
-  });
+        adminDetails: req.user,
+      }); 
+    }
+    res.render("admin/theater-details", {
+      admin: true,
+      ownersLength,
+      adminDetails: req.user,
+      Theater: response
+    });
+  })
 });
 
 //get user details
 
-router.get("/user-details", verifyLogin,async (req, res) => {
-  var UserDetails=await adminHelper.getUserDetails()
-if(UserDetails.length<1){
-  res.render('admin/user-details-dummy',{
-    admin: true,
-    ownersLength,
-    adminDetails:req.user,
-  })
-}
-  res.render("admin/user-details", {
+router.get("/user-details", verifyLogin, async (req, res) => {
+  var UserDetails = await adminHelper.getUserDetails()
+  if (UserDetails.length < 1) {
+    res.render('admin/user-details-dummy', {
       admin: true,
       ownersLength,
-      adminDetails:req.user,
-      UserDetails
-    });
+      adminDetails: req.user,
+    })
+  }
+  res.render("admin/user-details", {
+    admin: true,
+    ownersLength,
+    adminDetails: req.user,
+    UserDetails
+  });
 });
 
 
-router.get('/user-activity',async(req,res)=>{
-  var UserDetails=await adminHelper.getUserActivity()
 
-  if(UserDetails.length<1){
-    res.render('admin/user-activity-dummy',{
+
+router.get('/user-activity', async (req, res) => {
+  var UserDetails = await adminHelper.getUserActivity()
+
+  if (UserDetails.length < 1) {
+    res.render('admin/user-activity-dummy', {
       admin: true,
       ownersLength,
-      adminDetails:req.user,
+      adminDetails: req.user,
     })
   }
-  res.render('admin/user-activity',{
-    admin:true,
-    adminDetails:req.user,
+  res.render('admin/user-activity', {
+    admin: true,
+    adminDetails: req.user,
     ownersLength,
     UserDetails
 
@@ -365,12 +372,12 @@ router.post("/delete-owner/:id", verifyLogin, (req, res) => {
 //delet user
 
 router.post("/delete-user/:id", verifyLogin, (req, res) => {
-    adminHelper.deleteUser(req.params.id).then(() => {
-      res.json({ status: true });
-
-    });
+  adminHelper.deleteUser(req.params.id).then(() => {
+    res.json({ status: true });
 
   });
+
+});
 
 //post owner image upload
 
@@ -383,15 +390,6 @@ router.post("/owner-image-upload/:id", verifyLogin, (req, res) => {
 });
 
 
-//movies
-
-router.get("/movies", verifyLogin, (req, res) => {
-  res.render("admin/movie", {
-    admin: true,
-    ownersLength,
-    adminDetails: req.user,
-  });
-});
 
 router.get('/get-bar-chart-data', (req, res) => {
   adminHelper.getBarChartData(req.user._id).then((response) => {

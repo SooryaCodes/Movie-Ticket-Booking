@@ -286,6 +286,9 @@ module.exports = {
   getTheaterDetails: () => {
     return new Promise((resolve, reject) => {
       db.get().collection(collection.OWNER_COLLECTION).find().toArray().then((response) => {
+        for(var i=0;i<response.length;i++){
+          response[i].date=new Date(response[i].date).toLocaleDateString()
+        }
         resolve(response)
       })
     })
@@ -326,6 +329,7 @@ module.exports = {
       resolve(Users)
     })
   }
+,
 
 
 

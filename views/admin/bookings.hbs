@@ -1,9 +1,3 @@
-<!-- 1. Add latest jQuery and fancybox files -->
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-
-
 <link rel="stylesheet" href="/stylesheets/admin/home.css">
 <script src="/javascripts/admin/script.js"></script>
 
@@ -17,7 +11,6 @@
         <div class="box-content">
           <span>User's</span>
           <p class="box-data ">
-          </p>
         </div>
       </div>
     </div>
@@ -26,6 +19,7 @@
         <div class="box-content">
           <span>Owner's</span>
           <p class="box-data ">
+
           </p>
         </div>
       </div>
@@ -37,6 +31,7 @@
         <div class="box-content">
           <span>Movie's</span>
           <p class="box-data ">
+
           </p>
         </div>
       </div>
@@ -46,6 +41,7 @@
         <div class="box-content">
           <span>Bookings's</span>
           <p class="box-data ">
+
           </p>
         </div>
       </div>
@@ -64,67 +60,62 @@
   </div>
 </div>
 <!--table -->
+<!--table -->
 <div class="admin-table">
   <table>
     <tr>
-      <th id="row">No</th>
-      <th>Theater</th>
-      <th>Owner</th>
-      <th>Seat</th>
-      <th>Date</th>
-      <th>Status</th>
+      <th id="">No</th>
+      <th>Name</th>
+      <th>Join Date</th>
+      <th>Action</th>
     </tr>
+    {{#each BookingDetails}}
     <tr>
-      <td id="row">1</td>
-      <td>John Doe</td>
-      <td>Sivadham</td>
-      <td>220</td>
-      <td>10-2-2020</td>
-      <td>
-        <div class="status-h"></div>
-        On Hold
-      </td>
-    </tr>
-    <tr>
-      <td id="row">2</td>
-      <td>John Doe</td>
-      <td>Sivadham</td>
-      <td>220</td>
-      <td>10-2-2020</td>
-      <td>
-        <div class="status-a"></div>
-        Active
-      </td>
+      <td id="row"></td>
+      <td>{{this.Name}}</td>
+      <td>{{this.Date}}</td>
 
-    </tr>
-    <tr>
-      <td id="row">3</td>
-      <td>John Doe</td>
-      <td>Sivadham</td>
-      <td>220</td>
-      <td>10-2-2020</td>
       <td>
-        <div class="status-h"></div>
-        On Hold
-      </td>
-    </tr>
-    <tr>
-      <td id="row">4</td>
-      <td>John Doe</td>
-      <td>Sivadham</td>
-      <td>220</td>
-      <td>10-2-2020</td>
-      <td>
-        <div class="status-a"></div>
-        Active
-      </td>
 
+        <a onclick="deleteUser('{{this._id}}')">
+          <img src="/images/admin/trash (1).svg" alt="" />
+        </a>
+      </td>
     </tr>
+    {{/each}}
   </table>
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  function deleteUser(userId) {
+    var confirmDelete = confirm('Are You Sure Want To Delete')
+    if (confirmDelete) {
+      $.ajax({
+        url: '/admin/delete-user/' + userId,
+        data: userId,
+        method: 'post',
+        success: (response) => {
+
+          console.log(response.status)
+          if (response.status) {
+            swal({
+              title: "Deleted",
+              text: "Successfully",
+              icon: "success",
+              button: false
+            }); setTimeout(function () {
+              location.reload()
+            }, 2000)
+
+
+          }
+        }
+      })
+    }
+
+  }
+</script>
 
 
 
