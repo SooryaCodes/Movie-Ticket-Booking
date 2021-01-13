@@ -140,20 +140,34 @@ router.get("/theater-details", verifyLogin, (req, res) => {
 
 //get user details
 
-router.get("/user-details", verifyLogin, (req, res) => {
-  adminHelper.getAdminDetails().then((adminDetails) => {
-    console.log(req.user);
-    res.render("admin/user-details", {
+router.get("/user-details", verifyLogin,async (req, res) => {
+  var UserDetails=await adminHelper.getUserDetails()
+if(UserDetails.length<1){
+  res.render('admin/user-details-dummy',{
+    admin: true,
+    ownersLength,
+    adminDetails:req.user,
+  })
+}
+  res.render("admin/user-details", {
       admin: true,
       ownersLength,
-      adminDetails,
+      adminDetails:req.user,
+      UserDetails
     });
-  });
 });
 
 
 router.get('/user-activity',async(req,res)=>{
   var UserDetails=await adminHelper.getUserActivity()
+
+  if(UserDetails.length<1){
+    res.render('admin/user-activity-dummy',{
+      admin: true,
+      ownersLength,
+      adminDetails:req.user,
+    })
+  }
   res.render('admin/user-activity',{
     admin:true,
     adminDetails:req.user,
@@ -348,6 +362,15 @@ router.post("/delete-owner/:id", verifyLogin, (req, res) => {
     res.json({ status: true });
   });
 });
+//delet user
+
+router.post("/delete-user/:id", verifyLogin, (req, res) => {
+    adminHelper.deleteUser(req.params.id).then(() => {
+      res.json({ status: true });
+
+    });
+
+  });
 
 //post owner image upload
 

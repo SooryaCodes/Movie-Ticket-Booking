@@ -11,6 +11,8 @@
         <div class="box-content">
           <span>User's</span>
           <p class="box-data ">
+
+          </p>
         </div>
       </div>
     </div>
@@ -18,9 +20,7 @@
       <div class="box">
         <div class="box-content">
           <span>Owner's</span>
-          <p class="box-data ">
-
-          </p>
+          <p>{{ownersLength.oLength}}</p>
         </div>
       </div>
     </div>
@@ -60,62 +60,28 @@
   </div>
 </div>
 <!--table -->
-<!--table -->
 <div class="admin-table">
   <table>
     <tr>
-      <th id="">No</th>
+      <th id="row">No</th>
       <th>Name</th>
-      <th>Join Date</th>
+      <th>Theater</th>
       <th>Action</th>
     </tr>
-    {{#each UserDetails}}
     <tr>
-      <td id="row"></td>
-      <td>{{this.Name}}</td>
-      <td>{{this.Date}}</td>
-
-      <td>
-
-        <a onclick="deleteUser('{{this._id}}')">
-          <img src="/images/admin/trash (1).svg" alt="" />
-        </a>
+      <td class="empty" style="width: 100%; ">
+        <div id="empty" style="display: flex; align-items: center;">
+          <h1 style="font-size: 30px !important; font-weight: 600; color: rgb(116, 116, 116); margin-right: 20px;">Oops,
+            there is no User Activity.</h1>
+        </div>
       </td>
     </tr>
-    {{/each}}
+
   </table>
 </div>
 
 
-<script>
-  function deleteUser(userId) {
-    var confirmDelete = confirm('Are You Sure Want To Delete')
-    if (confirmDelete) {
-      $.ajax({
-        url: '/admin/delete-user/' + userId,
-        data: userId,
-        method: 'post',
-        success: (response) => {
 
-          console.log(response.status)
-          if (response.status) {
-            swal({
-              title: "Deleted",
-              text: "Successfully",
-              icon: "success",
-              button: false
-            }); setTimeout(function () {
-              location.reload()
-            }, 2000)
-
-
-          }
-        }
-      })
-    }
-
-  }
-</script>
 
 
 

@@ -1,8 +1,7 @@
 var db = require("../config/connection");
 var collection = require("../config/collection");
 const bcrypt = require("bcrypt");
-const { response } = require("express");
-const { search } = require("../routes/admin");
+
 const objectId = require("mongodb").ObjectID;
 module.exports = {
 
@@ -177,6 +176,17 @@ module.exports = {
         });
     });
   },
+  deleteUser: (userId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.USER_COLLECTION)
+        .removeOne({ _id: objectId(userId) })
+        .then((response) => {
+          console.log("success");
+          resolve({ status: true });
+        });
+    });
+  },
 
   getLineChartData: (id) => {
     return new Promise(async (resolve, reject) => {
@@ -286,6 +296,7 @@ module.exports = {
   getUserActivity: (id) => {
     return new Promise(async (resolve, reject) => {
       var bookingDetails = await db.get().collection(collection.BOOKING_COLLECTION).find().toArray()
+      console.log(bookingDetails);
       for (var i = 0; i < bookingDetails.length; i++) {
         bookingDetails[i].UserDetails = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(bookingDetails[i].userId) })
         bookingDetails[i].Date = await new Date(bookingDetails[i].Date).toLocaleDateString()
@@ -298,10 +309,24 @@ module.exports = {
         }
 
       }
-
       resolve(bookingDetails)
     })
   },
+
+  getUserDetails: () => {
+    return new Promise(async (resolve, reject) => {
+
+      var Users = await db.get().collection(collection.USER_COLLECTION).find().toArray()
+
+      for (var i = 0; i < Users.length; i++) {
+        Users[i].Date = await new Date(Users[i].Date).toLocaleDateString()
+
+
+      }
+      resolve(Users)
+    })
+  }
+
 
 
 
