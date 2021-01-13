@@ -23,7 +23,7 @@
       <div class="boxes">
         <div class="text">
           <p>
-            Movies          
+            Movies
           </p>
           <span class="box-data">$.200</span>
 
@@ -112,7 +112,7 @@
         <a href="/owner/edit-screen/{{this._id}}">
           <img src="/images/admin/edit-2.svg" alt="" />
         </a>
-        <a onclick="getDeleteWrapper('{{this.Name}}')">
+        <a onclick="getDeleteWrapper('{{this.Name}}','{{this._id}}')">
           <img src="/images/admin/trash (1).svg" alt="" />
         </a>
       </td>
@@ -120,11 +120,12 @@
       {{!--delete popup--}}
       <div class="delete-wrapper" id="{{this._id}}">
         <div class="delete">
-          <span id="delete" class="{{this._id}}"></span>
+          <span id="delete" class="{{this._id}}">Delete {{this.Name}} ?</span>
           <p>This will permanently delete the image from your image library. You will not be able to undo this action.
           </p>
           <div class="inputs-btn">
-            <button class="mask waves-effect waves-light rgba-white-slight" onclick="closeDelet('{{this._id}}')">Cancel</button>
+            <button class="mask waves-effect waves-light rgba-white-slight"
+              onclick="closeDelet('{{this._id}}')">Cancel</button>
             <button class="mask waves-effect waves-light rgba-white-slight"
               onclick="deleteScreen('{{this._id}}')">Delete</button>
           </div>
@@ -138,23 +139,21 @@
 
 <!-- ----tables--- -->
 <script>
-  const closeDelet = () => {
-    var wrapper = document.querySelector('.delete-wrapper')
+  
+  const closeDelet = (id) => {
+    var wrapper = document.getElementById(id)
     wrapper.classList.remove('active')
   }
 </script>
 <script>
-  function getDeleteWrapper(Name) {
-    var Delspan = document.getElementById('delete')
-    Delspan.innerText = `Delete ${Name} ?`
-
-    var wrapper = document.querySelector('.delete-wrapper')
+  function getDeleteWrapper(Name,id) {
+    var wrapper = document.getElementById(id)
     wrapper.classList.toggle('active')
   }
   function deleteScreen(Id) {
 
 
-    var wrapper = document.querySelector('.delete-wrapper')
+    var wrapper = document.getElementById(Id)
     $.ajax({
       url: '/owner/delete-screen/' + Id,
       data: Id,

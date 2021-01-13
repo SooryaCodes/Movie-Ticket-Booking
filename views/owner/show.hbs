@@ -121,19 +121,19 @@
         <a href="/owner/edit-show/{{this._id}}">
           <img src="/images/admin/edit-2.svg" alt="" />
         </a>
-        <a onclick="getDeleteWrapper('Show')">
+        <a onclick="getDeleteWrapper('{{this._id}}')">
           <img src="/images/admin/trash (1).svg" alt="" />
         </a>
       </td>
 
       {{!--delete popup--}}
-      <div class="delete-wrapper">
+      <div class="delete-wrapper" id="{{this._id}}">
         <div class="delete">
-          <span id="delete">Delete This.Png ?</span>
+          <span id="delete">Delete Show ?</span>
           <p>This will permanently delete the image from your image library. You will not be able to undo this action.
           </p>
           <div class="inputs-btn">
-            <button class="mask waves-effect waves-light rgba-white-slight" onclick="closeDelet()">Cancel</button>
+            <button class="mask waves-effect waves-light rgba-white-slight" onclick="closeDelet('{{this._id}}')">Cancel</button>
             <button class="mask waves-effect waves-light rgba-white-slight"
               onclick="deleteShow('{{this._id}}')">Delete</button>
           </div>
@@ -146,15 +146,12 @@
 
 
 <script>
-  const closeDelet = () => {
-    var wrapper = document.querySelector('.delete-wrapper')
+  const closeDelet = (id) => {
+    var wrapper = document.getElementById(id)
     wrapper.classList.remove('active')
   }
-  function getDeleteWrapper(Name) {
-    var Delspan = document.getElementById('delete')
-    Delspan.innerText = `Delete ${Name} ?`
-
-    var wrapper = document.querySelector('.delete-wrapper')
+  function getDeleteWrapper(id) {
+    var wrapper = document.getElementById(id)
     wrapper.classList.toggle('active')
   }
   function deleteShow(Id) {
@@ -166,13 +163,12 @@
 
         console.log(response.status)
         if (response.status) {
-          var wrapper = document.querySelector('.delete-wrapper')
+          var wrapper = document.getElementById(Id)
 
           wrapper.classList.remove('active')
 
           location.reload()
 
-          console.log('delete')
 
         }
       }
