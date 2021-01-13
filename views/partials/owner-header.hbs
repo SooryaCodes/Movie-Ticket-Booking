@@ -200,19 +200,21 @@
         url: '/owner/getAnalytics',
         method: 'post',
         success: (response) => {
-          console.log(response)
           var boxes = document.querySelectorAll('.box-data')
+          var progress = document.querySelectorAll('.progress-bar')
           var incomeArray = []
 
           for (var i = 0; i < response.myBookings.length; i++) {
             incomeArray[i] = response.myBookings[i].Amount
           }
 
-          console.log(incomeArray)
 
           var income = incomeArray.reduce((a, b) => a + b, 0)
 
-          console.log(income)
+          progress[0].style.width = income / (100) + "%"
+          progress[1].style.width = `${response.Movies.length}%`
+          progress[2].style.width = `${response.Upcoming.length}%`
+          progress[3].style.width = `${response.myBookings.length}%`
           boxes[0].innerHTML = `₹ ${income} `
           boxes[1].innerHTML = `${response.Movies.length} `
           boxes[2].innerHTML = `${response.Upcoming.length} `
