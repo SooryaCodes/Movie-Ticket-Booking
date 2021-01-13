@@ -118,7 +118,8 @@ router.get("/logout", (req, res) => {
 
 router.get("/user-details", verifyLogin, async (req, res) => {
   var UserDetails = await ownerHelper.getUserDetails(req.user._id)
-  res.render("owner/user", { owner: true, ownerDetails: req.user });
+  console.log(UserDetails);
+  res.render("owner/user", { owner: true, ownerDetails: req.user ,User:UserDetails});
 });
 
 router.get("/screen", verifyLogin, (req, res) => {

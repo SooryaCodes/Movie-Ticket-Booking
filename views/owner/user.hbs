@@ -2,18 +2,18 @@
 
 
 
-    <div class="over-view">
-        <div class="over-view-title">
-            <p>Dashboard</p>
-        </div>
-        <div class="boxes-wrapper">
+<div class="over-view">
+    <div class="over-view-title">
+        <p>Dashboard</p>
+    </div>
+    <div class="boxes-wrapper">
 
         <div class="box-wrapper">
 
             <div class="boxes">
                 <div class="text">
                     <p>Income</p>
-                    <span class="box-data">$.200</span>
+                    <span class="box-data"></span>
                 </div>
                 <div class="progress" style="height: 10px; width: 90%; ">
 
@@ -26,7 +26,7 @@
             <div class="boxes">
                 <div class="text">
                     <p>Income</p>
-                    <span class="box-data">$.200</span>
+                    <span class="box-data"></span>
                 </div>
 
                 <div class="progress" style="height: 10px; width: 90%; ">
@@ -37,11 +37,11 @@
             </div>
         </div>
         <div class="box-wrapper2">
-        
+
             <div class="boxes">
                 <div class="text">
                     <p>Income</p>
-                    <span class="box-data">$.200</span>
+                    <span class="box-data"></span>
                 </div>
                 <div class="progress" style="height: 10px; width: 90%; ">
 
@@ -54,7 +54,7 @@
             <div class="boxes">
                 <div class="text">
                     <p>Income</p>
-                    <span class="box-data">$.200</span>
+                    <span class="box-data"></span>
                 </div>
                 <div class="progress" style="height: 10px; width: 90%; ">
 
@@ -63,201 +63,209 @@
 
                 </div>
             </div>
-      </div>
-      </div>
         </div>
-        {{!-- <!-- ---chart section --- -->
+    </div>
+</div>
+{{!--
+<!-- ---chart section --- -->
 
 
 
-        <div class="chart-owner" >
-            <div class="line-chart">
-                <div class="chart-heading">
-                    <p>Revenue</p>
-                    </div>
-                    <canvas id="lineChart"></canvas>
-                    
-                </div>
-                <div class="horizonatal-chart">
-                    <div class="chart-heading">
-                        <p>Analytics</p>
-                    </div>
-                    <canvas id="horizontalBar"></canvas>
-                </div>
-    
-            </div>
-    
-             --}}
-            <!-- table -->
+<div class="chart-owner">
+    <div class="line-chart">
+        <div class="chart-heading">
+            <p>Revenue</p>
+        </div>
+        <canvas id="lineChart"></canvas>
 
-            
+    </div>
+    <div class="horizonatal-chart">
+        <div class="chart-heading">
+            <p>Analytics</p>
+        </div>
+        <canvas id="horizontalBar"></canvas>
+    </div>
+
+</div>
+
+--}}
+<!-- table -->
+
+
 <!--table -->
 <div class="owner-table">
-  <div class="table-title">
-      <p>User Activity</p>
-  </div>
+    <div class="table-title">
+        <p>User Activity</p>
+    </div>
     <table>
-     
-      <tr>
-        
-        <th class="no">
-          No
-        </th>
-        <th>
-          Name
-        </th>
-        <th>
-         Date
-        </th>
-        <th>
-            Last Booking    
-        </th>
-        <th>
-            Status    
-        </th>
-        <th>
-          Amount
-        </th>
-      </tr>
+
         <tr>
-          <td id="row" >
-            1
-          </td>
-          <td>
-           Joker <!-- <img src="/images/owner/profile/owner{{this._id}}.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" alt=""> {{this.Name}} -->
-          </td>
-          <td>
-              20-10-2020
-        </td>
-          <td>
-              20-10-2020
-        </td>
-         <td>
-        <div class="status-h"></div>
-        On Hold
-      </td>
-          <td>
-           $23303.0
-          </td>
+
+            <th class="no">
+                No
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Join Date
+            </th>
+            <th>
+                Booking Date
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Amount
+            </th>
         </tr>
+        {{#each User}}
+        <tr>
+            <td id="row">
+
+            </td>
+            <td>
+                {{this.UserDetails.Name}}
+            </td>
+            <td>
+                {{this.UserDetails.Date}}
+            </td>
+            <td>
+                {{this.Date}}
+            </td>
+            <td>
+                {{#if this.Paid}}
+                <div class="status-a"></div>
+Paid
+                {{else}}
+                <div class="status-h"></div>
+                Pending
+                {{/if}}
+            </td>
+            <td>
+                ₹  {{this.Amount}}
+            </td>
+        </tr>
+        {{/each}}
     </table>
-  </div>
+</div>
 
 
 
 
-      <!-- ----tables--- -->
+<!-- ----tables--- -->
 
-{{!-- 
-        <script>
-            $(document).ready(function () {
-                $('#dtBasicExample').DataTable();
-                $('.dataTables_length').addClass('bs-select');
-            });
-        </script>
-        <script>
-            const currentLocation = location.href;
-            const sidebar = document.getElementsByClassName("side-bar-items");
-            const sidebarLength = sidebar.length;
-            for (let i = 0; i < sidebarLength; i++) {
-                if (sidebar[i].href === currentLocation) {
-                    sidebar[i].classList = "side-bar-items active";
+{{!--
+<script>
+    $(document).ready(function () {
+        $('#dtBasicExample').DataTable();
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
+<script>
+    const currentLocation = location.href;
+    const sidebar = document.getElementsByClassName("side-bar-items");
+    const sidebarLength = sidebar.length;
+    for (let i = 0; i < sidebarLength; i++) {
+        if (sidebar[i].href === currentLocation) {
+            sidebar[i].classList = "side-bar-items active";
+        }
+    }
+</script>
+<script>
+
+
+    // Line
+    var ctxL = document.getElementById("lineChart").getContext('2d');
+    var gradientFill = ctxL.createLinearGradient(0, 0, 0, 290);
+    gradientFill.addColorStop(0, "rgba(255,108,70,100)");
+    gradientFill.addColorStop(1, "rgba(255,124,88,0.4)");
+    var myLineChart = new Chart(ctxL, {
+        type: 'line',
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    data: [0, 65, 45, 65, 35, 65, 0],
+                    backgroundColor: gradientFill,
+
+                    borderWidth: 2,
+                    pointBorderColor: "#fff",
+                    pointBackgroundColor: "rgba(173, 53, 186, 0.1)",
                 }
+            ]
+        },
+        "options": {
+            legend: {
+                display: false,
+            },
+            "scales": {
+                "xAxes": [{
+                    "ticks": {
+                        "beginAtZero": true
+                    },
+                    gridLines: {
+                        display: false,
+                    },
+                }],
+                "yAxes": [{
+                    gridLines: {
+                        display: false,
+                    },
+                }]
+            },
+            responsive: true
+
+        }
+    });
+
+    // bar chart script
+
+    new Chart(document.getElementById("horizontalBar"), {
+        "type": "horizontalBar",
+        "data": {
+            "labels": ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Grey"],
+            "datasets": [{
+                "label": "My First Dataset",
+                "data": [22, 33, 55, 12, 86, 23, 14],
+                "fill": false,
+                "backgroundColor": [
+                    "#ff8978",
+                    "#ff8978",
+                    "#ff8978",
+                    "#ff8978",
+                    "#ff8978",
+                    "#ff8978",
+                    "#ff8978",
+                ],
+
+                "borderWidth": 1
+            }]
+        },
+
+        "options": {
+            legend: {
+                display: false,
+            },
+            "scales": {
+                "xAxes": [{
+                    "ticks": {
+                        "beginAtZero": true
+                    },
+                    gridLines: {
+                        display: false,
+                    },
+                }],
+                "yAxes": [{
+                    gridLines: {
+                        display: false,
+                    },
+                }]
             }
-        </script>
-        <script>
+        }
+    });
+</script>
 
-
-            // Line
-            var ctxL = document.getElementById("lineChart").getContext('2d');
-            var gradientFill = ctxL.createLinearGradient(0, 0, 0, 290);
-            gradientFill.addColorStop(0, "rgba(255,108,70,100)");
-            gradientFill.addColorStop(1, "rgba(255,124,88,0.4)");
-            var myLineChart = new Chart(ctxL, {
-                type: 'line',
-                data: {
-                    labels: ["January", "February", "March", "April", "May", "June", "July"],
-                    datasets: [
-                        {
-                            label: "My First dataset",
-                            data: [0, 65, 45, 65, 35, 65, 0],
-                            backgroundColor: gradientFill,
-
-                            borderWidth: 2,
-                            pointBorderColor: "#fff",
-                            pointBackgroundColor: "rgba(173, 53, 186, 0.1)",
-                        }
-                    ]
-                },
-                "options": {
-                    legend: {
-                        display: false,
-                    },
-                    "scales": {
-                        "xAxes": [{
-                            "ticks": {
-                                "beginAtZero": true
-                            },
-                            gridLines: {
-                                display: false,
-                            },
-                        }],
-                        "yAxes": [{
-                            gridLines: {
-                                display: false,
-                            },
-                        }]
-                    },
-                    responsive: true
-
-                }
-            });
-
-            // bar chart script
-
-            new Chart(document.getElementById("horizontalBar"), {
-                "type": "horizontalBar",
-                "data": {
-                    "labels": ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Grey"],
-                    "datasets": [{
-                        "label": "My First Dataset",
-                        "data": [22, 33, 55, 12, 86, 23, 14],
-                        "fill": false,
-                        "backgroundColor": [
-                            "#ff8978",
-                            "#ff8978",
-                            "#ff8978",
-                            "#ff8978",
-                            "#ff8978",
-                            "#ff8978",
-                            "#ff8978",
-                        ],
-
-                        "borderWidth": 1
-                    }]
-                },
-
-                "options": {
-                    legend: {
-                        display: false,
-                    },
-                    "scales": {
-                        "xAxes": [{
-                            "ticks": {
-                                "beginAtZero": true
-                            },
-                            gridLines: {
-                                display: false,
-                            },
-                        }],
-                        "yAxes": [{
-                            gridLines: {
-                                display: false,
-                            },
-                        }]
-                    }
-                }
-            });
-        </script>
-
-        --}}  
+--}}
