@@ -84,52 +84,153 @@
 
 
 <script>
-  // ---chart script---
 
-  var ctxL = document.getElementById("barChart").getContext("2d");
-  var gradientFill = ctxL.createLinearGradient(0, 0, 0, 290);
-  gradientFill.addColorStop(0, "#5e97ff");
-  gradientFill.addColorStop(1, "rgba(0,146,255,0.1)");
-  var myLineChart = new Chart(ctxL, {
-    type: "bar",
-    data: {
-      labels: ["March", "March", "April", "May", "June", "July"],
-      datasets: [
-        {
-          label: "My First dataset",
-          data: [30, 65, 45, 65, 35, 65, 0],
-          backgroundColor: gradientFill,
-          borderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-    },
-  });
+  const getLineChart = () => {
+    $.ajax({
+      url: '/admin/getLineChartData',
+      method: 'post',
+      success: (response) => {
+        console.log(response, "response")
+        var January = response.January
+        var February = response.February
+        var March = response.March
+        var April = response.April
+        var May = response.May
+        var June = response.June
+        var July = response.July
+        var August = response.August
+        var September = response.September
+        var October = response.October
+        var November = response.November
+        var December = response.December
 
-  var ctxL = document.getElementById("lineChart").getContext("2d");
-  var gradientFill = ctxL.createLinearGradient(0, 0, 0, 290);
-  gradientFill.addColorStop(0, "rgba(173, 53, 186, 1)");
-  gradientFill.addColorStop(1, "rgba(173, 53, 186, 0.1)");
-  var myLineChart = new Chart(ctxL, {
-    type: "line",
-    data: {
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
-      datasets: [
-        {
-          label: "My First dataset",
-          data: [0, 65, 45, 65, 35, 65, 0],
-          backgroundColor: gradientFill,
-          borderColor: ["#AD35BA"],
-          borderWidth: 2,
-          pointBorderColor: "#fff",
-          pointBackgroundColor: "rgba(173, 53, 186, 0.1)",
+        lineChart(January, February, March, April, May, June, July, August, September, October, November, December)
+      }
+    })
+  }
+
+
+
+  window.addEventListener('load', () => {
+    getLineChart()
+  })
+
+  function lineChart(January, February, March, April, May, June, July, August, September, October, November, December) {
+
+    // Line
+    var ctxL = document.getElementById("lineChart").getContext('2d');
+    var gradientFill = ctxL.createLinearGradient(0, 0, 0, 290);
+    gradientFill.addColorStop(0, "rgba(173, 53, 186, 1)");
+    gradientFill.addColorStop(1, "rgba(173, 53, 186, 0.1)");
+    var myLineChart = new Chart(ctxL, {
+      type: 'line',
+      data: {
+        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        datasets: [
+          {
+            label: "My First dataset",
+            data: [January, February, March, April, May, June, July, August, September, October, November, December],
+            backgroundColor: gradientFill,
+
+            borderWidth: 2,
+            pointBorderColor: "#fff",
+            pointBackgroundColor: "rgba(173, 53, 186, 0.1)",
+          }
+        ]
+      },
+      "options": {
+
+        "scales": {
+          "xAxes": [{
+            "ticks": {
+              "beginAtZero": true
+            },
+            gridLines: {
+              display: false,
+            },
+          }],
+          "yAxes": [{
+            gridLines: {
+              display: false,
+            },
+          }]
         },
-      ],
-    },
-    options: {
-      responsive: true,
-    },
-  });
+        responsive: true
+
+      }
+    });
+
+  }
+
+</script>
+<script>
+
+
+
+
+  // bar chart script
+  var bar_chart_data = {}
+  const getBarChartData = () => {
+    $.ajax({
+      url: '/admin/get-bar-chart-data',
+      method: 'get',
+      success: (data) => {
+        console.log(data, "data")
+        bar_chart_data.Screens = data.Screens.length
+        bar_chart_data.Shows = data.Shows.length
+        bar_chart_data.Movies = data.Movies.length
+        bar_chart_data.Bookings = data.Bookings.length
+        bar_chart_data.Upcomings = data.Upcomings.length
+        bar_chart_data.Users = data.Users.length
+
+        var Bookings = bar_chart_data.Bookings
+        var Screens = bar_chart_data.Screens
+        var Shows = bar_chart_data.Shows
+        var Movies = bar_chart_data.Movies
+        var Upcomings = bar_chart_data.Upcomings
+        var Users = bar_chart_data.Users
+
+        barChart(Screens, Shows, Movies, Bookings, Users)
+      }
+    })
+  }
+  window.addEventListener('load', () => {
+    getBarChartData()
+  })
+
+
+
+  const barChart = (Screens, Shows, Movies, Bookings, Users) => {
+    // ---chart script---
+
+    var ctxL = document.getElementById("barChart").getContext("2d");
+    var gradientFill = ctxL.createLinearGradient(0, 0, 0, 290);
+    gradientFill.addColorStop(0, "#5e97ff");
+    gradientFill.addColorStop(1, "rgba(0,146,255,0.1)");
+    var myLineChart = new Chart(ctxL, {
+      type: "bar",
+      data: {
+        labels: ['Screens', 'Shows', 'Movies', 'Bookings', 'Users'],
+        datasets: [
+          {
+            label: "My First dataset",
+            data: [Screens, Shows, Movies, Bookings, Users],
+            backgroundColor: gradientFill,
+            borderWidth: 0,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+      },
+    });
+  }
+
+
+
+
+
+
+
+
 </script>
