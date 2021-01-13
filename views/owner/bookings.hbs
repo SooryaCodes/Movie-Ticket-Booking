@@ -92,10 +92,10 @@
         Show
       </th>
       <th>
-        Payment 
+        Payment
       </th>
       <th>
-        Payment Status
+       Status
       </th>
       <th>
         Amount
@@ -107,17 +107,26 @@
 
       </td>
       <td>
-      {{!-- {{this.Show.}} --}}
+        {{this.MovieDetails.Title}}
       </td>
       <td>
-        20-10-2020
+        {{this.Show.screenName}}
+      </td>
+      <td>{{this.ShowDetails.Date}}  |  {{this.ShowDetails.Time}}</td>
+      <td>
+        {{this.Payment}}
       </td>
       <td>
-        2H 20M
+        {{#if this.Paid}}
+        <div class="status-a"></div>
+        {{else}}
+        <div class="status-h"></div>
+        {{/if}}
+        {{this.Payment_Status}}
       </td>
-
+<td> ₹ {{this.Amount}}</td>
     </tr>
-{{/each}}
+    {{/each}}
   </table>
 </div>
 

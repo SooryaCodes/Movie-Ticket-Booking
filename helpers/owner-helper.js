@@ -627,6 +627,11 @@ module.exports = {
         console.log(bookingDetails[i].Show);
         bookingDetails[i].MovieDetails=await db.get().collection(collection.MOVIE_COLLECTION).findOne({_id:objectId(bookingDetails[i].Show.Movie)})
       }
+
+      for (var i = 0; i < bookingDetails.length; i++) {
+        console.log(bookingDetails[i].Show);
+        bookingDetails[i].ShowDetails=await db.get().collection(collection.SHOW_COLLECTION).findOne({_id:objectId(bookingDetails[i].Show._id)})
+      }
       console.log(bookingDetails);
       resolve(bookingDetails)
     })
