@@ -119,19 +119,19 @@
         <a href="/owner/edit-movie/{{this._id}}">
           <img src="/images/admin/edit-2.svg" alt="" />
         </a>
-        <a onclick="getDeleteWrapper('{{this.Title}}')">
+        <a onclick="getDeleteWrapper('{{this.Title}}','{{this._id}}')">
           <img src="/images/admin/trash (1).svg" alt="" />
         </a>
       </td>
 
       {{!--delete popup--}}
-      <div class="delete-wrapper">
+      <div class="delete-wrapper" id="{{this._id}}">
         <div class="delete">
-          <span id="delete">Delete This.Png ?</span>
+          <span id="delete" class="{{this._id}}">Delete This.Png ?</span>
           <p>This will permanently delete the image from your image library. You will not be able to undo this action.
           </p>
           <div class="inputs-btn">
-            <button class="mask waves-effect waves-light rgba-white-slight" onclick="closeDelet()">Cancel</button>
+            <button class="mask waves-effect waves-light rgba-white-slight" onclick="closeDelet('{{this._id}}')">Cancel</button>
             <button class="mask waves-effect waves-light rgba-white-slight"
               onclick="deleteMovie('{{this._id}}')">Delete</button>
           </div>
@@ -144,15 +144,15 @@
 
 
 <script>
-  const closeDelet = () => {
-    var wrapper = document.querySelector('.delete-wrapper')
+  const closeDelet = (id) => {
+    var wrapper = document.getElementById(id)
     wrapper.classList.remove('active')
   }
-  function getDeleteWrapper(Name) {
-    var Delspan = document.getElementById('delete')
+  function getDeleteWrapper(Name, id) {
+    var Delspan = document.getElementsByClassName(id)
     Delspan.innerText = `Delete ${Name} ?`
 
-    var wrapper = document.querySelector('.delete-wrapper')
+    var wrapper = document.getElementById(id)
     wrapper.classList.toggle('active')
   }
   function deleteMovie(Id) {
@@ -164,7 +164,7 @@
 
         console.log(response.status)
         if (response.status) {
-              var wrapper = document.querySelector('.delete-wrapper')
+          var wrapper = document.getElementById(Id)
 
           wrapper.classList.remove('active')
 

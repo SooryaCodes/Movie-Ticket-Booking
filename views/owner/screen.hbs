@@ -118,13 +118,13 @@
       </td>
 
       {{!--delete popup--}}
-      <div class="delete-wrapper">
+      <div class="delete-wrapper" id="{{this._id}}">
         <div class="delete">
-          <span id="delete">Delete This.Png ?</span>
+          <span id="delete" class="{{this._id}}"></span>
           <p>This will permanently delete the image from your image library. You will not be able to undo this action.
           </p>
           <div class="inputs-btn">
-            <button class="mask waves-effect waves-light rgba-white-slight" onclick="closeDelet()">Cancel</button>
+            <button class="mask waves-effect waves-light rgba-white-slight" onclick="closeDelet('{{this._id}}')">Cancel</button>
             <button class="mask waves-effect waves-light rgba-white-slight"
               onclick="deleteScreen('{{this._id}}')">Delete</button>
           </div>
