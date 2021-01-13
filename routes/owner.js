@@ -122,6 +122,9 @@ router.get("/user-details", verifyLogin, async (req, res) => {
   res.render("owner/user", { owner: true, ownerDetails: req.user ,User:UserDetails});
 });
 
+
+
+
 router.get("/screen", verifyLogin, (req, res) => {
   ownerHelper.getScreens(req.user._id).then((data) => {
     if (data.length < 1) {

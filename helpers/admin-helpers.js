@@ -279,7 +279,31 @@ module.exports = {
         resolve(response)
       })
     })
-  }
+  },
+
+
+
+  getUserActivity: (id) => {
+    return new Promise(async (resolve, reject) => {
+      var bookingDetails = await db.get().collection(collection.BOOKING_COLLECTION).find().toArray()
+      for (var i = 0; i < bookingDetails.length; i++) {
+        bookingDetails[i].UserDetails = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(bookingDetails[i].userId) })
+        bookingDetails[i].Date = await new Date(bookingDetails[i].Date).toLocaleDateString()
+        bookingDetails[i].UserDetails.Date = await new Date(bookingDetails[i].UserDetails.Date).toLocaleDateString()
+        if (bookingDetails[i].Payment_Status === 'Paid') {
+          bookingDetails[i].Paid = true
+        } else {
+          bookingDetails[i].Paid = false
+
+        }
+
+      }
+
+      resolve(bookingDetails)
+    })
+  },
+
+
 
 
 };

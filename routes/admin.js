@@ -151,6 +151,18 @@ router.get("/user-details", verifyLogin, (req, res) => {
   });
 });
 
+
+router.get('/user-activity',async(req,res)=>{
+  var UserDetails=await adminHelper.getUserActivity()
+  res.render('admin/user-activity',{
+    admin:true,
+    adminDetails:req.user,
+    ownersLength,
+    UserDetails
+
+  })
+})
+
 //get update password
 
 router.get("/update-password", verifyLogin, (req, res) => {
