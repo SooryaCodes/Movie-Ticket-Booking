@@ -33,7 +33,8 @@ module.exports = {
   signup: (mobile, data) => {
     return new Promise((reolve, reject) => {
       data.Mobile = mobile;
-      data.Date=new Date()
+      data.Date = new Date()
+      data.Wallet = 0
       data.role = "user";
       db.get()
         .collection(collection.USER_COLLECTION)
@@ -102,9 +103,9 @@ module.exports = {
   generateRazorpay: (data, userId) => {
     return new Promise(async (resolve, reject) => {
       console.log(data, userId);
-
+      data.WalletAmount = parseInt(data.WalletAmount)
       var details = {};
-
+      data.total = parseInt(data.total)
       details.Amount = data.total;
       details.Seat = data.seat;
       details.userId = userId;
@@ -118,12 +119,22 @@ module.exports = {
       console.log(details, "details");
       details.walletUsed = data.walletUsed
       if (data.walletUsed === true) {
-        var deleteWallet = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
-          $set: {
-            Wallet: 0
-          }
-        })
+        if (data.AmountIsOne === true) {
+          var deleteWallet = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
+            $inc: {
+              Wallet: -data.total
+            }
+          })
+        } else if (data.WalletUsedWithAmount === true) {
+          var deleteWallet = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
+            $inc: {
+              Wallet: -data.WalletAmount
+            }
+          })
+        }
       }
+
+
       var showCollection = await db
         .get()
         .collection(collection.SHOW_COLLECTION)
@@ -142,11 +153,39 @@ module.exports = {
 
       var bookingId = booking.ops[0]._id;
 
-      var options = {
-        amount: details.Amount * 100, // amount in the smallest currency unit
-        currency: "INR",
-        receipt: "" + bookingId,
-      };
+
+      if (data.AmountIsOne === true) {
+
+        var options = {
+          amount: 1 * 100, // amount in the smallest currency unit
+          currency: "INR",
+          receipt: "" + bookingId,
+        };
+
+      } else if (data.WalletUsedWithAmount === true) {
+        var options = {
+          amount: (data.total - data.WalletAmount) * 100, // amount in the smallest currency unit
+          currency: "INR",
+          receipt: "" + bookingId,
+        };
+
+      } else if (data.originalAmount === true) {
+        var options = {
+          amount: data.total * 100, // amount in the smallest currency unit
+          currency: "INR",
+          receipt: "" + bookingId,
+        };
+
+      }
+
+
+
+
+
+
+
+
+
       console.log(options);
       instance.orders.create(options, function (err, order) {
         if (err) {
@@ -193,6 +232,7 @@ module.exports = {
 
       var details = {};
 
+      data.total = parseInt(data.total);
       details.Amount = data.total;
       details.Seat = data.seat;
       details.userId = userId;
@@ -206,7 +246,7 @@ module.exports = {
       if (data.walletUsed === true) {
         var deleteWallet = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
           $set: {
-            Wallet: 0
+            Wallet: -data.total
           }
         })
       }
@@ -678,45 +718,45 @@ module.exports = {
       resolve(Data)
     })
   },
-  cancelBooking: (id,userId) => {
+  cancelBooking: (id, userId) => {
     return new Promise(async (resolve, reject) => {
 
       var bookDetails = await db.get().collection(collection.BOOKING_COLLECTION).findOne({ _id: objectId(id) })
 
 
-      var deleteSeatsShow = await db.get().collection(collection.SHOW_COLLECTION).updateOne({ _id: objectId(bookDetails.Show._id) },{
-        $pull:{
-          Seats:bookDetails.Seat
+      var deleteSeatsShow = await db.get().collection(collection.SHOW_COLLECTION).updateOne({ _id: objectId(bookDetails.Show._id) }, {
+        $pull: {
+          Seats: bookDetails.Seat
         }
       })
 
-      var Amount =parseInt(bookDetails.Amount)
+      var Amount = parseInt(bookDetails.Amount)
 
 
-      var addWallet=await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
+      var addWallet = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
         $inc: {
           Wallet: Amount
         }
       })
 
-      var addREward=await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
+      var addREward = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, {
         $push: {
           Rewards: Amount
         }
-      }) 
+      })
       var deleteBooking = await db.get().collection(collection.BOOKING_COLLECTION).removeOne({ _id: objectId(id) })
       resolve({ status: true })
     })
   },
-  cancelBookingFailed: (id,userId) => {
+  cancelBookingFailed: (id, userId) => {
     return new Promise(async (resolve, reject) => {
 
       var bookDetails = await db.get().collection(collection.BOOKING_COLLECTION).findOne({ _id: objectId(id) })
 
 
-      var deleteSeatsShow = await db.get().collection(collection.SHOW_COLLECTION).updateOne({ _id: objectId(bookDetails.Show._id) },{
-        $pull:{
-          Seats:bookDetails.Seat
+      var deleteSeatsShow = await db.get().collection(collection.SHOW_COLLECTION).updateOne({ _id: objectId(bookDetails.Show._id) }, {
+        $pull: {
+          Seats: bookDetails.Seat
         }
       })
 

@@ -21,12 +21,12 @@ window.addEventListener('load', () => {
   <strong>Hi ${name}.</strong> Seat Selection Will Time Out In 5 minutes.
 </div>`;
 
-disableCorona()
+  disableCorona()
 
 
 })
 
-function disableCorona(){
+function disableCorona() {
   var AllSeatsForDisabling = document.querySelectorAll('input[name="seat"]');
   for (var i = 0; i < AllSeatsForDisabling.length; i++) {
     if (i % 2 === 0) {
@@ -142,7 +142,7 @@ function myfun(hi) {
     console.log(wrapper.childElementCount);
     if (SeatShow.childElementCount >= 1) {
       wrapper.classList.add("active");
-    }else {
+    } else {
       wrapper.classList.remove("active");
       console.log("hi there is nothing");
     }
@@ -201,9 +201,9 @@ function myfun(hi) {
 
 
 
- function checkoutBtn() {
+function checkoutBtn() {
   var checkedSeat = document.querySelectorAll('input[name="seat"]:checked');
-var TotalPrice=parseInt(document.getElementById('total').innerHTML)
+  var TotalPrice = parseInt(document.getElementById('total').innerHTML)
   var seatNumber = checkedSeat.length;
   var paymentPopupWrapper = document.querySelector(".payment-popup-wrapper");
   var paymentPopup = document.querySelector(".payment-popup");
@@ -219,7 +219,7 @@ var TotalPrice=parseInt(document.getElementById('total').innerHTML)
   paymentPopupWrapper.classList.toggle('active')
   paymentPopup.classList.toggle("active");
 };
-document.querySelector('.x').addEventListener('click',()=>{
+document.querySelector('.x').addEventListener('click', () => {
   var paymentPopupWrapper = document.querySelector(".payment-popup-wrapper");
   var paymentPopup = document.querySelector(".payment-popup");
   paymentPopupWrapper.classList.remove('active')
@@ -232,12 +232,15 @@ function wallet(val) {
   var val = parseInt(val)
   console.log(val, total);
   if (walletInput.checked === true) {
-    document.getElementById("totalPriceForPayment").innerHTML = total - val;
+    if (total - val < 0) {
+      document.getElementById("totalPriceForPayment").innerHTML = 1;
+    } else {
+      document.getElementById("totalPriceForPayment").innerHTML = total - val;
+    }
   } else {
-
-    document.getElementById("totalPriceForPayment").innerHTML = total + val;
+    var originalTotal = parseInt(document.getElementById('total').innerText)
+    document.getElementById("totalPriceForPayment").innerHTML = originalTotal
   }
-
 }
 function payment(paymentMethod) {
   var checkedSeat = document.querySelectorAll('input[name="seat"]:checked');
@@ -245,23 +248,34 @@ function payment(paymentMethod) {
   for (var i = 0; i < checkedSeat.length; i++) {
     seat[i] = checkedSeat[i].value;
   }
-
-  var total = parseInt(
-    document.getElementById("totalPriceForPayment").innerText
-  );
-
-
+  var totalPriceForPayment = parseInt(document.getElementById("totalPriceForPayment").innerText)
+  var total = parseInt(document.getElementById('total').innerText)
   var walletUsed;
-
+  var AmountIsOne = false
+  var originalAmount = false
+  var WalletUsedWithAmount = false
   var walletInput = document.getElementById('Wallet');
   if (walletInput) {
-
     if (walletInput.checked === true) {
+      if (totalPriceForPayment === 1) {
+        AmountIsOne = true
+      } else if (totalPriceForPayment != total && totalPriceForPayment > 1) {
+        WalletUsedWithAmount = true
+      }
       walletUsed = true
     } else {
       walletUsed = false
     }
+
   }
+
+
+  if (totalPriceForPayment === total) {
+    console.log('it is very berirjvdvhd');
+    originalAmount = true
+  }
+
+  console.log(totalPriceForPayment, total, 'njanane');
 
   $.ajax({
     url: "/ticket-booking",
@@ -275,7 +289,11 @@ function payment(paymentMethod) {
       seat,
       ownerId: ownerId,
       show,
-      walletUsed
+      walletUsed,
+      AmountIsOne,
+      originalAmount,
+      WalletUsedWithAmount,
+      WalletAmount: walletInput.value
     }),
     success: (response) => {
       if (response.status === false) {

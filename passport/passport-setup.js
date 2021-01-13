@@ -106,6 +106,7 @@ module.exports.initializePassport = (passport) => {
               userData.Email = profile.email;
               userData.role = "user";
               userData.signup = true
+              userData.Wallet=0
               userData.Date=new Date()
 
               db.get()
