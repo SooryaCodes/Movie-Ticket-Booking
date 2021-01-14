@@ -56,13 +56,6 @@ window.addEventListener('load', () => {
   }
 })
 
-window.addEventListener('load', () => {
-  var walletWrapper = document.querySelector('.wallet')
-
-  if (Wallet <= 0) {
-    walletWrapper.remove()
-  }
-})
 window.addEventListener("load", function () {
   for (var i = 0; i < Reserved.length; i++) {
     document.getElementById(Reserved[i]).parentNode.classList.add("Reserved-Seat");

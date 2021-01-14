@@ -334,7 +334,7 @@ router.get("/seat-select/:id/:ownerId", verifyLogin, (req, res) => {
     console.log(bookedSeats);
 
     var DetailsUser = await userHelpers.getWallet(req.user._id)
-    console.log(DetailsUser.Wallet);
+    console.log(DetailsUser,"DetailsUser");
     console.log(DetailsUser.Rewards);
     console.log(screen, "scrreeen cchekibb");
     res.render("user/screen", {

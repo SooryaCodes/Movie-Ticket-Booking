@@ -619,11 +619,9 @@ module.exports = {
   getWallet: (id) => {
     return new Promise((resolve, reject) => {
       db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(id) }).then((data) => {
-        if (data.Wallet) {
+       
           resolve(data)
-        } else {
-          resolve({ status: false })
-        }
+        
       })
     })
   },
