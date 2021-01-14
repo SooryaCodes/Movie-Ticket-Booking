@@ -485,6 +485,7 @@ for(var i=0;i<showsWithScreenId.length;i++){
     shows[i]=showsWithScreenId[i]
   }
 }
+console.log(shows);
       resolve(shows)
     })
   },
