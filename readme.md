@@ -7,7 +7,7 @@ In This App You Can Book Movie Tikects Online.*
 [Click Here For Live Preview.](https://moviecafe.sooryakriz.com)
 
 
-## Clone My Repo.
+## Clone My Repo
 
 **SSH**
 
@@ -41,9 +41,23 @@ https://github.com/Sooryakriz11/Movie-Ticket-Booking/archive/master.zip
 **Install All Packages**
 
 ```
-npm install
+$ npm install
 ```
 
+
+## Run
+
+**To Start The Project On Local Server**
+
+```
+$ npm start
+```
+
+*Or*
+
+```
+$ npm run dev
+```
 ## Major Routers
 
 **Admin**
@@ -51,14 +65,14 @@ npm install
 ```
 localhost:3000/admin
 ```
-*You Can Find  More In Views -> admin.js*
+*You Can Find  More In routes -> admin.js & helpers -> user-helpers*
 
 **Owner**
 
 ```
 localhost:3000/owner
 ```
-*You Can Find More In Views -> owner.js*
+*You Can Find More In routes -> owner.js & helpers -> user-helpers*
 
 **User**
 
@@ -69,8 +83,11 @@ localhost:3000/owner
 localhost:3000
 ```
 
-*You Can Find More In Views -> user.js*
-## 
+*You Can Find More In routes -> user.js & helpers -> user-helpers*
+
+## Thank You 
+
+**Have A Great Day heart**
 
 
 
