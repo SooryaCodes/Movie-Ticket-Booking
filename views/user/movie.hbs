@@ -455,11 +455,11 @@
         locationWrapper.classList.remove('active')
     }
 
-var UserLongitue='{{userDetails.Longitude}}'
-var UserLatitude='{{userDetails.Latitude}}'
-var UserLocation=[
-UserLongitue,UserLatitude
-]
+    var UserLongitue = '{{userDetails.Longitude}}'
+    var UserLatitude = '{{userDetails.Latitude}}'
+    var UserLocation = [
+        UserLongitue, UserLatitude
+    ]
     const giveMarkers = (Theaters) => {
         mapboxgl.accessToken = 'pk.eyJ1Ijoic29vcnlhLWtyaXoiLCJhIjoiY2tqYTcydDN1NWc1bTJ5bjRuYXF3eHdpayJ9.mo48bziP80gkbrXL-1kETw';
 
@@ -974,7 +974,7 @@ UserLongitue,UserLatitude
         screen.classList.remove('active')
         var sliderWrapperShow = document.querySelector('.swiper-wrapper.Show')
         if (checkedScreen === null) {
-            alert('You Didn"t Select Any Screen ! Try Again ')
+            alert('You Didn"t Select Any Show ! Try Again ')
             removeSlider()
             wrapper.classList.remove('active')
         } else {
@@ -982,6 +982,11 @@ UserLongitue,UserLatitude
                 url: `/getShowDetails/${movieId}/${checkedScreen.value}`,
                 method: 'post',
                 success: (showDetails) => {
+                    if (showDetails.length < 1) {
+                        wrapper.classList.remove('active')
+                        loader.classList.remove('active')
+                        alert('Sorry , No Shows Available !  :(')
+                    }
                     console.log(showDetails)
                     showDetails.forEach(Details => {
                         console.log(Details)
