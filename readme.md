@@ -65,14 +65,14 @@ $ npm run dev
 ```
 localhost:3000/admin
 ```
-*You Can Find  More In routes -> admin.js & helpers -> user-helpers*
+*You Can Find  More In routes -> admin.js & helpers -> admin-helper.js*
 
 **Owner**
 
 ```
 localhost:3000/owner
 ```
-*You Can Find More In routes -> owner.js & helpers -> user-helpers*
+*You Can Find More In routes -> owner.js & helpers -> owner-helper.js*
 
 **User**
 
@@ -83,7 +83,7 @@ localhost:3000/owner
 localhost:3000
 ```
 
-*You Can Find More In routes -> user.js & helpers -> user-helpers*
+*You Can Find More In routes -> user.js & helpers -> user-helpers.js*
 
 ## Thank You 
 
