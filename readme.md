@@ -1,2 +1,1 @@
-**Hey , Welcome To Movie Cafe**
-
+**Welcome To Movie Booking System**
