@@ -478,14 +478,13 @@ module.exports = {
   getShowDetails: (movieId, screenId) => {
     return new Promise(async (resolve, reject) => {
       var showsWithScreenId = await db.get().collection(collection.SHOW_COLLECTION).find({ screenId: screenId }).toArray()
+      var shows = []
 
 for(var i=0;i<showsWithScreenId.length;i++){
   if(showsWithScreenId[i].Movie===movieId){
     shows[i]=showsWithScreenId[i]
   }
 }
-      var shows = []
-      console.log(shows, "shows");
       resolve(shows)
     })
   },
