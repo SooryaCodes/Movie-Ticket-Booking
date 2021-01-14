@@ -87,7 +87,7 @@ localhost:3000
 
 ## Thank You 
 
-**Have A Great Day heart**
+**Have A Great Day**
 
 
 
