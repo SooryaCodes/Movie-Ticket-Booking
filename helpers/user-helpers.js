@@ -478,7 +478,7 @@ module.exports = {
 
   getShowDetails: (movieId, screenId) => {
     return new Promise(async (resolve, reject) => {
-      var shows = await db.get().collection(collection.SHOW_COLLECTION).find({ screenId: screenId ,Movie:objectId(movieId)}).toArray()
+      var shows = await db.get().collection(collection.SHOW_COLLECTION).find({ screenId: screenId ,Movie:movieId}).toArray()
       
       console.log(shows, "shows");
       resolve(shows)
