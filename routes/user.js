@@ -300,7 +300,7 @@ router.post("/getScreenDetails/:movieId/:ownerId", (req, res) => {
     });
 });
 router.post("/getShowDetails/:movieId/:screenId", (req, res) => {
-  console.log(req.params.movieId, req.params.ownerId);
+  console.log(req.params.movieId);
   userHelpers
     .getShowDetails(req.params.movieId, req.params.screenId)
     .then((response) => {
