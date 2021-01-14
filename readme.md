@@ -6,6 +6,20 @@
 In This App You Can Book Movie Tikects Online.*
 [Click Here For Live Preview.](https://moviecafe.sooryakriz.com)
 
+## Key Features
+
+```
+-Referal Link
+
+-Movie Rating
+
+-Wallet Checkout
+
+-Real Time Notification
+
+-Templated Mails
+
+```
 
 ## Clone My Repo
 
