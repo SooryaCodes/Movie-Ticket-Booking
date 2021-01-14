@@ -19,6 +19,7 @@ var client = require("twilio")(
 );
 const verifyLogin = (req, res, next) => {
   if (req.isAuthenticated() && req.user.role === "user") {
+    req.session.loggedIn=true
     next();
   } else if (req.session.loggedIn) {
     next();
