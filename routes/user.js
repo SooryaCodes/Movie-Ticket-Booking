@@ -19,7 +19,6 @@ var client = require("twilio")(
 );
 const verifyLogin = (req, res, next) => {
   if (req.isAuthenticated() && req.user.role === "user") {
-    req.session.loggedIn=true
     next();
   } else if (req.session.loggedIn) {
     next();
@@ -184,8 +183,6 @@ router.get(
     failureFlash: true,
   }),
   function (req, res) {
-
-    req.session.loggedIn = true
     // Successful authentication, redirect home.
   }
 );
@@ -418,11 +415,11 @@ router.post('/profile-image', (req, res) => {
 
 
 router.get('/booking-success', (req, res) => {
-  userHelpers.changeStatus(req.query.id, req.user._id).then(async (Response) => {
+  userHelpers.changeStatus(req.query.id, req.user._id).then(async(Response) => {
     var dynamic_template_data = {
       Link: 'https://moviecafe.sooryakriz.com/account'
     }
-    var paymentMail = await mailHelper.sendPayment(req.user.Email, process.env.MY_EMAIL, 'd-e697e803620148f2bdf3529366c5eb22', dynamic_template_data)
+    var paymentMail=await mailHelper.sendPayment(req.user.Email, process.env.MY_EMAIL, 'd-e697e803620148f2bdf3529366c5eb22', dynamic_template_data)
 
     userHelpers.getBookingDetail(req.query.id).then((templateData) => {
 
@@ -509,35 +506,35 @@ router.post('/getBookings', (req, res) => {
 })
 
 
-router.post('/cancel-booking/:id', (req, res) => {
-  userHelpers.cancelBooking(req.params.id, req.user._id).then((response) => {
-    res.json({ status: true })
+router.post('/cancel-booking/:id',(req,res)=>{
+  userHelpers.cancelBooking(req.params.id,req.user._id).then((response)=>{
+    res.json({status:true})
   })
 })
-router.post('/cancel-booking-failed/:id', (req, res) => {
-  userHelpers.cancelBookingFailed(req.params.id, req.user._id).then((response) => {
-    res.json({ status: true })
+router.post('/cancel-booking-failed/:id',(req,res)=>{
+  userHelpers.cancelBookingFailed(req.params.id,req.user._id).then((response)=>{
+    res.json({status:true})
   })
 })
 
-router.post('/MovieSearch/:SearchWord', async (req, res) => {
-  var Movies = await userHelpers.getAllMovies()
+router.post('/MovieSearch/:SearchWord',async(req,res)=>{
+  var Movies=await userHelpers.getAllMovies()
   const options = {
     includeScore: true,
     keys: ["Title"]
   }
-
+  
   // Create a new instance of Fuse
   const fuse = new Fuse(Movies, options)
-
+  
   // Now search for 'Man'
   const result = fuse.search(req.params.SearchWord)
   console.log(result);
   res.json(result)
 })
 
-router.post('/getAllMovies', (req, res) => {
-  userHelpers.getAllMovies().then((response) => {
+router.post('/getAllMovies',(req,res)=>{
+  userHelpers.getAllMovies().then((response)=>{
     res.json(response)
   })
 })
