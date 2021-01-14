@@ -810,12 +810,12 @@
 
                 // when window width is >= 480px
                 966: {
-                    slidesPerView: 3,
+                    slidesPerView: 2,
                     spaceBetween: 0
                 },
                 // when window width is >= 640px
                 1382: {
-                    slidesPerView: 4,
+                    slidesPerView: 2.5,
                     spaceBetween: 0,
                 }
             }
@@ -1065,7 +1065,7 @@
             screen.classList.remove('active')
             show.classList.remove('active')
             removeDetailsAll()
-            loader.classList.remove('active')
+            loader.classList.remove('active')   
         } else {
 
             location.href = "/seat-select/" + checkedShow.value + '/' + ownerId

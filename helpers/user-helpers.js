@@ -458,18 +458,19 @@ module.exports = {
       var shows = await db
         .get()
         .collection(collection.SHOW_COLLECTION)
-        .find({ ownerId: objectId(ownerId) }, { Movie: movieId })
+        .find({ ownerId: objectId(ownerId), Movie: movieId })
         .toArray();
+
+      console.log(shows, "shows");
       var screenDetails = [];
       for (var i = 0; i < shows.length; i++) {
-        var screenData = await db
+        screenDetails[i] = await db
           .get()
           .collection(collection.SCREEN_COLLECTION)
           .findOne({ _id: objectId(shows[i].screenId) });
-        screenDetails[i] = screenData;
       }
 
-      console.log(screenDetails);
+      console.log(screenDetails, "sscreensdetails");
       resolve(screenDetails)
     });
   },
@@ -480,12 +481,12 @@ module.exports = {
       var showsWithScreenId = await db.get().collection(collection.SHOW_COLLECTION).find({ screenId: screenId }).toArray()
       var shows = []
 
-for(var i=0;i<showsWithScreenId.length;i++){
-  if(showsWithScreenId[i].Movie===movieId){
-    shows[i]=showsWithScreenId[i]
-  }
-}
-console.log(shows);
+      for (var i = 0; i < showsWithScreenId.length; i++) {
+        if (showsWithScreenId[i].Movie === movieId) {
+          shows[i] = showsWithScreenId[i]
+        }
+      }
+      console.log(shows, "shows");
       resolve(shows)
     })
   },
