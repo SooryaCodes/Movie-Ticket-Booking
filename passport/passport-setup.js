@@ -259,7 +259,6 @@ module.exports.initializePassport = (passport) => {
             if (err) {
               throw err;
             } else {
-              user.loggedIn=true
               done(null, user);
             }
           }
