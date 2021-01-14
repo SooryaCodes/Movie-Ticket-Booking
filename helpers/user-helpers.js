@@ -764,6 +764,16 @@ module.exports = {
   },
 
 
+  getUpcomingMovies:()=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collection.UPCOMING_MOVIE_COLLECTION).find().toArray().then((response)=>{
+        console.log(response);
+        resolve(response)
+      })
+    })
+  }
+
+
 };
 
 

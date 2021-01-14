@@ -54,12 +54,13 @@ router.get("/", verifyLogin, function (req, res, next) {
     }
 
     res.clearCookie("ref");
-    userHelpers.getMovies().then((Movie) => {
+    userHelpers.getMovies().then(async (Movie) => {
       var Horror = Movie.filter((value) => value.Category === "Horror");
       var Action = Movie.filter((value) => value.Category === "Action");
       var Comedy = Movie.filter((value) => value.Category === "Comedy");
       var Drama = Movie.filter((value) => value.Category === "Drama");
       var Romance = Movie.filter((value) => value.Category === "Romance");
+      var Upcoming = await userHelpers.getUpcomingMovies()
       res.render("user/home", {
         user: true,
         Horror,
@@ -69,7 +70,8 @@ router.get("/", verifyLogin, function (req, res, next) {
         Romance,
         userDetails: req.user,
         Location: req.session.Location,
-        Rewarded: req.session.Reward
+        Rewarded: req.session.Reward,
+        Upcoming
       });
     });
   });
@@ -334,7 +336,7 @@ router.get("/seat-select/:id/:ownerId", verifyLogin, (req, res) => {
     console.log(bookedSeats);
 
     var DetailsUser = await userHelpers.getWallet(req.user._id)
-    console.log(DetailsUser,"DetailsUser");
+    console.log(DetailsUser, "DetailsUser");
     console.log(DetailsUser.Rewards);
     console.log(screen, "scrreeen cchekibb");
     res.render("user/screen", {
@@ -415,11 +417,11 @@ router.post('/profile-image', (req, res) => {
 
 
 router.get('/booking-success', (req, res) => {
-  userHelpers.changeStatus(req.query.id, req.user._id).then(async(Response) => {
+  userHelpers.changeStatus(req.query.id, req.user._id).then(async (Response) => {
     var dynamic_template_data = {
       Link: 'https://moviecafe.sooryakriz.com/account'
     }
-    var paymentMail=await mailHelper.sendPayment(req.user.Email, process.env.MY_EMAIL, 'd-e697e803620148f2bdf3529366c5eb22', dynamic_template_data)
+    var paymentMail = await mailHelper.sendPayment(req.user.Email, process.env.MY_EMAIL, 'd-e697e803620148f2bdf3529366c5eb22', dynamic_template_data)
 
     userHelpers.getBookingDetail(req.query.id).then((templateData) => {
 
@@ -506,35 +508,35 @@ router.post('/getBookings', (req, res) => {
 })
 
 
-router.post('/cancel-booking/:id',(req,res)=>{
-  userHelpers.cancelBooking(req.params.id,req.user._id).then((response)=>{
-    res.json({status:true})
+router.post('/cancel-booking/:id', (req, res) => {
+  userHelpers.cancelBooking(req.params.id, req.user._id).then((response) => {
+    res.json({ status: true })
   })
 })
-router.post('/cancel-booking-failed/:id',(req,res)=>{
-  userHelpers.cancelBookingFailed(req.params.id,req.user._id).then((response)=>{
-    res.json({status:true})
+router.post('/cancel-booking-failed/:id', (req, res) => {
+  userHelpers.cancelBookingFailed(req.params.id, req.user._id).then((response) => {
+    res.json({ status: true })
   })
 })
 
-router.post('/MovieSearch/:SearchWord',async(req,res)=>{
-  var Movies=await userHelpers.getAllMovies()
+router.post('/MovieSearch/:SearchWord', async (req, res) => {
+  var Movies = await userHelpers.getAllMovies()
   const options = {
     includeScore: true,
     keys: ["Title"]
   }
-  
+
   // Create a new instance of Fuse
   const fuse = new Fuse(Movies, options)
-  
+
   // Now search for 'Man'
   const result = fuse.search(req.params.SearchWord)
   console.log(result);
   res.json(result)
 })
 
-router.post('/getAllMovies',(req,res)=>{
-  userHelpers.getAllMovies().then((response)=>{
+router.post('/getAllMovies', (req, res) => {
+  userHelpers.getAllMovies().then((response) => {
     res.json(response)
   })
 })

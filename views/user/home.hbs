@@ -205,6 +205,37 @@
 </div>
 {{/if}}
 
+
+<!-- Swiper -->
+{{#if Upcoming}}
+
+<div class="swiper-container movie">
+    <div class="category">
+        <p>Action</p>
+    </div>
+    <div class="swiper-wrapper">
+
+        {{#each Upcoming}}
+
+        <div class="swiper-slide">
+            <!-- Swiper -->
+
+            <a href="/movie/{{this._id}}">
+                <div class="card">
+                    <img src="/images/owner/movie/{{this._id}}.jpg" alt="">
+                </div>
+
+            </a>
+
+        </div>
+        {{/each}}
+
+
+    </div>
+</div>
+{{/if}}
+
+
 {{!-- Location --}}
 
 <input type="text" name="Latitude" id="Latitude" class="signupInput" hidden>
