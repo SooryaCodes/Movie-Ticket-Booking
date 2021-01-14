@@ -336,6 +336,7 @@
 
 
     function addBooking() {
+        document.querySelector('.table').innerHTML =''
         $.ajax({
             url: '/getBookings',
             method: 'post',
