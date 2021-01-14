@@ -443,6 +443,17 @@
 </div>
 
 <script>
+
+
+    const removeDetailsAll = () => {
+        Theaters
+        Screens
+        Show
+        var Screens = document.querySelector('.Screens').innerHTML = ""
+        var Theaters = document.querySelector('.Theaters').innerHTML = ""
+        var Show = document.querySelector('.Show').innerHTML = ""
+
+    }
     var locationWrapper = document.querySelector('.location-wrapper')
     const displayLocation = () => {
 
@@ -827,7 +838,12 @@
             method: 'post',
             success: (Theater) => {
                 if (Theater.length < 1) {
+                    removeSlider()
                     wrapper.classList.remove('active')
+                    theater.classList.remove('active')
+                    screen.classList.remove('active')
+                    show.classList.remove('active')
+                    removeDetailsAll()
                     loader.classList.remove('active')
                     alert('Sorry , No Theaters Available!  :(')
                 } else {
@@ -890,7 +906,7 @@
         theater.classList.remove('active')
         screen.classList.remove('active')
         show.classList.remove('active')
-
+        removeDetailsAll()
     })
 
 
@@ -910,6 +926,11 @@
         if (checkedTheater === null) {
             alert('You Didn"t Select Any Theater ! Try Again ')
             removeSlider()
+            wrapper.classList.remove('active')
+            theater.classList.remove('active')
+            screen.classList.remove('active')
+            show.classList.remove('active')
+            removeDetailsAll()
             wrapper.classList.remove('active')
         } else {
             $.ajax({
@@ -977,13 +998,23 @@
             alert('You Didn"t Select Any Show ! Try Again ')
             removeSlider()
             wrapper.classList.remove('active')
+            theater.classList.remove('active')
+            screen.classList.remove('active')
+            show.classList.remove('active')
+            removeDetailsAll()
+            loader.classList.remove('active')
         } else {
             $.ajax({
                 url: `/getShowDetails/${movieId}/${checkedScreen.value}`,
                 method: 'post',
                 success: (showDetails) => {
                     if (showDetails.length < 1) {
+                        removeSlider()
                         wrapper.classList.remove('active')
+                        theater.classList.remove('active')
+                        screen.classList.remove('active')
+                        show.classList.remove('active')
+                        removeDetailsAll()
                         loader.classList.remove('active')
                         alert('Sorry , No Shows Available !  :(')
                     }
@@ -1030,6 +1061,11 @@
             alert('You Didn"t Select Any Show ! Try Again ')
             removeSlider()
             wrapper.classList.remove('active')
+            theater.classList.remove('active')
+            screen.classList.remove('active')
+            show.classList.remove('active')
+            removeDetailsAll()
+            loader.classList.remove('active')
         } else {
 
             location.href = "/seat-select/" + checkedShow.value + '/' + ownerId
