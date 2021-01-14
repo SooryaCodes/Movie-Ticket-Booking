@@ -55,8 +55,12 @@
         document.querySelector('.row').innerHTML = null
         if (SearchInput.value.length === 0) {
             getAllMovies()
-        } else {
-            document.querySelector('.row').innerHTML=""
+        } else if (SearchInput.value.length > 1) {
+
+            document.querySelector('.row').innerHTML = ""
+        }
+    
+            document.querySelector('.row').innerHTML = ""
             $.ajax({
                 url: `/MovieSearch/${searchKey}`,
                 method: 'post',
@@ -79,6 +83,6 @@
 
                 }
             })
-        }
+        
     }    
 </script>
