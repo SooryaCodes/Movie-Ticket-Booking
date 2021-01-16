@@ -11,6 +11,10 @@ In This App You Can Book Movie Tikects Online.*
 ```
 -Referal Link
 
+-Seat Selection
+
+-Two Payment Gateways
+
 -Movie Rating
 
 -Wallet Checkout
@@ -18,6 +22,8 @@ In This App You Can Book Movie Tikects Online.*
 -Real Time Notification
 
 -Templated Mails
+
+-Theater Distance & Routes
 
 ```
 
