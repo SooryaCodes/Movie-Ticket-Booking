@@ -344,6 +344,8 @@
                 document.getElementById('Booking').innerHTML = response.length
                 document.getElementById('Payments').innerHTML = response.length
                 document.getElementById('Pendings').innerHTML = Pendings.length
+
+                console.log(response)
                 if (response.length === 0) {
                     var table = document.querySelector('.table').innerHTML = ` <tr> <td style="display:flex;align-items:center;justify-content:center;width:100% !important;font-size:20px;font-weight:600;">Sorry, You Have No Bookings.<td></tr>`
 

@@ -56,6 +56,7 @@ window.addEventListener('load', () => {
   }
 })
 
+
 window.addEventListener("load", function () {
   for (var i = 0; i < Reserved.length; i++) {
     document.getElementById(Reserved[i]).parentNode.classList.add("Reserved-Seat");
