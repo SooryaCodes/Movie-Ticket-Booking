@@ -49,6 +49,13 @@
             }
         })
     }
+
+
+
+
+    window.addEventListener('load', () => {
+        getAllMovies()
+    })
     var SearchInput = document.getElementById('search')
     if (SearchInput.value.length === 0) {
         getAllMovies()
