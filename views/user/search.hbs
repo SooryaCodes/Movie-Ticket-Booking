@@ -27,6 +27,8 @@
 
 <script>
     const getAllMovies = () => {
+        document.querySelector('.row').innerHTML = null
+
         $.ajax({
             url: '/getAllMovies',
             method: 'post',
