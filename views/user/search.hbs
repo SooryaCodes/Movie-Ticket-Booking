@@ -27,7 +27,7 @@
 
 <script>
     const getAllMovies = () => {
-        document.querySelector('.row').innerHTML = null
+        document.querySelector('.row').innerHTML = ""
 
         $.ajax({
             url: '/getAllMovies',
@@ -54,7 +54,7 @@
         getAllMovies()
     }
     const getMovie = (searchKey) => {
-        document.querySelector('.row').innerHTML = null
+        document.querySelector('.row').innerHTML = ""
         if (SearchInput.value.length === 0) {
             getAllMovies()
         } else if (SearchInput.value.length > 1) {
