@@ -10,10 +10,10 @@
 body {
   background: #303449;
   width: 100%;
-display: flex;
-
-align-items: center;justify-content: center;  
-flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   height: 100%;
 }
 ::selection {
@@ -58,7 +58,7 @@ flex-direction: column;
   background: #303449;
   box-shadow: 5px 5px 10px #282b3d, -5px -5px 10px #32374b;
 }
-.user-dash .profile-section .img-section input{
+.user-dash .profile-section .img-section input {
   position: absolute;
   top: 0;
   width: 100%;
@@ -477,7 +477,7 @@ flex-direction: column;
   }
 }
 
-.table{
+.table {
   counter-reset: section;
   border: none !important;
   border-bottom: none !important;
@@ -489,12 +489,12 @@ flex-direction: column;
   counter-increment: section;
   content: counter(section);
 }
-tr{
+tr {
   border: none !important;
   border-bottom: none !important;
-
 }
-th,td{
+th,
+td {
   color: rgb(190, 190, 190);
   border: none !important;
 }
@@ -523,7 +523,8 @@ th,td{
   height: 30%;
   border-radius: 5px;
   background: #303449;
-  display: flex;    color: white !important;
+  display: flex;
+  color: white !important;
 
   align-items: center;
   justify-content: center;
@@ -553,13 +554,15 @@ th,td{
     padding-right: 20px;
     line-height: 20px;
   }
-  .show-btn,#pay{
+  .show-btn,
+  #pay {
     font-size: 9px !important;
     height: 30px !important;
   }
 }
 
-.show-btn,#pay {
+.show-btn,
+#pay {
   width: 90px;
   font-size: 14px;
   color: #cccd;

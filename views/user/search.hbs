@@ -57,10 +57,10 @@
             getAllMovies()
         } else if (SearchInput.value.length > 1) {
 
+
             document.querySelector('.row').innerHTML = ""
-        }
-    
-            document.querySelector('.row').innerHTML = ""
+
+
             $.ajax({
                 url: `/MovieSearch/${searchKey}`,
                 method: 'post',
@@ -82,7 +82,11 @@
 
 
                 }
+
             })
-        
+
+
+        }
+
     }    
 </script>
