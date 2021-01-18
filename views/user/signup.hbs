@@ -9,7 +9,9 @@
     type="text/css" />
 
 <link rel="stylesheet" href="/stylesheets/user/login.css">
+<div class="alerts">
 
+</div>
 <div class="login-wrapper">
 
     <div class="left-section">
@@ -36,13 +38,14 @@
                     </div>
                     <input type="text" name="Latitude" placeholder="Email" id="Latitude" class="signupInput" hidden>
                     <input type="text" name="Longitude" placeholder="Email" id="Longitude" class="signupInput" hidden>
-                    <input type="text" name="mobile" placeholder="mobile" id="Mobile" value="{{mobile}}" class="signupInput" hidden>
+                    <input type="text" name="mobile" placeholder="mobile" id="Mobile" value="{{mobile}}"
+                        class="signupInput" hidden>
                 </div>
 
                 <div class="input-submit btn-s-h">
                     <button class="mask waves-effect btn btn-light-blue waves-light rgba-white-slight"
                         style="width: 300px; font-size: 15px; display: flex;border-radius: 0px; height: 45px; align-items: center;justify-content: center;"
-                        id="" class="" onclick="displayLocation()">Continue</button>
+                        id="" class="" onclick="validationForm()">Continue</button>
                 </div>
             </div>
 
@@ -82,6 +85,22 @@
 
     const cancelLocation = () => {
         locationWrapper.classList.remove('active')
+    }
+
+
+    const validationForm = () => {
+        var Name = document.getElementById('Name').value
+        var Email = document.getElementById('Email').value
+        var alerts = document.querySelector('.alerts')
+
+        if (Name.length === 0 && Email.length === 0 || Name.length === 0 || Email.length === 0 || !Email.includes('@')) {
+
+            alerts.innerHTML = `                <div class="alert alert-danger" id="alert" role="alert">
+                    Please Fill The Form
+                </div>`
+        } else {
+            displayLocation()
+        }
     }
 
 
@@ -153,13 +172,13 @@
         }
 
 
-$.ajax({
-    url:'/signup/'+mobile,
-    method:'post',
-    data:Details,
-    success:()=>{
-        location.href='/'
-    }
-})
+        $.ajax({
+            url: '/signup/' + mobile,
+            method: 'post',
+            data: Details,
+            success: () => {
+                location.href = '/'
+            }
+        })
     }
 </script>
