@@ -25,6 +25,8 @@ In This App You Can Book Movie Tikects Online.*
 
 -Theater Distance & Routes
 
+-Email Verification
+
 ```
 
 ## Clone My Repo

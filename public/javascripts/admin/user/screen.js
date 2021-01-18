@@ -40,7 +40,6 @@ function disableCorona() {
 setTimeout(() => {
   location.href = '/'
 }, 300000)
-console.log(bookedSeats);
 var Reserved = bookedSeats.split(",");
 window.addEventListener('load', () => {
   if (Reserved.length === TotalNumberOfSeat) {
@@ -67,7 +66,6 @@ window.addEventListener("load", function () {
     });
   }
 });
-console.log(Reserved, "rese");
 var Vip = {
   Row: VipRow,
   Seat: VipSeat,
@@ -85,7 +83,6 @@ var Premium = {
   Seat: PremiumSeat,
 };
 
-console.log(Vip, Excecutive, Premium, Normal);
 
 //---normal seat---
 
@@ -109,7 +106,6 @@ function myfun(hi) {
     unselected.forEach((value) => (value.disabled = true));
     disableCorona()
     var name = document.getElementById("username").value;
-    console.log(name);
     document.querySelector(
       ".alerts"
     ).innerHTML += `<div class="alert style="position:fixed;" alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
@@ -133,12 +129,10 @@ function myfun(hi) {
       removeAlert.remove();
     }
 
-    console.log(wrapper.childElementCount);
     if (SeatShow.childElementCount >= 1) {
       wrapper.classList.add("active");
     } else {
       wrapper.classList.remove("active");
-      console.log("hi there is nothing");
     }
   }
 
@@ -176,7 +170,6 @@ function myfun(hi) {
     if (seat[i].includes("Excecutive")) Excecutive.push(seat[i]);
   }
 
-  console.log(Vip, Premium, Excecutive, Normal);
 
   var VipPrice = Vip.length * show.Vip;
   var NormalPrice = Normal.length * show.Normal;
@@ -185,7 +178,6 @@ function myfun(hi) {
 
   var TotalPrice = VipPrice + ExcecutivePrice + NormalPrice + PremiumPrice;
 
-  console.log(TotalPrice);
 
   document.getElementById("total").innerText = ` ${TotalPrice}`;
 
@@ -224,7 +216,6 @@ function wallet(val) {
   var walletInput = document.getElementById('Wallet');
   var total = parseInt(document.getElementById("totalPriceForPayment").innerText)
   var val = parseInt(val)
-  console.log(val, total);
   if (walletInput.checked === true) {
     if (total - val < 0) {
       document.getElementById("totalPriceForPayment").innerHTML = 1;
@@ -265,11 +256,9 @@ function payment(paymentMethod) {
 
 
   if (totalPriceForPayment === total) {
-    console.log('it is very berirjvdvhd');
     originalAmount = true
   }
 
-  console.log(totalPriceForPayment, total, 'njanane');
 
   $.ajax({
     url: "/ticket-booking",
@@ -294,7 +283,6 @@ function payment(paymentMethod) {
         alert("failed");
       } else if (response.Razorpay === true) {
         razorpayPayment(response);
-        console.log(response, "response");
         // alert('success')
       } else {
         var bookingDetails = {
@@ -310,7 +298,6 @@ function payment(paymentMethod) {
 
 
 const razorpayPayment = (data) => {
-  console.log(data, "data in razorpay");
   var options = {
     key: "rzp_test_kX6azReFALaRXo", // Enter the Key ID generated from the Dashboard
     amount: data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -348,8 +335,6 @@ const razorpayPayment = (data) => {
   }
 };
 function verifyPayment(payment, order) {
-  console.log(payment, 'payment');
-  console.log(order, 'order');
   $.ajax({
     url: "/verify-payment",
     method: "post",
