@@ -74,9 +74,14 @@
                 url: `/MovieSearch/${searchKey}`,
                 method: 'post',
                 success: (response) => {
+                    if (response.length === 0) {
+                        document.querySelector('.row').innerHTML="<div style='width:100%;display:flex;align-items:center;justify-content:center;color:#cccd'><h3>Oops Movie Not Found.</h3>"
+                    } else {
 
-                    response.forEach(element => {
-                        document.querySelector('.row').innerHTML += `  <div class="col-12 col-sm-6 col-md-4 col-lg-3 "
+
+
+                        response.forEach(element => {
+                            document.querySelector('.row').innerHTML += `  <div class="col-12 col-sm-6 col-md-4 col-lg-3 "
             style="padding: 0; display: flex; align-items: center; justify-content: space-around;">
             <a href="/movie/${element.item._id}">
             <div class="products" data-aos="fade-up" data-aos-duration="1800">
@@ -86,9 +91,9 @@
             </div>
             </a>
         </div>`
-                    })
+                        })
 
-
+                    }
 
                 }
 
