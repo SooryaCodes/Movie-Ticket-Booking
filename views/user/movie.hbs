@@ -545,7 +545,6 @@
                     }
                 };
 
-                console.log(data);
                 // get the sidebar and add the instructions
                 var instructions = document.getElementById('instructions');
                 var steps = data.legs[0].steps;
@@ -709,7 +708,6 @@
 
             var distancePElemnt = document.getElementById(id).innerHTML = `Distance ${Math.floor(data.distance / 1000)} Km`
 
-            console.log(data);
 
 
 
@@ -728,9 +726,7 @@
 
     function rate(value) {
         var rateStatus
-        console.log(value)
         var num = parseInt(value) - 1
-        console.log(num)
         var stars = document.querySelectorAll('input[name="rating"]')
         for (var j = 0; j < stars.length; j++) {
             if (stars[j].checked) {
@@ -752,9 +748,7 @@
     function rateSubmit(id) {
         var stars = document.querySelectorAll('input[name="rating"]:checked')
         var Review = document.getElementById('Review').value
-        console.log(stars.length, "hey")
         var Rating = stars.length
-        console.log(Rating, Review)
         $.ajax({
             url: '/rating/' + id,
             method: 'post',
@@ -826,7 +820,6 @@
     var tlbtn = document.getElementById('tl-btn')
 
     const selection = (movieId) => {
-        console.log(movieId)
         var wrapper = document.querySelector('.selecting-wrapper')
         var loader = document.querySelector('.loader-small')
         wrapper.classList.toggle('active')
@@ -855,7 +848,6 @@
                             TheaterDetails.push(el);
                         }
                     });
-                    console.log(TheaterDetails, 'TheaterDetails')
                     giveMarkers(TheaterDetails)
                     TheaterDetails.forEach(Details => {
                         var location = [
@@ -1018,9 +1010,7 @@
                         loader.classList.remove('active')
                         alert('Sorry , No Shows Available !  :(')
                     }
-                    console.log(showDetails)
                     showDetails.forEach(Details => {
-                        console.log(Details)
                         sliderWrapperShow.innerHTML += `
                     <div class="swiper-slide booking" >
 <input type="radio" name="Show" onchange="" value="${Details._id}" id="date">
