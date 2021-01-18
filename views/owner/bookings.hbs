@@ -92,14 +92,19 @@
         Show
       </th>
       <th>
+        Seats
+      </th>
+      <th>
         Payment
       </th>
       <th>
-       Status
+        Status
       </th>
       <th>
         Amount
       </th>
+
+
     </tr>
     {{#each Bookings}}
     <tr>
@@ -112,7 +117,10 @@
       <td>
         {{this.Show.screenName}}
       </td>
-      <td>{{this.ShowDetails.Date}}  |  {{this.ShowDetails.Time}}</td>
+      <td>{{this.ShowDetails.Date}} | {{this.ShowDetails.Time}}</td>
+      <td>
+        <button class="btn  " style="background-color: rgb(235, 118, 118);color: white;" onclick="displaySeats('{{this._id}}')">Show</button>
+      </td>
       <td>
         {{this.Payment}}
       </td>
@@ -124,16 +132,46 @@
         {{/if}}
         {{this.Payment_Status}}
       </td>
-<td> ₹ {{this.Amount}}</td>
+      <td> ₹ {{this.Amount}}</td>
+
+
+
+
+      {{!--delete popup--}}
+      <div class="delete-wrapper" id="{{this._id}}">
+        <div class="delete">
+          <span id="delete">Seats</span>
+          <div style="display: flex;align-items: center;">
+            {{#each this.Seat}}
+            <p style="font-weight: 600; ">
+              {{this}}
+            </p> <span style="font-size: 20px;">,</span>
+            {{/each}}
+          </div>
+          <div class="inputs-btn">
+            <button class="mask waves-effect waves-light rgba-white-slight" hidden>Cancel</button>
+            <button class="mask waves-effect waves-light rgba-white-slight"
+              onclick="closeSeats('{{this._id}}')">Close</button>
+          </div>
+        </div>
+      </div>
+
+
     </tr>
     {{/each}}
   </table>
 </div>
 
+<script>
+
+</script>
+
 
 <script>
-  $(document).ready(function () {
-    $('#dtBasicExample').DataTable();
-    $('.dataTables_length').addClass('bs-select');
-  });
+  const displaySeats=(id)=>{
+    var wrapper=document.getElementById(id).classList.toggle('active')
+  }
+  const closeSeats=(id)=>{
+    var wrapper=document.getElementById(id).classList.remove('active')
+  }
 </script>
