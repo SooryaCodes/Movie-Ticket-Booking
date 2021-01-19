@@ -228,6 +228,8 @@ function wallet(val) {
   }
 }
 function payment(paymentMethod) {
+  document.querySelector('.loader').classList.toggle('active')
+
   var checkedSeat = document.querySelectorAll('input[name="seat"]:checked');
   var seat = [];
   for (var i = 0; i < checkedSeat.length; i++) {
@@ -285,6 +287,7 @@ function payment(paymentMethod) {
         razorpayPayment(response);
         // alert('success')
       } else {
+
         var bookingDetails = {
           message: 'New Booking Confirmed',
           ownerId: ownerId
@@ -322,6 +325,9 @@ const razorpayPayment = (data) => {
       color: "#4B6591",
     },
   };
+
+
+
   var rzp1 = new Razorpay(options);
   rzp1.on("payment.failed", function (response) {
 
@@ -331,6 +337,8 @@ const razorpayPayment = (data) => {
   }, 1000);
 
   function razorpayUp() {
+    document.querySelector('.loader').classList.remove('active')
+
     rzp1.open();
   }
 };
