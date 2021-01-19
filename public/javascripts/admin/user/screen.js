@@ -310,7 +310,6 @@ const razorpayPayment = (data) => {
     image: "",
     order_id: data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     handler: function (response) {
-
       verifyPayment(response, data);
     },
     prefill: {
@@ -324,6 +323,12 @@ const razorpayPayment = (data) => {
     theme: {
       color: "#4B6591",
     },
+    "modal": {
+      "ondismiss": function(){
+        location.href = "/booking-failure?id=" + data.receipt;
+
+      }
+  }
   };
 
 
