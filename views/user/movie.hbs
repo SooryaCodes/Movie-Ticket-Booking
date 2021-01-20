@@ -37,7 +37,10 @@
 
     }
 </style>
+<div class="alerts "
+    style="position: fixed; top: 100px; display: flex;align-items: center;justify-content: center;width: 100%;z-index: 100000000;">
 
+</div>
 <div class="movie-view">
     <div class="left-section">
         <div class="movie-poster">
@@ -749,19 +752,45 @@
         var stars = document.querySelectorAll('input[name="rating"]:checked')
         var Review = document.getElementById('Review').value
         var Rating = stars.length
-        $.ajax({
-            url: '/rating/' + id,
-            method: 'post',
-            data: {
-                Rating,
-                Review
-            },
-            success: () => {
-                var wrapper = document.querySelector('.rate-pop-up-wrapper')
-                wrapper.classList.remove('active')
-                location.reload()
-            }
-        })
+        var alerts = document.querySelector('.alerts')
+console.log(Review.length,Rating)
+        if (Rating === 0) {
+            alerts.innerHTML = `<div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
+  Please Rate Before Submit.
+<button type="button" class="close" onclick="this.parentNode.remove()" aria-label="Close">
+  <span aria-hidden="true">×</span>
+</button>
+</div>`
+        }
+
+        if (Review.length === 0) {
+            alerts.innerHTML = `<div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
+  Please Add Review Before Submit.
+<button type="button" class="close" onclick="this.parentNode.remove()" aria-label="Close">
+  <span aria-hidden="true">×</span>
+</button>
+</div>`
+        }
+
+        if (Rating > 0 && Review.length > 0) {
+
+
+            $.ajax({
+                url: '/rating/' + id,
+                method: 'post',
+                data: {
+                    Rating,
+                    Review
+                },
+                success: () => {
+                    var wrapper = document.querySelector('.rate-pop-up-wrapper')
+                    wrapper.classList.remove('active')
+                    location.reload()
+                }
+            })
+
+        }
+
     }
 </script>
 <script>
