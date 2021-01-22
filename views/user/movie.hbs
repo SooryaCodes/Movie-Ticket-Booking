@@ -153,7 +153,9 @@
             </div>
 
 
-
+            <div class="nearest">
+<p style="color: #fff; font-weight: 500;font-family: 'poppins',sans-serif;"><i class="fas fa-info-circle    "></i> Your Nearest Theaterter iS <span style="font-weight: 600;">Soorya CInems</span> & Distance <span style="font-weight: 600;">20Km</span>.</p>
+            </div>
             <div class="select-btns">
 
                 <button class="mask waves-effect waves-light rgba-white-slight " id="tl-btn"
@@ -373,7 +375,6 @@
 </div>
 
 {{/if}}
-
 
 
 
@@ -679,11 +680,13 @@
 
     }
 
+    var theaterDistances = []
+
 
 
 
     // create a function to make a directions request
-    function getDistance(end, id) {
+    function getDistance(end, detail) {
         mapboxgl.accessToken = 'pk.eyJ1Ijoic29vcnlhLWtyaXoiLCJhIjoiY2tqYTcydDN1NWc1bTJ5bjRuYXF3eHdpayJ9.mo48bziP80gkbrXL-1kETw';
 
         // make a directions request using cycling profile
@@ -709,16 +712,44 @@
                 }
             };
 
-            var distancePElemnt = document.getElementById(id).innerHTML = `Distance ${Math.floor(data.distance / 1000)} Km`
-
-
-
+            var distancePElemnt = document.getElementById(detail._id).innerText = Math.floor(data.distance / 1000)
 
 
         };
         req.send();
 
-    }   
+    }
+
+
+
+    function findNear(data) {
+        data.forEach(Details => {
+
+            var d = document.getElementById(Details._id)
+            Details.Distance = parseInt(d.innerHTML)
+        })
+
+        console.log(data, "data")
+        // There's no real number bigger than plus Infinity
+        var nearest = Number.POSITIVE_INFINITY;
+        var tmp;
+        for (var i = data.length - 1; i >= 0; i--) {
+            tmp = data[i].Distance;
+            if (tmp < nearest) nearest = tmp;
+        }
+        console.log(nearest);
+
+        const checkNearest = (data) => {
+            return data.Distance === nearest
+        }
+        var nearestData = data.filter(checkNearest)
+
+        console.log(nearestData);
+
+        var showingNearest=document.querySelector('.nearest').innerHTML=`<p style="color: #fff; font-weight: 500;font-family: 'poppins',sans-serif;"><i class="fas fa-info-circle    "></i> Your Nearest Theater <span style="font-weight: 600;">${nearestData[0].Theater}</span> & Distance <span style="font-weight: 600;">${nearestData[0].Distance} Km</span>.</p>`
+
+
+    }
 </script>
 <script>
     function ratePopUp() {
@@ -753,7 +784,7 @@
         var Review = document.getElementById('Review').value
         var Rating = stars.length
         var alerts = document.querySelector('.alerts')
-console.log(Review.length,Rating)
+        console.log(Review.length, Rating)
         if (Rating === 0) {
             alerts.innerHTML = `<div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
   Please Rate Before Submit.
@@ -858,7 +889,7 @@ console.log(Review.length,Rating)
         $.ajax({
             url: '/getTheater/' + movieId,
             method: 'post',
-            success: (Theater) => {
+            success: async (Theater) => {
                 if (Theater.length < 1) {
                     removeSlider()
                     wrapper.classList.remove('active')
@@ -878,7 +909,7 @@ console.log(Review.length,Rating)
                         }
                     });
                     giveMarkers(TheaterDetails)
-                    TheaterDetails.forEach(Details => {
+                    TheaterDetails.forEach(async (Details) => {
                         var location = [
                             Details.Longitude,
                             Details.Latitude
@@ -888,15 +919,30 @@ console.log(Review.length,Rating)
 <input type="radio" name="Theater" onchange="" value="${Details._id}" id="date">
     <label id="label" for="date" class="date">
         <p style="font-size: 15px;text-align: center;">${Details.Theater} </p>
-        <p style="font-size: 13px;text-align: center;font-weight:400" id="${Details._id}"></p>
+        <p style="font-size: 13px;text-align: center;font-weight:400" >Distance <span id="${Details._id}" class="distance"  ></span> Km</p>
     </label>
 </div>
 `
-                        var MapDetails = getDistance(location, Details._id)
+                        var MapDetails = await getDistance(location, Details)
+
+
+
+
                     })
+
+
+                    setTimeout(async () => {
+
+                        var findNearest = await findNear(TheaterDetails)
+                    }, 1000)
+
+
+
+
+
+
+
                 }
-
-
 
 
                 slider()
