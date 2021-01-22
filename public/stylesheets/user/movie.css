@@ -1578,3 +1578,28 @@ i.star{
     font-size: 14px;
   }
 }
+
+
+@media (max-width:1500px){
+
+  .nearest p{
+font-size: 12px;
+  }
+}
+@media (max-width:800px){
+
+  .nearest p{
+font-size: 11px;
+  }
+}
+@media (max-width:390px){
+
+  .nearest p{
+font-size: 10px;
+  }
+}
+
+
+
+
+
