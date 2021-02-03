@@ -729,7 +729,6 @@
             Details.Distance = parseInt(d.innerHTML)
         })
 
-        console.log(data, "data")
         // There's no real number bigger than plus Infinity
         var nearest = Number.POSITIVE_INFINITY;
         var tmp;
@@ -737,14 +736,12 @@
             tmp = data[i].Distance;
             if (tmp < nearest) nearest = tmp;
         }
-        console.log(nearest);
 
         const checkNearest = (data) => {
             return data.Distance === nearest
         }
         var nearestData = data.filter(checkNearest)
 
-        console.log(nearestData);
 
         var showingNearest=document.querySelector('.nearest').innerHTML=`<p style="color: #fff; font-weight: 500;font-family: 'poppins',sans-serif;"><i class="fas fa-info-circle    "></i> Your Nearest Theater <span style="font-weight: 600;">${nearestData[0].Theater}</span> & Distance <span style="font-weight: 600;">${nearestData[0].Distance} Km</span>.</p>`
 
@@ -784,7 +781,6 @@
         var Review = document.getElementById('Review').value
         var Rating = stars.length
         var alerts = document.querySelector('.alerts')
-        console.log(Review.length, Rating)
         if (Rating === 0) {
             alerts.innerHTML = `<div class="alert  alert-dismissible fade show" role="alert" style="background:#464d75; color:white;box-shadow:0px 0px 20px #222538">
   Please Rate Before Submit.
